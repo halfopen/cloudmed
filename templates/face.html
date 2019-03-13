@@ -14,16 +14,12 @@
 	<!-- <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 </head>
 <body>
-	<form role="form">
-		<div class="form-group">
-			<input  id="pic" type="file" class="form-control" name = 'pic' accept = "image/*" onchange = "selectFile()"/>
-			<select name="type" id="type" class="form-control">
-				<option value="face">face</option>
-				<option value="tongue">tongue</option>
-			</select>
-			<button class="form-control" id="submit">submit</button>
-		</div>
-	</form>
+	<input  id="pic" type="file" class="form-control" name = 'pic' accept = "image/*" onchange = "selectFile()"/>
+	<select name="type" id="type" class="form-control">
+		<option value="face">face</option>
+		<option value="tongue">tongue</option>
+	</select>
+	<button class="form-control" id="submit">submit</button>
 	<h5 id="pro_result"></h5>
 	<div id = "result"></div>
 	
