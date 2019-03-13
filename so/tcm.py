@@ -1,9 +1,9 @@
 # coding: utf-8
 import os
-
+from cloudmed.settings import *
 class TcmPro:
 	def tcmPro(self, img_path, pro_type):
-		tmp = os.popen("./main "+img_path+" "+pro_type).readlines()
+		tmp = os.popen(BASE_DIR+"/so/main "+img_path+" "+pro_type).readlines()
 		print(tmp)
 		tmp = tmp[0]
 		return tmp.replace("\n", "")
