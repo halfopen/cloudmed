@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>html5实现上传</title>
+	<style type="text/css">
+	*{
+		margin:10px;
+	}
+
+	</style>
+	<!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">   -->
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<!-- <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+</head>
+<body>
+	<form role="form">
+		<div class="form-group">
+			<input  id="pic" type="file" class="form-control" name = 'pic' accept = "image/*" onchange = "selectFile()"/>
+			<select name="type" id="type" class="form-control">
+				<option value="face">face</option>
+				<option value="tongue">tongue</option>
+			</select>
+			<button class="form-control" id="submit">submit</button>
+		</div>
+	</form>
+	<h5 id="pro_result"></h5>
+	<div id = "result"></div>
+	
+	<!-- <button onclick = "handIn()">提交</button> -->
+	<script type="text/javascript">
+		//var files = document.getElementById('pic').files;
+		var form = new FormData();//通过HTML表单创建FormData对象
+		var url = 'http://facestory.cn:8000/upload'
+		function selectFile(){
+			var files = document.getElementById('pic').files;
+			console.log(files[0]);
+			if(files.length == 0){
+				return;
+			}
+			var file = files[0];
+			//把上传的图片显示出来
+			var reader = new FileReader();
+			// 将文件以Data URL形式进行读入页面
+			console.log(reader);
+			reader.readAsBinaryString(file);
+			reader.onload = function(f){
+		        var result = document.getElementById("result");
+		        var src = "data:" + file.type + ";base64," + window.btoa(this.result);
+		        result.innerHTML = '<img src ="'+src+'"/>';
+		    }
+			console.log('file',file);
+			///////////////////
+			form.append('file',file);
+			console.log(form.get('file'));
+		}
+		$(document).ready(function(){
+			console.log("ready");
+			$("#submit").on("click", function(){
+				console.log("submit");
+				var form = new FormData();
+				var type = $("#type").val();
+			  	form.append("file",document.getElementById('pic').files[0]);
+			  	form.append("type", type);
+			　	$.ajax({
+	                url:url,
+	                type:"post",
+	                data:form,
+	                processData:false,
+	                contentType:false,
+	                success:function(data){
+	                    console.log("over..");
+	                    console.log(data);
+	                    var html = "";
+                    	for(var key in data.result){
+                    		console.log(data.key[key]);
+                    		console.log(data.info[key][data.result[key]]);
+                    		html+=data.key[key]+":"+data.info[key][data.result[key]]+"<br/>";
+                    	}
+	                    $("#pro_result").html(html);
+	                }
+				});
+			});
+		});
+	</script>
+</body>
+</html>
