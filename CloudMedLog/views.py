@@ -101,6 +101,7 @@ def decode_result(result, type="face"):
 
     d["info"] = info
     d["key"] = key
+
     for k in key.keys():
         d[k] = result % 10
         result = int(result / 10)
