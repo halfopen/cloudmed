@@ -10,7 +10,7 @@ tcmPro = TcmPro()
 
 
 def face(req):
-    return render("face.html")
+    return render(req, "face.html")
 
 
 def upload_image(req):
