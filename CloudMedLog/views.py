@@ -78,7 +78,7 @@ def decode_result(result, type="face"):
     key = None
     info = None
     d = dict()
-    d["result"] = str(result)
+    d["raw"] = str(result)
     if type == "face":
         key = {"faceDetectRes": "人脸检测结果", "faceColor": "面部颜色检测结果", "faceGloss": "面部光泽检测结果",
                "lipDetectRes": "嘴唇检测结果", "lipColor": "嘴唇颜色检测结果"}
@@ -103,8 +103,9 @@ def decode_result(result, type="face"):
 
     d["info"] = info
     d["key"] = key
-
+    result_dict = dict()
     for k in key.keys():
-        d[k] = result % 10
+        result_dict[k] = result % 10
         result = int(result / 10)
+    d['result'] = result_dict
     return d
