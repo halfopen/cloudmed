@@ -21,12 +21,15 @@ from django.conf.urls.static import static
 from django.conf.urls import url, include
 from django.contrib import admin
 import CloudMedLog.urls
+from CloudMedLog.views import *
+
 
 DIRNAME = os.path.dirname(__file__)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(CloudMedLog.urls)),
+    url(r'^upload', upload_image), 
 ]
 
 if settings.DEBUG:
