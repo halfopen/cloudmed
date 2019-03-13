@@ -75,6 +75,7 @@ def decode_result(result, type="face"):
     result = int(result)
     keys = None
     d = dict()
+    d["result"] = str(result)
     if type == "face":
         keys = ["faceDetectRes", "faceColor", "faceGloss", "lipDetectRes", "lipColor"]
     else:
