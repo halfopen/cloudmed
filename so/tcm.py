@@ -10,13 +10,13 @@ class TcmPro:
 
 
 	def facePro(self, img_path):
-		tmp = tcmPro(img_path, "face")
+		tmp = self.tcmPro(img_path, "face")
 		tmp = tmp.replace("tcmFaceFeature = ", "")
 		return tmp
 
 
 	def tongPro(self, img_path):
-		tmp = tcmPro(img_path, "tongue")
+		tmp = self.tcmPro(img_path, "tongue")
 		tmp = tmp.replace("tcmTongueFeature = ", "")
 		return tmp
 
