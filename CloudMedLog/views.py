@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http.response import *
 import os
 import time
@@ -7,6 +7,10 @@ from django import forms
 from so.tcm import TcmPro
 
 tcmPro = TcmPro()
+
+
+def face(req):
+    return render("face.html")
 
 
 def upload_image(req):
