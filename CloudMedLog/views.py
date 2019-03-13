@@ -30,7 +30,9 @@ def upload_image(req):
             result = tcmPro.facePro(os.path.join(UPLOAD_ROOT, filename))
         else:
             result = tcmPro.tongPro(os.path.join(UPLOAD_ROOT, filename))
-        return JsonResponse(decode_result(result, type))
+        d = decode_result(result, type)
+        d['file'] = filename
+        return JsonResponse(d)
 
 
 
