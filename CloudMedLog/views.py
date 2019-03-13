@@ -83,5 +83,5 @@ def decode_result(result, type="face"):
 
     for k in keys:
         d[k] = result%10
-        result /= 10
+        result =int(result/ 10)
     return d
