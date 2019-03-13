@@ -128,6 +128,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname('__file__')))
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
+UPLOAD_ROOT = os.path.join(MEDIA_ROOT, "upload")
+
 MEDIA_URL = '/media/'
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
