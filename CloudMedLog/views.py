@@ -41,7 +41,7 @@ def upload_image(req):
 
 
 """
-面诊返回值：
+面诊返回值：  31251
     返回类型：int
 	faceDetectRes->人脸检测结果:0->未检测出人脸，1->成功检测出人脸
 	faceColor->面部颜色检测结果:0->面白，1->面黑，2->面红,3->面黄，4->面青，5->正常
@@ -84,31 +84,32 @@ def decode_result(result, type="face"):
     d = dict()
     d["raw"] = str(result)
     if type == "face":
-        key = {"faceDetectRes": "人脸检测结果", "faceColor": "面部颜色检测结果", "faceGloss": "面部光泽检测结果",
-               "lipDetectRes": "嘴唇检测结果", "lipColor": "嘴唇颜色检测结果"}
+        key = {"_1faceDetectRes": "人脸检测结果", "_2faceColor": "面部颜色检测结果", "_3faceGloss": "面部光泽检测结果",
+               "_4lipDetectRes": "嘴唇检测结果", "_5lipColor": "嘴唇颜色检测结果"}
         info = {
-            "faceDetectRes": ["未检测到人脸", "成功检测到人脸"],
-            "faceColor": ["面白", "面黑", "面红", "面黄", "面青", "正常"],
-            "faceGloss": ["有光泽", "少光泽", "无光泽"],
-            "lipDetectRes": ["未检测出嘴唇", "成功检测出嘴唇"],
-            "lipColor": ["淡白", "淡红", "红", "暗红", "紫"]
+            "_1faceDetectRes": ["未检测到人脸", "成功检测到人脸"],
+            "_2faceColor": ["面白", "面黑", "面红", "面黄", "面青", "正常"],
+            "_3faceGloss": ["有光泽", "少光泽", "无光泽"],
+            "_4lipDetectRes": ["未检测出嘴唇", "成功检测出嘴唇"],
+            "_5lipColor": ["淡白", "淡红", "红", "暗红", "紫"]
         }
     else:
-        key = {"tongueDetectRes":"舌体检测结果", "tongueCrack":"舌裂纹检测结果", "tongueFatThin":"舌胖瘦检测结果",
-               "tongueCoatThickness":"舌苔厚薄检测结果", "tongueCoatColor":"舌苔颜色检测结果", "tongueNatureColor":"舌质颜色检测结果"}
+        key = {"_1tongueDetectRes":"舌体检测结果", "_2tongueCrack":"舌裂纹检测结果", "_3tongueFatThin":"舌胖瘦检测结果",
+               "_4tongueCoatThickness":"舌苔厚薄检测结果", "_5tongueCoatColor":"舌苔颜色检测结果", "_6tongueNatureColor":"舌质颜色检测结果"}
         info = {
-            "tongueDetectRes":["未检测出舌像","成功检测出舌像"],
-            "tongueCrack":["未检测到裂纹","成功检测到裂纹"],
-            "tongueFatThin": ["正常(瘦)","胖舌"],
-            "tongueCoatThickness": ["薄","厚"],
-            "tongueCoatColor": ["苔白","苔黄"],
-            "tongueNatureColor":["舌暗红", "舌淡白","舌淡红", "舌红", "舌深红（舌紫）"]
+            "_1tongueDetectRes":["未检测出舌像","成功检测出舌像"],
+            "_2tongueCrack":["未检测到裂纹","成功检测到裂纹"],
+            "_3tongueFatThin": ["正常(瘦)","胖舌"],
+            "_4tongueCoatThickness": ["薄","厚"],
+            "_5tongueCoatColor": ["苔白","苔黄"],
+            "_6tongueNatureColor":["舌暗红", "舌淡白","舌淡红", "舌红", "舌深红（舌紫）"]
         }
 
     d["info"] = info
     d["key"] = key
     result_dict = dict()
-    for k in key.keys():
+    keys = list(key.keys()).sort()
+    for k in keys:
         result_dict[k] = result % 10
         result = int(result / 10)
     d['result'] = result_dict
