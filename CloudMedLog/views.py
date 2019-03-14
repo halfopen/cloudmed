@@ -108,7 +108,8 @@ def decode_result(result, type="face"):
     d["info"] = info
     d["key"] = key
     result_dict = dict()
-    keys = list(key.keys()).sort()
+    keys = list(key.keys())
+    keys.sort()
     for k in keys:
         result_dict[k] = result % 10
         result = int(result / 10)

@@ -27,7 +27,7 @@ from CloudMedLog.views import *
 DIRNAME = os.path.dirname(__file__)
 
 urlpatterns = [
-    url(r'^', face),
+    url(r'^$', face),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(CloudMedLog.urls)),
     url(r'^upload', upload_image), 
