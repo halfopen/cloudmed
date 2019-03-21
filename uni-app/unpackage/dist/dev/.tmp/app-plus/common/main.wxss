@@ -109,4 +109,23 @@ page,
 ._button.primary {
         background-color: #0faeff;
 }
+    /* 修改弹框样式 添加div.提高优先级*/
+.hsy-dialog ._div.main {
+		position: absolute;
+		margin: 0 auto;
+		top: 10%;
+		height: 80%;
+		width: 90%;
+		-webkit-box-shadow: 0 0 5px rgba(0,0,0,.2);
+		        box-shadow: 0 0 5px rgba(0,0,0,.2);
+		background: #fff;
+		border-radius: 3px;
+		font-size: 1.2em;
+}
+.hsy-dialog .main .title .content{
+		background: none;
+}
+.hsy-dialog .main ._div.body {
+		max-width: none;
+}
 

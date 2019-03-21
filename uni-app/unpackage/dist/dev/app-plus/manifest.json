@@ -89,6 +89,9 @@
       "bottom": {
         "offset": "auto"
       }
+    },
+    "uni-app": {
+      "compilerVersion": "1.7.0"
     }
   }
 }

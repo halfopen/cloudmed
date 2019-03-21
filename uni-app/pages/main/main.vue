@@ -1,5 +1,19 @@
 <template>
     <view class="content" id="container">
+		<!-- 问诊弹框 -->
+		<hsy-dialog class="confirm" v-model="showModal" v-bind="curQuestion">
+		  <div slot="title">请回答下面的问题</div>
+		  <div slot="body">
+			<div>{{curQuestion.question}}</div>
+			<div class="answer-list" v-for="choose in curQuestion.choose" v-bind:key="choose.id">
+			  <view>{{choose.title}}</view>
+			</div>
+			<div>
+				图
+			</div>
+		  </div>
+		</hsy-dialog>
+		
 		<view>上次体检结果：70， 阴虚，2018-12-12</view>
 
 		<view class="action-row dia-ctn ">     
@@ -30,8 +44,11 @@
 			<view class="border-row">
 				<view class="row-cap">问诊</view>
 				
-				<view class="cir-question-ctn" v-for="q in questions" v-bind:key="q.id" v-on:click="showQuestion">
-					<view class="cir-question" :style="cirQuestionStyle"><text>{{q.question}}</text></view>
+				<view class="cir-question-ctn" v-for="q in questions" v-bind:key="q.id" v-on:click="showQuestion(q.id)">
+					<!-- 序号大于13的问题不显示 -->
+					<view v-if="q.id < 13" class="cir-question" :style="cirQuestionStyle">  
+						<text>{{q.question}}</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -53,18 +70,24 @@
 	// import 'babel-polyfill'; // es6 shim
 	import Vue from 'vue';
 	import myUpload from 'vue-image-crop-upload';
+	import Dialog from 'hsy-vue-dialog'
+	Vue.use(Dialog);
 
 	var questions = require("./questions.json");
+	
 	console.log(questions);
     export default {
         computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
 		data(){
 				return {
 					name:"7777",
-					"questions":questions.rows,
-					"cirQuestionStyle":{
+					questions: questions.rows,
+					cirQuestionStyle:{
 						height: "",
-					} 
+						width: "",
+					},
+					showModal: false,
+					curQuestion:questions.rows[0]
 				}
 		},
         onLoad() {
@@ -99,12 +122,20 @@
 				getHeight(){
 					var cirQ = document.getElementsByClassName("cir-question")[0];
 					console.log(cirQ);
-					console.log(this.cirQuestionStyle.height = window.getComputedStyle(cirQ).width);
+					console.log();
+					this.cirQuestionStyle.height = window.getComputedStyle(cirQ).width;
+					this.cirQuestionStyle.width = window.getComputedStyle(cirQ).width;
 					//this.cirQuestionStyle.width = window.innerHeight/4;
 				},
-				showQuestion(){
-					alert(777);
+				showQuestion(id){
+					console.log(id);
+					this.$data.curQuestion = this.$data.questions[parseInt(id)];
+					console.log(this.$data.curQuestion);
+					this.$data.showModal = true;
 				}
+		},
+		components:{
+				modal:{}
 		},
 		created(){
 			window.addEventListener('resize', this.getHeight);
@@ -205,4 +236,5 @@
 		padding-left: 20px;
 		padding-right: 20px;
 	}
+
 </style>

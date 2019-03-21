@@ -728,4 +728,30 @@
 		border: 1px solid black;
 		padding: 0;
 }
+.cir-question-ctn{
+		display: inline-block;
+		width: 25%;
+		padding: 0;
+}
+.cir-question-ctn .cir-question{
+		background: green;
+		margin: 4px;
+		text-align: center;
+		color: white;
+		border-radius: 40px;
+		overflow: hidden;
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+}
+.button{
+		text-align: center;
+		display: inline-block;
+		background: #8F8F94;
+		color: white;
+		border-radius: 4px;
+		padding-left: 20px;
+		padding-right: 20px;
+}
+
 
