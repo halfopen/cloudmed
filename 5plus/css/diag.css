@@ -1,0 +1,38 @@
+.mui-content{
+    padding: 15px;
+}
+
+.pic-diag-ctn{
+    position: relative;
+    display: flex;
+}
+
+.pic-diag-sub-ctn{
+    display: block;
+    width: 50%;
+    float: left;
+    padding: 2px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.border{
+    border: 1px solid green;
+    border-radius: 5px;
+    margin: 4px;
+
+}
+
+.pic-diag-sub-ctn span{
+    float: left;
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+.pic-diag-sub-ctn img{
+    width: 100px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}

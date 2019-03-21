@@ -24,15 +24,13 @@
 
 	<body>
 		<div class="mui-content">
-			<div class="title">
-				<p>使用nativeObj 原生控件绘制的底部选项卡示例，当前为父页面，显示第一个tab项内容；</p>
-				<p>这里采用将第一个tab项内容放在父页面显示，因为是入口页面，会在启动中进行渲染，使首页显示速度更快</p>
-				<p>选项卡常用于App首页，为加快渲染，原生底部选项卡是在manifest.json中通过plus -> launchwebview -> subNViews 节点配置的；</p>
-				<p>选项卡图标使用字体绘制，点击可切换对应选项卡的高亮状态，开发者可自定义相应的点击事件；</p>
-				<p>本示例中，点击第二个选项卡打开一个支持下拉刷新的webview；点击第四个选项卡，打开一个新窗口。</p>
+			<div class="notify"> </div>
 
-				<p>中间悬浮大球图标，因涉及屏幕分辨率动态计算，目前是在首页plusReady事件中实现绘制的。该悬浮大球支持点击事件，开发者可定制实现对应的点击逻辑。</P>
-				<p>为提高性能，本示例选项卡图标全部使用字体文件绘制（推荐），实际使用中也可以使用图片绘制。</p>
+			<div class="entry-ctn">
+				<div>中医体检</div>
+				<div>中医在线</div>
+				<div>健康咨询</div>
+				<div>我的档案</div>
 			</div>
 		</div>
 
@@ -192,7 +190,7 @@
 							activePage = targetPage;
 						} else {
 							//第四个tab 打开新窗口
-							plus.webview.open('html/new-webview.html', 'new', {}, 'slide-in-right', 200);
+							plus.webview.open('html/diag.html', 'new', {}, 'slide-in-right', 200);
 						}
 					});
 				});
