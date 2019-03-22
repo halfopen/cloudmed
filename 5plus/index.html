@@ -7,6 +7,20 @@
 		<title>首页</title>
 		<script src="js/mui.min.js"></script>
 		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="./js/mui.min.js"></script>
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link href="./css/app.css" rel="stylesheet" />
+		<link href="./css/diag.css" rel="stylesheet" />
+
+		<link rel="stylesheet" href="../css/angular-material.min.css" />
+		<script src="./data/question.js" ></script>
+		<script src="./js/angular.min.js"></script>
+		<script src="./js/angular-animate.min.js"></script>
+		<script src="../js/angular-aria.min.js"></script>
+		<script src="../js/angular-messages.min.js"></script>
+
+		<!-- Angular Material Library -->
+		<script src="../js/angular-material.min.js"></script>
 		<style>
 			html,
 			body {
@@ -19,28 +33,106 @@
 				font-size: 15px;
 				padding-bottom: 51px;
 			}
+			.mui-content{
+				height: 100%;
+			}
+
+			.entry-ctn.mui-row{
+				height: 70%;
+			}
+
+			.entry-ctn .mui-col-sm-6{
+				height: 50%;
+				padding: 5px;
+			}
+
+			.entry-ctn .mui-table-view-cell{
+				text-align: center;
+				height: 100%;
+				background: green;
+				border-radius: 5px;
+				display: flex;
+			}
+
+			.entry-ctn .mui-col-xs-6:nth-child(1) .mui-table-view-cell{
+				background: rgb(197,139,233);
+			}
+
+			.entry-ctn .mui-col-xs-6:nth-child(2) .mui-table-view-cell{
+				background: rgb(103,202,130);
+			}
+
+			.entry-ctn .mui-col-xs-6:nth-child(3) .mui-table-view-cell{
+				background: rgb(94,218,167);
+			}
+
+			.entry-ctn .mui-col-xs-6:nth-child(4) .mui-table-view-cell{
+				background: rgb(213,204,125);
+			}
+
+			.entry-ctn .mui-table-view-cell span{
+				margin: auto;
+				position: relative;
+				height: 20px;
+				display: inline-block;
+				color:white;
+				font-size: medium;
+			}
+			.notify{
+				height:25%;
+				display: flex;
+				background: rgb(199, 154, 184);
+				border-radius: 5px;
+				padding: 5px;
+				margin: 5px;
+				color: white;
+			}
 		</style>
 	</head>
 
 	<body>
-		<div class="mui-content">
-			<div class="notify"> </div>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">首页</h1>
+		</header>
+		<div class="mui-content" ng-app="myApp" ng-controller="myCtrl">
+			<div class="notify"> 
+				<div>{{date}}</div> 
+				<div>{{tip}}</div>
+			</div>
 
-			<div class="entry-ctn">
-				<div>中医体检</div>
-				<div>中医在线</div>
-				<div>健康咨询</div>
-				<div>我的档案</div>
+			<div class="entry-ctn mui-row">
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<div class="mui-table-view-cell" ng-click="goDiagnosis()"><span>中医体检</span></div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<div class="mui-table-view-cell"><span>中医在线</span></div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<div class="mui-table-view-cell"><span>健康咨询</span></div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6">
+					<div class="mui-table-view-cell"><span>档案管理</span></div>
+				</div>
 			</div>
 		</div>
 
 		<script src="js/util.js"></script>
 		<script type="text/javascript">
+			var app = angular.module('myApp', []);
+			app.controller('myCtrl', function($scope){
+				$scope.date = Date();
+				$scope.goDiagnosis = function(){
+					console.log("诊断");
+					window.location = "/html/diag.html";
+				}
+			});
+
 			(function() {
 				mui.init({
 					swipeBack: true //启用右滑关闭功能
 				});
 				mui.plusReady(function() {
+
 					var self = plus.webview.currentWebview(),
 						leftPos = Math.ceil((window.innerWidth - 60) / 2); // 设置凸起大图标为水平居中
 
