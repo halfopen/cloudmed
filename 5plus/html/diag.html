@@ -4,17 +4,43 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>健康自检</title>
+		
 		<script src="../js/mui.min.js"></script>
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link href="../css/app.css" rel="stylesheet" />
 		<link href="../css/diag.css" rel="stylesheet" />
+
+		<link rel="stylesheet" href="../css/angular-material.min.css" />
+		<script src="../data/question.js" ></script>
+		<script src="../js/angular.min.js"></script>
+		<script src="../js/angular-animate.min.js"></script>
+		<script src="../js/angular-aria.min.js"></script>
+		<script src="../js/angular-messages.min.js"></script>
+
+		<!-- Angular Material Library -->
+		<script src="../js/angular-material.min.js"></script>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">健康自检</h1>
 		</header>
-		<div class="mui-content">
+		<div style="visibility: hidden">
+		<div class="md-dialog-container" id="myDialog">
+			<md-dialog layout-padding>
+			<h2>Pre-Rendered Dialog</h2>
+			<p>
+				This is a pre-rendered dialog, which means that <code>$mdDialog</code> doesn't compile its
+				template on each opening.
+				<br/><br/>
+				The Dialog Element is a static element in the DOM, which is just visually hidden.<br/>
+				Once the dialog opens, we just fetch the element from the DOM into our dialog and upon close
+				we restore the element back into its old DOM position.
+			</p>
+			</md-dialog>
+		</div>
+		</div>
+		<div class="mui-content" ng-app="myApp" ng-controller="myCtrl">
 			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估</p>
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
@@ -30,13 +56,65 @@
 					</div>
 				</div>
 			</div>
-			<div class="qst-ctn">
+			<div class="qst-ctn border">
 				<span>问诊</span>
-				
+				<div class="mui-content ">
+						
+						<div class="mui-row">
+							<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
+								<div class="cir-question-ctn">
+									<div class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)">
+										{{q.question}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 			</div>
 		</div>
 		
 		<script>
+			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
+			app.controller('myCtrl', function($scope, $mdDialog){
+				$scope.questions = questions.rows;
+				console.log($scope.questions);
+				$scope.name = "7787";
+
+				$scope.showQuestion = function(id){
+					console.log(id);
+					console.log($scope.questions[id]);
+				}
+
+				$scope.showQuestion = function(ev, index) {
+					$mdDialog.show({
+						controller: DialogController,
+						templateUrl: './dialog1.tmpl.html',
+						parent: angular.element(document.body),
+						targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+					})
+					.then(function(answer) {
+						$scope.status = 'You said the information was "' + answer + '".';
+					}, function() {
+						$scope.status = 'You cancelled the dialog.';
+					});
+				};
+
+				function DialogController($scope, $mdDialog) {
+					$scope.hide = function() {
+					$mdDialog.hide();
+					};
+
+					$scope.cancel = function() {
+					$mdDialog.cancel();
+					};
+
+					$scope.answer = function(answer) {
+					$mdDialog.hide(answer);
+					};
+				}
+			});
 			mui.init();
 		</script>
 	</body>

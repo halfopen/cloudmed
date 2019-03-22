@@ -1,5 +1,6 @@
 .mui-content{
     padding: 15px;
+    font-size: small;
 }
 
 .pic-diag-ctn{
@@ -29,10 +30,37 @@
     padding-top: 2px;
     padding-left: 2px;
 }
+.qst-ctn span{
+    padding-top: 2px;
+    padding-left: 2px;
+}
 
 .pic-diag-sub-ctn img{
     width: 100px;
     display: table-cell;
     vertical-align: middle;
     text-align: center;
+    border-radius: 50px;
+    border: 1px solid black;
+}
+.cir-question-ctn{
+    background: green;
+    margin: 4px;
+    border-radius: 10px;
+    color: white;
+}
+.cir-question{
+    
+}
+
+.qst-dlg{
+    background: transparent;
+    padding: 10%;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+.qst-dlg .content{
+    background: white;
+    
 }
