@@ -103,7 +103,7 @@
 
 			<div class="entry-ctn mui-row">
 				<div class="mui-col-sm-6 mui-col-xs-6">
-					<div class="mui-table-view-cell" ng-click="goDiagnosis()"><span>中医体检</span></div>
+					<div class="mui-table-view-cell" ng-click="goDiagnosis()" id="diagnosis"><span>中医体检</span></div>
 				</div>
 				<div class="mui-col-sm-6 mui-col-xs-6">
 					<div class="mui-table-view-cell"><span>中医在线</span></div>
@@ -117,14 +117,25 @@
 			</div>
 		</div>
 
+		<nav class="mui-bar mui-bar-tab">  
+				<a class="mui-tab-item">  
+					<span class="mui-icon mui-icon-home"></span>  
+					<span class="mui-tab-label">首页</span>  
+				</a>  
+			</nav>
+
 		<script src="js/util.js"></script>
 		<script type="text/javascript">
 			var app = angular.module('myApp', []);
 			app.controller('myCtrl', function($scope){
 				$scope.date = Date();
-				$scope.goDiagnosis = function(){
-					console.log("诊断");
-					window.location = "/html/diag.html";
+				if(undefined == mui.os.plus){
+					console.log("web 环境");
+					$scope.goDiagnosis = function(){
+						window.location = "/html/diag.html";
+					}
+				}else{
+					console.log("app 环境");
 				}
 			});
 
@@ -133,8 +144,12 @@
 					swipeBack: true //启用右滑关闭功能
 				});
 				mui.plusReady(function() {
-
-	
+					console.log("app 环境 plus ready");
+					document.getElementById("diagnosis").addEventListener("tap", function(){
+						console.log("tap");
+						plus.webview.open("html/diag.html", "new", {}, "slide-in-right", 200);
+					});
+					
 				});
 			})();
 		</script>
