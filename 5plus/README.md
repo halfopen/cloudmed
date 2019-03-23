@@ -26,4 +26,6 @@ dialog需要本地开一个server
 
 ![](./images/5plus.png)
 
-
+# Todo：
+实现了把question的内容和选项传入dialog，下一步根据选择题类型，显示单选或多选  
+目前echarts显示有问题（显示不出来……）
