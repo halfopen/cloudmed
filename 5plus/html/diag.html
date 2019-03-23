@@ -9,6 +9,7 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link href="../css/app.css" rel="stylesheet" />
 		<link href="../css/diag.css" rel="stylesheet" />
+		<link href="../css/chart.css" rel="stylesheet"/>
 
 		<link rel="stylesheet" href="../css/angular-material.min.css" />
 		<script src="../data/question.js" ></script>
@@ -19,6 +20,8 @@
 
 		<!-- Angular Material Library -->
 		<script src="../js/angular-material.min.js"></script>
+		<!-- echarts-->
+		<script src="../js/echarts.min.js"></script>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav">
@@ -88,6 +91,10 @@
 				$scope.showQuestion = function(ev, index) {
 					$mdDialog.show({
 						controller: DialogController,
+						locals: {  // added
+							id : index,
+							q : $scope.questions[index]
+						},
 						templateUrl: './dialog1.tmpl.html',
 						parent: angular.element(document.body),
 						targetEvent: ev,
@@ -101,7 +108,7 @@
 					});
 				};
 
-				function DialogController($scope, $mdDialog) {
+				function DialogController($scope, $mdDialog, id, q) {
 					$scope.hide = function() {
 					$mdDialog.hide();
 					};
@@ -113,6 +120,8 @@
 					$scope.answer = function(answer) {
 					$mdDialog.hide(answer);
 					};
+					$scope.id = id;  //added
+					$scope.q = q;
 				}
 			});
 			mui.init();
