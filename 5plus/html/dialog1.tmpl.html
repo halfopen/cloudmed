@@ -14,16 +14,20 @@
 				<p>{{q.question}}</p>
 			</div>
 			<div class="mui-content-padded"> 
-				<if condition="$q.option_type eq '1'">  <!-- set question type -->
-					<form action="" class="mui-input-group">					
-							<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in q.choose">
-							  <label>{{c.title}}</label>
-							  <input name="?" value = {{c.result}} type="checkbox"  >
-							  
-							</div>
-									
-					</form>
-				</if>
+				  <!-- set question type -->
+				<form action="" class="mui-input-group" ng-if="q.option_type=='1'">					
+					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in q.choose">
+					  <label>{{c.title}}</label>
+					  <input name="?" value = {{c.title_result}} type="checkbox"  >				  
+					</div>
+								
+				</form>
+				<form action="" class="mui-input-group" ng-if="q.option_type=='0'">
+					<div class="mui-input-row mui-radio mui-left" ng-repeat="c in q.choose">
+					  <label>{{c.title}}</label>
+					  <input name="?" value = {{c.title_result}} type="radio"  >				  
+					</div>
+				</form>
 			<div class="mui-content-padded">
 				<h5>雷达图</h5>
 				<div class="chart" id="radar"></div>
