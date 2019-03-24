@@ -85,81 +85,85 @@
 				console.log($scope.questions);
 				$scope.name = "7787";
 
-				$scope.showQuestion = function(id){
-					console.log(id);
-					console.log($scope.questions[id]);
+				var updateQuestion = function(){
+					console.log($scope.questions.reverse());
 				}
 
+
 				$scope.draw = function(scores){  //added
-						var byId = function(id){
-							return document.getElementById(id)
-						}
-						var myradar = echarts.init(byId('radar'));
-						var option = {
-							title: {
-								
-							},
-							tooltip: {},
-							legend: {
-								data: ['体质得分'],
-								tooltip:{
-									color: 'orange'
-								}
-								
-							},
-							radar: {
-								// shape: 'circle',
-								name: {
-									textStyle: {
-										color: '#fff',
-										backgroundColor: '#999',
-										borderRadius: 3,
-										padding: [3, 5],
-										fontSize: 15,
-								   }
-								   
-								},
-								indicator: [
-								   { name: '阴虚', max: 6500},
-								   { name: '阳虚', max: 16000},
-								   { name: '气虚', max: 30000},
-								   { name: '血瘀', max: 38000},
-								   { name: '肾虚', max: 52000},
-								   { name: '瘀滞', max: 25000}
-								],
-								splitNumber: '2',
-								splitArea: {
-									areaStyle: {
-										color: ['white', 'white', 'white', 'white']
-									}
-								},
-								splitLine:{
-									lineStyle: {
-										color: ['#aaa', '#ddd'],
-										width: '1'
-									}
-								}
-								
-							},
-							series: [{
-								name: '预算 vs 开销（Budget vs spending）',
-								type: 'radar',
-								// areaStyle: {normal: {}},
-								data : [
-									{
-										value : scores,
-										name : '体质得分',
-										lineStyle:{
-											color: 'darkred',
-											width: '5'
-										}
-									},
-								   
-								]
-							}]
-						};
-						myradar.setOption(option);			
+					var byId = function(id){
+						return document.getElementById(id)
 					}
+					var myradar = echarts.init(byId('radar'));
+					var option = {
+						title: {
+							
+						},
+						tooltip: {},
+						legend: {
+							data: ['体质得分'],
+							tooltip:{
+								color: 'orange'
+							}
+							
+						},
+						radar: {
+							// shape: 'circle',
+							name: {
+								textStyle: {
+									color: '#fff',
+									backgroundColor: '#999',
+									borderRadius: 3,
+									padding: [3, 5],
+									fontSize: 15,
+								}
+								
+							},
+							indicator: [
+								{ name: '阴虚', max: 6500},
+								{ name: '阳虚', max: 16000},
+								{ name: '气虚', max: 30000},
+								{ name: '血瘀', max: 38000},
+								{ name: '肾虚', max: 52000},
+								{ name: '瘀滞', max: 25000}
+							],
+							splitNumber: '2',
+							splitArea: {
+								areaStyle: {
+									color: ['white', 'white', 'white', 'white']
+								}
+							},
+							splitLine:{
+								lineStyle: {
+									color: ['#aaa', '#ddd'],
+									width: '1'
+								}
+							}
+							
+						},
+						series: [{
+							name: '预算 vs 开销（Budget vs spending）',
+							type: 'radar',
+							// areaStyle: {normal: {}},
+							data : [
+								{
+									value : scores,
+									name : '体质得分',
+									lineStyle:{
+										color: 'darkred',
+										width: '5'
+									}
+								},
+								
+							]
+						}]
+					};
+					myradar.setOption(option);			
+				}
+
+				$scope.choose = function(index, qid){
+					console.log(index, qid)
+				}
 
 				$scope.showQuestion = function(ev, index) {
 					console.log(index)
@@ -188,14 +192,13 @@
 				function DialogController($scope, $mdDialog, id, qs) {
 					$scope.hide = function() {
 						$mdDialog.hide();
+						console.log("hide")
 					};
 
 					$scope.cancel = function() {
 						$mdDialog.cancel();
-					};
-
-					$scope.answer = function(answer) {
-						$mdDialog.hide(answer);
+						console.log("cancel")
+						updateQuestion(); // 这里要传参数
 					};
 					$scope.id = id;
 					$scope.qs = qs;
