@@ -50,12 +50,18 @@
 					<div class="border">
 						<span>面诊</span>
 						<img src="../images/face.png" />
+						<div class="desc">
+							文字描述
+						</div>
 					</div>
 				</div>
 				<div class="pic-diag-sub-ctn"> 
 					<div class="border">
 						<span>舌诊</span>
 						<img src="../images/tongue.png" />
+						<div class="desc">
+							文字描述
+						</div>
 					</div>
 				</div>
 			</div>
@@ -67,7 +73,7 @@
 							<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
 								<div class="cir-question-ctn">
 									<div class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
-										{{q.question}}
+										{{q.short_question}}
 									</div>
 								</div>
 							</div>

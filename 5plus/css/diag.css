@@ -22,22 +22,24 @@
     border: 1px solid green;
     border-radius: 5px;
     margin: 4px;
-
+    position: relative;
 }
 
 .pic-diag-sub-ctn span{
     float: left;
-    padding-top: 2px;
-    padding-left: 2px;
+    top: 2px;
+    left: 2px;
+    position: absolute;
+    font-weight: bolder;
 }
 .qst-ctn span{
     padding-top: 2px;
     padding-left: 2px;
+    font-weight: bolder;
 }
 
 .pic-diag-sub-ctn img{
     width: 100px;
-    display: table-cell;
     vertical-align: middle;
     text-align: center;
     border-radius: 50px;
@@ -50,7 +52,7 @@
     color: white;
 }
 .cir-question{
-    
+    font-size: xx-small;
 }
 
 .qst-dlg{
