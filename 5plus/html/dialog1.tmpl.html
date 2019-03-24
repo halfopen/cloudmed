@@ -4,7 +4,7 @@
 	<link href="../css/chart.css" rel="stylesheet"/>
     <div >
 		<md-dialog-actions>
-			<span  ng-click="cancel()" >x</span>
+			<span  ng-click="cancel()"  class="mui-icon mui-icon-close"></span>
 		</md-dialog-actions>
         
     </div>
@@ -16,9 +16,9 @@
 			<div class="mui-content-padded"> 
 				  <!-- set question type -->
 				<form action="" class="mui-input-group" ng-if="qs[id].option_type=='1'">					
-					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose">
+					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose" ng-click="choose($index, id)">
 					  <label>{{c.title}}</label>
-					  <input name="?" value = {{c.title_result}} type="checkbox" ng-click="draw()">				  
+					  <input name="?" value = {{c.title_result}} type="checkbox">				  
 					</div>
 								
 				</form>
