@@ -11,7 +11,16 @@ var questions = {
                       "id":"0",
                       "title":"A.是",
                       "title_result":"疲劳",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 5,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 30
+						}
                       },
                       {
                       "id":"1",
