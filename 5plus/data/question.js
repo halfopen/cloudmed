@@ -25,8 +25,17 @@ var questions = {
                       {
                       "id":"1",
                       "title":"B.否",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"精力充沛",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -41,25 +50,61 @@ var questions = {
                       "id":"0",
                       "title":"A.怕冷",
                       "title_result":"怕冷",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 30,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 16,
+						"qixu": 8
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.怕热",
                       "title_result":"怕热",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"2",
                       "title":"C.手足心热",
                       "title_result":"手足心热",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 30,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"3",
                       "title":"D.正常",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"不怕冷",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -74,19 +119,46 @@ var questions = {
                       "id":"0",
                       "title":"A.活动汗出",
                       "title_result":"活动汗出",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 4,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 12
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.夜间出汗",
                       "title_result":"夜间出汗",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 12,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"2",
                       "title":"C.正常",
                       "title_result":"",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -101,25 +173,61 @@ var questions = {
                       "id":"0",
                       "title":"A.偏黄",
                       "title_result":"偏黄",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 10,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.清长（色清，量多）",
                       "title_result":"清长（色清，量多）",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 12,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 10,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"2",
                       "title":"C.夜尿频多",
                       "title_result":"夜尿频多",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 10,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"3",
                       "title":"D.正常",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"小便正常",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -133,26 +241,62 @@ var questions = {
                       {
                       "id":"0",
                       "title":"A.偏干",
-                      "title_result":"偏干",
-                      "state":"false"
+                      "title_result":"大便偏干",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.偏黏",
-                      "title_result":"偏黏",
-                      "state":"false"
+                      "title_result":"大便偏黏",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 16,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"2",
                       "title":"C.偏稀",
-                      "title_result":"偏稀",
-                      "state":"false"
+                      "title_result":"大便偏稀",
+                      "state":"false",
+					  "score": {
+						"yangxu": 4,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 15,
+						"shenxu": 0,
+						"qixu": 6
+						}
                       },
                       {
                       "id":"3",
                       "title":"D.正常",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"大便正常",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -167,13 +311,31 @@ var questions = {
                       "id":"0",
                       "title":"A.不好",
                       "title_result":"胃口不好",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 30,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.正常",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"胃口好",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -188,13 +350,31 @@ var questions = {
                       "id":"0",
                       "title":"A.是",
                       "title_result":"容易口渴",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 10,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.否",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"不口干口渴",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -209,32 +389,77 @@ var questions = {
                       {
                       "id":"0",
                       "title":"A.甜",
-                      "title_result":"甜",
-                      "state":"false"
+                      "title_result":"口甜",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 12,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.苦",
-                      "title_result":"苦",
-                      "state":"false"
+                      "title_result":"口苦",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"2",
                       "title":"C.黏",
-                      "title_result":"黏",
-                      "state":"false"
+                      "title_result":"口黏",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 12,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"3",
                       "title":"D.口淡",
                       "title_result":"口淡",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 6
+						}
                       },
                       {
                       "id":"4",
                       "title":"E.正常",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"口中无异味",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -249,13 +474,32 @@ var questions = {
                       "id":"0",
                       "title":"A.是",
                       "title_result":"容易心烦、情绪低落",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 30,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
+
                       },
                       {
                       "id":"1",
                       "title":"B.否",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"心情舒畅",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -270,13 +514,31 @@ var questions = {
                       "id":"0",
                       "title":"A.是",
                       "title_result":"干枯且容易掉头发",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 6,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.否",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"发质好不掉头发",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -291,13 +553,31 @@ var questions = {
                       "id":"0",
                       "title":"A.是",
                       "title_result":"容易失眠",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 6,
+						"tanshi": 0,
+						"yuzhi": 8,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.否",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"睡眠正常",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -312,25 +592,61 @@ var questions = {
                       "id":"0",
                       "title":"A.乳房胀",
                       "title_result":"乳房胀",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 16,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.食后腹胀",
                       "title_result":"食后腹胀",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 15,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"2",
                       "title":"C.胸胁胀满",
                       "title_result":"胸胁胀满",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 16,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"3",
                       "title":"D.无",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"身体无胀满不适",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -345,13 +661,31 @@ var questions = {
                       "id":"0",
                       "title":"A.是",
                       "title_result":"酸软无力",
-                      "state":"false"
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 30,
+						"qixu": 0
+						}
                       },
                       {
                       "id":"1",
                       "title":"B.否",
-                      "title_result":"",
-                      "state":"false"
+                      "title_result":"腰膝硬朗，腿脚有力",
+                      "state":"false",
+					  "score": {
+						"yangxu": 0,
+						"yinxu": 0,
+						"tanshi": 0,
+						"yuzhi": 0,
+						"pixu": 0,
+						"shenxu": 0,
+						"qixu": 0
+						}
                       }
                       ]
             },
@@ -366,7 +700,7 @@ var questions = {
                       "id":"0",
                       "title":"A.偏少",
                       "title_result":"偏少",
-                      "state":"false"
+                      "state":"false"					  
                       },
                       {
                       "id":"1",
