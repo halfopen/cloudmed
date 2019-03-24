@@ -3,6 +3,7 @@ var questions = {
             {
             "id":"0",
             "question":"1.请问您感觉自己容易疲劳乏力吗？",
+            "short_question":"感觉疲劳乏力吗？",
             "sex":"0",
             "age":"",
             "option_type":"0",
@@ -42,6 +43,7 @@ var questions = {
             {
             "id":"1",
             "question":"2.您平时容易怕冷、怕热、或手足心热吗？",
+            "short_question":"怕冷怕热、手足心热吗？",
             "sex":"0",
             "age":"",
             "option_type":"1",
@@ -111,6 +113,7 @@ var questions = {
             {
             "id":"2",
             "question":"3.您平时容易出汗或晚上睡觉易出汗吗？",
+            "short_question":"容易出汗吗？",
             "sex":"0",
             "age":"",
             "option_type":"1",
@@ -165,6 +168,7 @@ var questions = {
             {
             "id":"3",
             "question":"4.您平时小便怎么样？",
+            "short_question":"小便正常吗？",
             "sex":"0",
             "age":"",
             "option_type":"1",
@@ -234,6 +238,7 @@ var questions = {
             {
             "id":"4",
             "question":"5.您平时大便怎么样？",
+            "short_question":"大便正常吗？",
             "sex":"0",
             "age":"",
             "option_type":"1",
@@ -303,6 +308,7 @@ var questions = {
             {
             "id":"5",
             "question":"6.您平时胃口怎样？",
+            "short_question":"胃口不好吗？",
             "sex":"0",
             "age":"",
             "option_type":"0",
@@ -342,6 +348,7 @@ var questions = {
             {
             "id":"6",
             "question":"7.您平时容易口渴或口干吗？",
+            "short_question":"有口渴或者口干吗？",
             "sex":"0",
             "age":"",
             "option_type":"0",
@@ -382,6 +389,7 @@ var questions = {
             {
             "id":"7",
             "question":"8.您平时口中是否有异样的味道？",
+            "short_question":"口中有异味吗？",
             "sex":"0",
             "age":"",
             "option_type":"1",
@@ -466,6 +474,7 @@ var questions = {
             {
             "id":"8",
             "question":"9.您平时容易心烦、情绪低落吗？",
+            "short_question":"情绪怎么样？",
             "sex":"0",
             "age":"",
             "option_type":"0",
@@ -506,6 +515,7 @@ var questions = {
             {
             "id":"9",
             "question":"10.您发质干枯或容易掉头发吗？",
+            "short_question":"发质干枯、掉头发吗？",
             "sex":"0",
             "age":"",
             "option_type":"0",
@@ -545,6 +555,7 @@ var questions = {
             {
             "id":"10",
             "question":"11.您平时容易失眠吗？",
+            "short_question":"睡眠怎么样？",
             "sex":"0",
             "age":"",
             "option_type":"0",
@@ -584,6 +595,7 @@ var questions = {
             {
             "id":"11",
             "question":"12.您平时身体有胀满不适吗？",
+            "short_question":"身体胀满不适吗？",
             "sex":"0",
             "age":"",
             "option_type":"1",
@@ -653,6 +665,7 @@ var questions = {
             {
             "id":"12",
             "question":"13.您自己感觉腰膝酸软、腿脚无力吗？",
+            "short_question":"腰膝酸软、腿脚无力吗？",
             "sex":"0",
             "age":"",
             "option_type":"0",
@@ -688,108 +701,7 @@ var questions = {
 						}
                       }
                       ]
-            },
-            {
-            "id":"13",
-            "question":"14.您平时月经量怎么样？",
-            "sex":"2",
-            "age":"[14,49]",
-            "option_type":"0",
-            "choose":[
-                      {
-                      "id":"0",
-                      "title":"A.偏少",
-                      "title_result":"偏少",
-                      "state":"false"					  
-                      },
-                      {
-                      "id":"1",
-                      "title":"B.偏多",
-                      "title_result":"偏多",
-                      "state":"false"
-                      },
-                      {
-                      "id":"2",
-                      "title":"C.正常（适量）",
-                      "title_result":"",
-                      "state":"false"
-                      }
-                      ]
-            },
-            {
-            "id":"14",
-            "question":"15.您平时月经颜色怎么样？",
-            "sex":"2",
-            "age":"[14,49]",
-            "option_type":"0",
-            "choose":[
-                      {
-                      "id":"0",
-                      "title":"A.淡红",
-                      "title_result":"淡红",
-                      "state":"false"
-                      },
-                      {
-                      "id":"1",
-                      "title":"B.暗红",
-                      "title_result":"暗红",
-                      "state":"false"
-                      },
-                      {
-                      "id":"2",
-                      "title":"C.鲜红",
-                      "title_result":"鲜红",
-                      "state":"false"
-                      }
-                      ]
-            },
-            {
-            "id":"15",
-            "question":"16.您平时月经有血块吗？",
-            "sex":"2",
-            "age":"[14,49]",
-            "option_type":"0",
-            "choose":[
-                      {
-                      "id":"0",
-                      "title":"A.是",
-                      "title_result":"有血块",
-                      "state":"false"
-                      },
-                      {
-                      "id":"1",
-                      "title":"B.否",
-                      "title_result":"",
-                      "state":"false"
-                      }
-                      ]
-            },
-            {
-            "id":"16",
-            "question":"17.您平时白带怎么样？",
-            "sex":"2",
-            "age":"[14,49]",
-            "option_type":"0",
-            "choose":[
-                      {
-                      "id":"0",
-                      "title":"A.质稀量多",
-                      "title_result":"质稀量多",
-                      "state":"false"
-                      },
-                      {
-                      "id":"1",
-                      "title":"B.质稠有异味",
-                      "title_result":"质稠有异味",
-                      "state":"false"
-                      },
-                      {
-                      "id":"2",
-                      "title":"C.正常",
-                      "title_result":"",
-                      "state":"false"
-                      }
-                      ]
             }
+            
             ]
 }
