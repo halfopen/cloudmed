@@ -66,7 +66,7 @@
 						<div class="mui-row">
 							<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
 								<div class="cir-question-ctn">
-									<div class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)">
+									<div class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
 										{{q.question}}
 									</div>
 								</div>
@@ -80,6 +80,8 @@
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.questions = questions.rows;
+				$scope.id = 0;  
+				$scope.qs = $scope.questions;
 				console.log($scope.questions);
 				$scope.name = "7787";
 
@@ -88,46 +90,11 @@
 					console.log($scope.questions[id]);
 				}
 
-				$scope.showQuestion = function(ev, index) {
-					$mdDialog.show({
-						controller: DialogController,
-						locals: {  // added
-							id : index,
-							qs : $scope.questions
-						},
-						templateUrl: './dialog1.tmpl.html',
-						parent: angular.element(document.body),
-						targetEvent: ev,
-						clickOutsideToClose:false,
-						fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-					})
-					.then(function(answer) {
-						$scope.status = 'You said the information was "' + answer + '".';
-					}, function() {
-						$scope.status = 'You cancelled the dialog.';
-					});
-				};
-
-				function DialogController($scope, $mdDialog, id, qs) {
-					$scope.hide = function() {
-					$mdDialog.hide();
-					};
-
-					$scope.cancel = function() {
-					$mdDialog.cancel();
-					};
-
-					$scope.answer = function(answer) {
-					$mdDialog.hide(answer);
-					};
-					$scope.id = id;  
-					$scope.qs = qs;
-					$scope.draw = function(){  //added
+				$scope.draw = function(scores){  //added
 						var byId = function(id){
 							return document.getElementById(id)
 						}
 						var myradar = echarts.init(byId('radar'));
-						var a = 1000
 						var option = {
 							title: {
 								
@@ -180,7 +147,7 @@
 								// areaStyle: {normal: {}},
 								data : [
 									{
-										value : [a, 10000, 28000, 35000, 50000, 19000],
+										value : scores,
 										name : '体质得分',
 										lineStyle:{
 											color: 'darkred',
@@ -193,6 +160,45 @@
 						};
 						myradar.setOption(option);			
 					}
+
+				$scope.showQuestion = function(ev, index) {
+					console.log(index)
+					$mdDialog.show({
+						controller: DialogController,
+						locals:{
+							id: index,
+							qs: $scope.questions
+						},
+						templateUrl: './dialog1.tmpl.html',
+						parent: angular.element(document.body),
+						targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+						onComplete: function(){    // 显示完成后的回调函数
+							$scope.draw([1000*index, 10000, 2800*index, 35000, 50000, 19000]);
+						}
+					})
+					.then(function() {
+						console.log("then")
+					}, function() {
+						$scope.status = 'You cancelled the dialog.';
+					});
+				};
+
+				function DialogController($scope, $mdDialog, id, qs) {
+					$scope.hide = function() {
+						$mdDialog.hide();
+					};
+
+					$scope.cancel = function() {
+						$mdDialog.cancel();
+					};
+
+					$scope.answer = function(answer) {
+						$mdDialog.hide(answer);
+					};
+					$scope.id = id;
+					$scope.qs = qs;
 				}
 			});
 			mui.init();
