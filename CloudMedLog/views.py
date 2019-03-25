@@ -5,6 +5,7 @@ import time
 from cloudmed.settings import BASE_DIR, MEDIA_ROOT, UPLOAD_ROOT
 from django import forms
 from so.tcm import TcmPro
+from .models import *
 
 tcmPro = TcmPro()
 

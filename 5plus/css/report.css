@@ -1,0 +1,33 @@
+.mui-content{
+    padding: 15px;
+    font-size: small;
+}
+
+.tip{
+    padding-top: 10px;
+}
+
+.col-box{
+
+/* padding: 4px; */
+
+border: 1px solid rgb(212, 232, 255);
+
+margin-bottom: 20px;
+
+background: white;
+
+border-radius: 2px;
+}
+
+.col-box div{
+
+background: rgb(212, 232, 255);
+
+padding: 4px;
+}
+
+.col-box p{
+    
+padding: 4px;
+}
