@@ -18,16 +18,25 @@
 				<form action="" class="mui-input-group" ng-if="qs[id].option_type=='1'">					
 					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose" ng-click="choose($index, id)">
 					  <label>{{c.title}}</label>
-					  <input name="?" value = {{c.title_result}} type="checkbox">				  
+					  <input name="duoxuan" value = {{c.title_result}} type="checkbox">				  
 					</div>
 								
 				</form>
+				
 				<form action="" class="mui-input-group" ng-if="qs[id].option_type=='0'">
 					<div class="mui-input-row mui-radio mui-left" ng-repeat="c in qs[id].choose">
 					  <label>{{c.title}}</label>
-					  <input name="?" value = {{c.title_result}} type="radio" ng-click="draw()" >				  
+					  <input name="danxuan" value = {{c.title_result}} type="radio" ng-click="draw()" >				  
 					</div>
 				</form>
+				
+				<!--
+				<form action="" class="mui-table-view mui-table-view-radio" ng-if="qs[id].option_type=='0'" id="danxuan">
+					<li class="mui-table-view-cell" ng-repeat="c in qs[id].choose" ng-click="choose($index, id)">
+					  <a class="mui-navigate-right">{{c.title}}</a>		  				  
+					</li>
+				</form>
+				-->
 			<div class="mui-content-padded">
 				<h5>雷达图</h5>
 				<div class="chart" id="radar" ng-click="draw()"></div>

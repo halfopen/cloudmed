@@ -34,7 +34,7 @@
 		</div>
 		
 		<div class="mui-content" >
-			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估 </p>
+			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估</p>
 			<!-- 面诊和舌诊容器 -->
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
@@ -80,7 +80,7 @@
 						</div>
 					</div>
 					<div class="footer">
-						<button class="btn" ng-click="diagnosis()">诊断</button>
+						<span class="btn" ng-click="diagnosis()">诊断</span>
 					</div>
 				</div>
 			</div>
@@ -88,10 +88,6 @@
 		
 		<script>
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
-			// https://blog.xinshangshangxin.com/2015/12/17/ngClick-fires-twice-on-button/
-			app.config(function($mdGestureProvider ) {
-				$mdGestureProvider.skipClickHijack();
-			});
 			mui("#loading-overlay");
 			var showLoading = function(show){
 				console.log("show loading"+show);
@@ -112,28 +108,18 @@
 				$scope.qs = $scope.questions;
 				console.log($scope.questions);
 				$scope.name = "7787";
-				/*
-				var updateQuestion = function(qid){
-					//console.log($scope.questions.reverse());
+
+				var updateQuestion = function(qid){  // have a try
 					console.log($scope.questions[qid].choose);
-					if ($scope.questions[qid].option_type == '0'){//单选题
-						var choose = document.getElementsByName("danxuan");
-						for (var i=0; i<choose.length; i++){
-							if (choose[i].checked){
-								console.log(i);
-							}
-						}
-					}
-				
-				
 					for (c in $scope.questions[qid].choose){
 						if (document.getElementById(c.id).checked){
 							c.state = "true";
 						}						
 					}
-					
+					console.log($scope.questions.reverse());
+						
 				}
-				*/
+				
 				/**
 					点击面诊或者舌诊
 				**/
@@ -287,7 +273,6 @@
 				}
 
 
-
 				$scope.diagnosis = function(){
 					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions);
 				}
@@ -321,32 +306,7 @@
 						$mdDialog.hide();
 						console.log("hide")
 					};
-					
-					var updateQuestion = function(qid){
-						//console.log($scope.questions.reverse());
-						c = qs[qid].choose;
-						if (qs[qid].option_type == '0'){//单选题
-							var choose = document.getElementsByName("danxuan");
-							for (var i=0; i<choose.length; i++){
-								if (choose[i].checked){
-									//console.log(i);
-									c[i].state = "true";						
-								}
-							}
-						}
-						else{ //多选题
-							var choose = document.getElementsByName("duoxuan");
-							for (var i=0; i<choose.length; i++){
-								if (choose[i].checked){
-									//console.log(i);
-									c[i].state = "true";
-								}
-							}
-							
-						}
-						console.log(c);
-						
-					}
+
 					$scope.cancel = function() {
 						$mdDialog.cancel();
 						console.log("cancel")
@@ -354,9 +314,8 @@
 					};
 					$scope.id = id;
 					$scope.qs = qs;
-
 					$scope.choose = function(index, qid){
-						console.log("choose", index, qid)
+						console.log("choose",index, qid)
 					}
 				}
 			});
