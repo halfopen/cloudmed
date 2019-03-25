@@ -23,34 +23,25 @@
 		<!-- echarts-->
 		<script src="../js/echarts.min.js"></script>
 	</head>
-	<body>
+	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">健康自检</h1>
 		</header>
-		<div style="visibility: hidden">
-		<div class="md-dialog-container" id="myDialog">
-			<md-dialog layout-padding>
-			<h2>Pre-Rendered Dialog</h2>
-			<p>
-				This is a pre-rendered dialog, which means that <code>$mdDialog</code> doesn't compile its
-				template on each opening.
-				<br/><br/>
-				The Dialog Element is a static element in the DOM, which is just visually hidden.<br/>
-				Once the dialog opens, we just fetch the element from the DOM into our dialog and upon close
-				we restore the element back into its old DOM position.
-			</p>
-			</md-dialog>
+
+		<div class="loading-overlay" ng-show="loading">
+			<img src="../images/loading.svg"  style="height:80px; width:80px;"/>
 		</div>
-		</div>
-		<div class="mui-content" ng-app="myApp" ng-controller="myCtrl">
+		
+		<div class="mui-content" >
 			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估</p>
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
-					<div class="border">
+					<div class="border face-diag">
 						<span>面诊</span>
-						<img src="../images/face.png" />
-						<div class="desc">
+						<img id="faceimg" src="../images/face.png" />
+						<input type="file" id="facepic" onchange="selectFile('facepic', 'faceimg', 'face-desc')"/>
+						<div class="desc" id="face-desc">
 							文字描述
 						</div>
 					</div>
@@ -58,8 +49,9 @@
 				<div class="pic-diag-sub-ctn"> 
 					<div class="border">
 						<span>舌诊</span>
-						<img src="../images/tongue.png" />
-						<div class="desc">
+						<img id="tongueimg" src="../images/tongue.png" />
+						<input type="file" id="tonguepic" onchange="selectFile('tonguepic', 'tongueimg', 'tongue-desc')"/>
+						<div class="desc" id="tongue-desc">
 							文字描述
 						</div>
 					</div>
@@ -83,10 +75,63 @@
 		</div>
 		
 		<script>
+			var selectFile = function(id, imgid, descid){
+					
+				console.log("select file"+id);
+				var files = document.getElementById(id).files;
+				if(0== files.length){
+					return;
+				}
+				var file = files[0];
+				var reader = new FileReader();
+
+				reader.readAsBinaryString(file);
+				reader.onload = function(f){
+					var result = document.getElementById(imgid);
+					var src = "data:" + file.type + ";base64," + window.btoa(this.result);
+					result.src = src;
+
+					// upload img
+					var url = "http://facestory.cn:8080/upload"
+					var form = new FormData();
+					var type = "face";
+					form.append("file", file);
+					form.append("type", type);
+		　		 	mui.ajax({
+						url:url,
+						type:"post",
+						data:form,
+						processData:false,
+						contentType:false,
+						success:function(data){
+							
+							console.log("over..");
+							if("0"==data.raw){
+								console.log("检测失败");
+								document.getElementById(descid).innerHTML = "未检测到";
+								return;
+							}
+							var html = "";
+							var short_html = "";
+							for(var key in data.result){
+								console.log(data.key[key]);
+								console.log(data.info[key][data.result[key]]);
+								html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
+							}
+							document.getElementById(descid).innerHTML = html;
+							console.log(data);
+						},
+						error: function(){
+							
+						}
+					});
+				}
+			};
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.questions = questions.rows;
 				$scope.id = 0;  
+				$scope.loading = false;
 				$scope.qs = $scope.questions;
 				console.log($scope.questions);
 				$scope.name = "7787";
@@ -94,7 +139,7 @@
 				var updateQuestion = function(){
 					console.log($scope.questions.reverse());
 				}
-
+				
 
 				$scope.draw = function(scores){  //added
 					var byId = function(id){
