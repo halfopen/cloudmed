@@ -34,7 +34,7 @@
 		</div>
 		
 		<div class="mui-content" >
-			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估</p>
+			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估 </p>
 			<!-- 面诊和舌诊容器 -->
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
@@ -80,7 +80,7 @@
 						</div>
 					</div>
 					<div class="footer">
-						<span class="btn" ng-click="diagnosis()">诊断</span>
+						<button class="btn" ng-click="diagnosis()">诊断</button>
 					</div>
 				</div>
 			</div>
@@ -88,6 +88,10 @@
 		
 		<script>
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
+			// https://blog.xinshangshangxin.com/2015/12/17/ngClick-fires-twice-on-button/
+			app.config(function($mdGestureProvider ) {
+				$mdGestureProvider.skipClickHijack();
+			});
 			mui("#loading-overlay");
 			var showLoading = function(show){
 				console.log("show loading"+show);
@@ -265,9 +269,7 @@
 					myradar.setOption(option);			
 				}
 
-				$scope.choose = function(index, qid){
-					console.log(index, qid)
-				}
+
 
 				$scope.diagnosis = function(){
 					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions);
@@ -310,6 +312,10 @@
 					};
 					$scope.id = id;
 					$scope.qs = qs;
+
+					$scope.choose = function(index, qid){
+						console.log("choose", index, qid)
+					}
 				}
 			});
 			mui.init();
