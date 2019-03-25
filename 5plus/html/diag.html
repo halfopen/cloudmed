@@ -28,19 +28,22 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">健康自检</h1>
 		</header>
-
-		<div class="loading-overlay" ng-show="loading">
+		<!-- 加载中蒙板 -->
+		<div class="loading-overlay" id="loading-overlay">
 			<img src="../images/loading.svg"  style="height:80px; width:80px;"/>
 		</div>
 		
 		<div class="mui-content" >
 			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估</p>
+			<!-- 面诊和舌诊容器 -->
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
 					<div class="border face-diag">
 						<span>面诊</span>
 						<img id="faceimg" src="../images/face.png" />
-						<input type="file" id="facepic" onchange="selectFile('facepic', 'faceimg', 'face-desc')"/>
+						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
+						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
+						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic"/>
 						<div class="desc" id="face-desc">
 							文字描述
 						</div>
@@ -50,88 +53,58 @@
 					<div class="border">
 						<span>舌诊</span>
 						<img id="tongueimg" src="../images/tongue.png" />
-						<input type="file" id="tonguepic" onchange="selectFile('tonguepic', 'tongueimg', 'tongue-desc')"/>
+						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic"/>
 						<div class="desc" id="tongue-desc">
 							文字描述
 						</div>
 					</div>
 				</div>
 			</div>
+			<!-- 问诊容器 -->
 			<div class="qst-ctn border">
 				<span>问诊</span>
+				<!-- 颜色说明 -->
+				<div class="color-board">
+					<div>-有症状</div>
+					<div>-无症状</div>
+					<div>-未回答</div>
+				</div>
 				<div class="mui-content ">
-						
-						<div class="mui-row">
-							<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
-								<div class="cir-question-ctn">
-									<div class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
-										{{q.short_question}}
-									</div>
+					<div class="mui-row">
+						<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
+							<div class="cir-question-ctn">
+								<div class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
+									{{q.short_question}}
 								</div>
 							</div>
 						</div>
 					</div>
+					<div class="footer">
+						<span class="btn" ng-click="diagnosis()">诊断</span>
+					</div>
+				</div>
 			</div>
 		</div>
 		
 		<script>
-			var selectFile = function(id, imgid, descid){
-					
-				console.log("select file"+id);
-				var files = document.getElementById(id).files;
-				if(0== files.length){
-					return;
-				}
-				var file = files[0];
-				var reader = new FileReader();
-
-				reader.readAsBinaryString(file);
-				reader.onload = function(f){
-					var result = document.getElementById(imgid);
-					var src = "data:" + file.type + ";base64," + window.btoa(this.result);
-					result.src = src;
-
-					// upload img
-					var url = "http://facestory.cn:8080/upload"
-					var form = new FormData();
-					var type = "face";
-					form.append("file", file);
-					form.append("type", type);
-		　		 	mui.ajax({
-						url:url,
-						type:"post",
-						data:form,
-						processData:false,
-						contentType:false,
-						success:function(data){
-							
-							console.log("over..");
-							if("0"==data.raw){
-								console.log("检测失败");
-								document.getElementById(descid).innerHTML = "未检测到";
-								return;
-							}
-							var html = "";
-							var short_html = "";
-							for(var key in data.result){
-								console.log(data.key[key]);
-								console.log(data.info[key][data.result[key]]);
-								html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
-							}
-							document.getElementById(descid).innerHTML = html;
-							console.log(data);
-						},
-						error: function(){
-							
-						}
-					});
-				}
-			};
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
+			mui("#loading-overlay");
+			var showLoading = function(show){
+				console.log("show loading"+show);
+				if(show==true){
+					mui("#loading-overlay")[0].style.display = "block";	
+				}else{
+					mui("#loading-overlay")[0].style.display = "none";	
+				}
+			}
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.questions = questions.rows;
+				$scope.faceResult = null;
+				$scope.tongueResult = null;
 				$scope.id = 0;  
-				$scope.loading = false;
+
+				$scope.facepic = null;
+
 				$scope.qs = $scope.questions;
 				console.log($scope.questions);
 				$scope.name = "7787";
@@ -140,6 +113,86 @@
 					console.log($scope.questions.reverse());
 				}
 				
+				/**
+					点击面诊或者舌诊
+				**/
+				$scope.selectFile = function(type){
+					showLoading(true);
+					var id = "facepic";
+					var imgid = "faceimg";
+					var descid = "face-desc";
+					if(type =="face"){
+						// 'facepic', 'faceimg', 'face-desc'
+						id = "facepic";
+						imgid = "faceimg";
+						descid = "face-desc";
+					}else{
+						// 'tonguepic', 'tongueimg', 'tongue-desc'
+						id = "tonguepic";
+						imgid = "tongueimg";
+						descid = "tongue-desc";
+					}
+					console.log("select file"+id);
+					var files = document.getElementById(id).files;
+					if(0== files.length){
+						showLoading(false);
+						return;
+					}
+					var file = files[0];
+					var reader = new FileReader();
+
+					reader.readAsBinaryString(file);
+					reader.onload = function(f){
+						var result = document.getElementById(imgid);
+						var src = "data:" + file.type + ";base64," + window.btoa(this.result);
+						result.src = src;
+
+						// upload img
+						var url = "http://facestory.cn:8080/upload"
+						var form = new FormData();
+						form.append("file", file);
+						form.append("type", type);
+			　		 	mui.ajax({
+							url:url,
+							type:"post",
+							data:form,
+							processData:false,
+							contentType:false,
+							success:function(data){
+								setTimeout(function(){
+									if(type=="face"){
+										$scope.faceResult = data;
+									}else{
+										$scope.tongueResult = data;
+									}
+									showLoading(false);
+									if("0"==data.raw){
+										console.log("检测失败");
+										document.getElementById(descid).innerHTML = "未检测到";
+										return;
+									}
+									var html = "";
+									var short_html = "";
+									for(var key in data.result){
+										console.log(data.key[key]);
+										console.log(data.info[key][data.result[key]]);
+										html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
+									}
+									document.getElementById(descid).innerHTML = html;
+								}, 1000);
+								console.log("over..");
+								
+								console.log(data);
+							},
+							error: function(){
+								setTimeout(function(){
+									showLoading(false);
+								}, 1000);
+							}
+						});
+					}
+				};
+			
 
 				$scope.draw = function(scores){  //added
 					var byId = function(id){
@@ -174,9 +227,9 @@
 								{ name: '阴虚', max: 6500},
 								{ name: '阳虚', max: 16000},
 								{ name: '气虚', max: 30000},
-								{ name: '血瘀', max: 38000},
-								{ name: '肾虚', max: 52000},
-								{ name: '瘀滞', max: 25000}
+								{onCompletename: '血瘀', max: 38000},
+								{onCompletename: '肾虚', max: 52000},
+								{onCompletename: '瘀滞', max: 25000}
 							],
 							splitNumber: '2',
 							splitArea: {
@@ -214,6 +267,10 @@
 
 				$scope.choose = function(index, qid){
 					console.log(index, qid)
+				}
+
+				$scope.diagnosis = function(){
+					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions);
 				}
 
 				$scope.showQuestion = function(ev, index) {
@@ -256,6 +313,7 @@
 				}
 			});
 			mui.init();
+			showLoading(false);
 		</script>
 	</body>
 </html>
