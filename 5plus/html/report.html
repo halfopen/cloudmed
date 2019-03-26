@@ -58,7 +58,7 @@
 				// 建议类型
 				$scope.stype = 7; // 健康
 				$scope.date = Date();
-				var faces = ["xiaolian.jpg", "xiaolian2.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg", "kulian2.jpg", "kulian3.jpg"];
+				var faces = ["xiaolian2.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg"];
 				$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[0];
 
 				if(undefined!= $location.search().data){
@@ -72,7 +72,7 @@
 					}
 					$scope.phy = data.phy;
 					$scope.healthScore = data.healthScore;
-					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(data.healthScore/25)];
+					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(data.healthScore/20)];
 					$scope.stype = data.mainType;
 
 					if(data.healthScore>=0 && data.healthScore<=40){
