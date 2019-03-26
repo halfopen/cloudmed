@@ -73,7 +73,7 @@
 				<div class="mui-content ">
 					<div class="mui-row">
 						<div class="mui-col-sm-6 mui-col-xs-12 mui-col-md-4" ng-repeat="q in questions">
-							<div class="{{q.choose_result.length==0? 'cir-question-ctn': 'cir-question-ctn-bad'}}">
+							<div class="{{q.choose_result.length!=0 && q.choose[q.choose.length-1].state=='false'? 'cir-question-ctn-bad': 'cir-question-ctn'}}">
 								<div name="questions" class=" mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
 									{{q.short_question}}
 								</div>
@@ -145,11 +145,13 @@
 							q.innerHTML = $scope.questions[qid].choose_result;
 						}
 						else{q.innerHTML = $scope.questions[qid].short_question;}
-						
+						/*
 						if(choose[choose.length-1].checked==false){//不健康
 							q.setAttribute("class","cir-question-ctn-bad mui-table-view-cell cir-question");
 						}
-						else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");}
+						else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");
+						}
+						*/
 					}
 					else{ //多选题
 						var choose = document.getElementsByName("duoxuan");
@@ -169,11 +171,12 @@
 							q.innerHTML = $scope.questions[qid].choose_result;
 						}
 						else{q.innerHTML = $scope.questions[qid].short_question;}
+						/*
 						if(choose[choose.length-1].checked==false && $scope.questions[qid].choose_result!=""){//排除什么都没选
 								q.setAttribute("class","cir-question-ctn-bad mui-table-view-cell cir-question");
 						}
 						else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");}
-						
+						*/
 					}
 					console.log($scope.questions[qid]);
 					
