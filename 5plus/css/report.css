@@ -31,3 +31,10 @@ padding: 4px;
     
 padding: 4px;
 }
+
+.suggestions-text{
+    font-family: 宋体; color: red; font-size: 12pt; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'
+}
+.suggestions-red-text{
+    font-family: '微软雅黑','sans-serif'; color: red; font-size: 12pt
+}
