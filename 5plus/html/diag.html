@@ -73,8 +73,11 @@
 				<div class="mui-content ">
 					<div class="mui-row">
 						<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
-							<div class="cir-question-ctn">
-								<div name="questions" class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
+							<!--
+							<div ng-class="{true: 'cir-question-ctn', false: 'cir-question-ctn-bad'}[ss]">
+							-->
+							<div>
+								<div name="questions" class="cir-question-ctn mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
 									{{q.short_question}}
 								</div>
 							</div>
@@ -116,37 +119,53 @@
 				
 				var updateQuestion = function(qid){ // 考虑同时改变主页面上的问题描述
 					//console.log($scope.questions.reverse());
+					//function changecolor($scope,state){if(state){$scope.ss=true;}else{$scope.ss=false;}}
 					c = $scope.questions[qid].choose;
 					if ($scope.questions[qid].option_type == '0'){//单选题
 						var choose = document.getElementsByName("danxuan");
 						var q = document.getElementsByName("questions")[qid];
-			
+						//首先清空choose_result
+						$scope.questions[qid].choose_result = "";
 						for (var i=0; i<choose.length; i++){
 							if (choose[i].checked){
 								c[i].state = "true";
-								q.innerHTML = c[i].title_result;						
+								$scope.questions[qid].choose_result+=c[i].title_result;						
 							}
 							else {c[i].state = "false";}//为确保多次更改同一题的正确性
 						}
+						if ($scope.questions[qid].choose_result!=""){
+							q.innerHTML = $scope.questions[qid].choose_result;
+						}
+						else{q.innerHTML = $scope.questions[qid].short_question;}
 						
+						if(choose[choose.length-1].checked==false){//不健康
+							q.setAttribute("class","cir-question-ctn-bad mui-table-view-cell cir-question");
+						}
+						else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");}
 					}
 					else{ //多选题
 						var choose = document.getElementsByName("duoxuan");
 						var q = document.getElementsByName("questions")[qid];
-						q.innerHTML = "";
+						//首先清空choose_result
+						$scope.questions[qid].choose_result = "";
+						//q.innerHTML = "";
 						for (var i=0; i<choose.length; i++){
 							if (choose[i].checked){
 								c[i].state = "true";
-								q.innerHTML+=c[i].title_result+" ";
-								//if (i<choose.length-1){
-									//q.style.background = "orangered";
-								//}
+								$scope.questions[qid].choose_result+=c[i].title_result+" ";
+								//q.innerHTML+=c[i].title_result+" ";
 							}
 							else{c[i].state = "false";}
 						}
-						if(choose[choose.length-1].checked==false){//不健康
-							q.style.background="orange";
+						if ($scope.questions[qid].choose_result!=""){
+							q.innerHTML = $scope.questions[qid].choose_result;
 						}
+						else{q.innerHTML = $scope.questions[qid].short_question;}
+						if(choose[choose.length-1].checked==false && $scope.questions[qid].choose_result!=""){//排除什么都没选
+								q.setAttribute("class","cir-question-ctn-bad mui-table-view-cell cir-question");
+						}
+						else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");}
+						
 					}
 					console.log($scope.questions[qid]);
 					

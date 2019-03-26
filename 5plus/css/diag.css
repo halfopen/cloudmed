@@ -52,6 +52,14 @@
     border-radius: 10px;
     color: white;
 }
+.cir-question-ctn-bad{
+	background: orange;
+	margin: 4px;
+	border-radius: 10px;
+	color: white;
+	border: 1px solid orange;
+	position: relative;
+}
 .cir-question{
     font-size: xx-small;
 }
