@@ -53,7 +53,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         tongueResult: tongueResult,
         healthScore: 100,
         healthType: [0, 0, 0, 0, 0, 0, 0],    // 是否包含某种体质,
-        mainType:0,                             // 主要体质
+        mainType:7,                             // 主要体质
         questionScore: [0, 0, 0, 0, 0, 0, 0],    // 各种问题的体质得分
         symCount: [0, 0, 0, 0, 0, 0, 0],         // 各种体质症状个数
         phy: "",                             // 最终体质
@@ -111,7 +111,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         dict.healthType[2] = 1;
     }
 
-    var sortedQuestionScore = dict.questionScore.concat();
+    
 
     // 如果气虚症状综述<2或者关键性问题回答否，那么就不是气虚
     if(dict.symCount[6]<2 && dict.healthType[6]==0){
@@ -148,16 +148,18 @@ var diagnosis = function(questions, faceResult, tongueResult){
         if (aQuestionScore > 0) symptom_num++;
     }
 
+    var sortedQuestionScore = dict.questionScore.concat();
+
     console.log(dict.questionScore, symptom_num, sortedQuestionScore);
     sortedQuestionScore.sort();
-    symptom_num = Math.random()*4;
+
     var tizhi = [-1, -1];
 
     var max1=0, max2=0;
 
     for(var i=0;i<dict.questionScore.length;i++){
         if(dict.questionScore[i]>max2 && dict.questionScore[i]<max1){
-            max2 = questionScore[i];
+            max2 = dict.questionScore[i];
             tizhi[1] = i;
         }else if(dict.questionScore[i]>max1){
             max2 = max1;
@@ -166,8 +168,10 @@ var diagnosis = function(questions, faceResult, tongueResult){
             tizhi[0] = i;
         }
     }
-    console.log(tizhi);
-
+    console.log("symptom_num",tizhi, symptom_num);
+    if(tizhi[0]>=0){
+        dict.mainType = tizhi[0];
+    }
     if(symptom_num>3){
         baseScore = sortedQuestionScore[6];
         dict.healthType[tizhi[0]] = 1;
@@ -217,7 +221,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         dict.phy = "健康";
     }
 
-    if(tizhi[0]==-1){
+    if(tizhi[0]==-1 || dict.phy.length==0){
         dict.phy = "健康";
         dict.healthScore = 100;
     }
