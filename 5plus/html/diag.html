@@ -226,7 +226,6 @@
 									showLoading(false);
 									if("0"==data.raw){
 										console.log("检测失败");
-										document.getElementById(descid).innerHTML = "未检测到";
 										return;
 									}
 									var html = "";
@@ -236,7 +235,12 @@
 										console.log(data.info[key][data.result[key]]);
 										html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
 									}
-									document.getElementById(descid).innerHTML = html;
+									if(type=="face"){
+										document.getElementById(descid).innerHTML = getfaceResult(data);
+									}else{
+										document.getElementById(descid).innerHTML = gettongueResult(data);
+									}
+									
 								}, 1000);
 								console.log("over..");
 								
