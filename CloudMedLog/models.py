@@ -15,7 +15,7 @@ class Diagnosis(models.Model):
     img = models.ImageField(upload_to="upload")
     type = models.IntegerField(default=0, verbose_name="类型", choices=((0, "脸部"), (1, "舌头")))
     date = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete="CASCADE")
 
 
 class Report(models.Model):
@@ -27,14 +27,14 @@ class Report(models.Model):
     tongue = models.CharField(max_length=2048, verbose_name="舌诊")       # tongueJson
     face = models.CharField(max_length=2048, verbose_name="面诊")     # faceJson
     date = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete="CASCADE")
 
 
 class OpLog(models.Model):
     """
         操作日志
     """
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete="CASCADE")
     device = models.CharField(max_length=1024, verbose_name="设备名", default="")
     op = models.CharField(max_length=1024, verbose_name="操作名", default="")
     info = models.TextField(verbose_name="操作信息", blank=True, default="")
