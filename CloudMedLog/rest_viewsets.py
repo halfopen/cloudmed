@@ -17,7 +17,13 @@ class OpLogViewset(viewsets.ModelViewSet):
     pagination_class = DataSetPaging
 
 
-class UploadedImageViewset(viewsets.ModelViewSet):
-    queryset = UploadImage.objects.order_by("-id").all()
-    serializer_class = UploadedImageSlz
+class DiagnosisImageViewset(viewsets.ModelViewSet):
+    queryset = Diagnosis.objects.order_by("-id").all()
+    serializer_class = DiagnosisSlz
+    pagination_class = DataSetPaging
+
+
+class ReportViewset(viewsets.ModelViewSet):
+    queryset = Report.objects.order_by("-id").all()
+    serializer_class = ReportSlz
     pagination_class = DataSetPaging
