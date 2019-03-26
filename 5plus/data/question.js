@@ -151,7 +151,7 @@ var questions = {
                       {
                       "id":"2",
                       "title":"C.正常",
-                      "title_result":"",
+                      "title_result":"出汗正常",
                       "state":"false",
 					  "score": {
 						"yangxu": 0,

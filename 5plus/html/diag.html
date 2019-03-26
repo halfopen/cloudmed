@@ -138,10 +138,15 @@
 							if (choose[i].checked){
 								c[i].state = "true";
 								q.innerHTML+=c[i].title_result+" ";
+								//if (i<choose.length-1){
+									//q.style.background = "orangered";
+								//}
 							}
 							else{c[i].state = "false";}
 						}
-						
+						if(choose[choose.length-1].checked==false){//不健康
+							q.style.background="orange";
+						}
 					}
 					console.log($scope.questions[qid]);
 					
