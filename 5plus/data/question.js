@@ -7,6 +7,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"0",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -47,6 +48,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"1",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -117,6 +119,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"1",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -172,6 +175,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"1",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -242,6 +246,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"1",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -312,6 +317,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"0",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -352,6 +358,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"0",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -393,6 +400,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"1",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -478,6 +486,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"0",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -519,6 +528,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"0",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -559,6 +569,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"0",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -599,6 +610,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"1",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
@@ -669,6 +681,7 @@ var questions = {
             "sex":"0",
             "age":"",
             "option_type":"0",
+            "choose_result":"",
             "choose":[
                       {
                       "id":"0",
