@@ -9,8 +9,15 @@ class OpLogSlz(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UploadedImageSlz(serializers.ModelSerializer):
+class DiagnosisSlz(serializers.ModelSerializer):
 
     class Meta:
-        model = UploadImage
+        model = Diagnosis
+        fields = "__all__"
+
+
+class ReportSlz(serializers.ModelSerializer):
+
+    class Meta:
+        model = Report
         fields = "__all__"

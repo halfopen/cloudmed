@@ -5,7 +5,7 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'op_log', OpLogViewset)
-router.register(r'uploaded_image', UploadedImageViewset)
+router.register(r'uploaded_image', DiagnosisImageViewset)
 
 urlpatterns = [
     # restful api list, with get and post method
