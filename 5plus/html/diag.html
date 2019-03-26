@@ -330,8 +330,8 @@
 					console.log(result);
 					setTimeout(function(){
 						showLoading(false);
-						if(undefined == mui.os.plus){
-							window.location = "report.html?data="+encodeURI(JSON.stringify(result));
+						if(true || undefined == mui.os.plus){
+							mui.openWindow({"id":"report", "url":"report.html?data="+encodeURI(JSON.stringify(result))});
 						}
 					}, 1000);
 				}
