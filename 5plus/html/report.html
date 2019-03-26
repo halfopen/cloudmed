@@ -17,6 +17,7 @@
 
 	</head>
 	<body>
+		<base href="/html/" />
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">检测报告</h1>
@@ -35,8 +36,8 @@
 				<p>{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
-				<div>结论： 肾虚 70分</div>
-				<p>身体状态不佳 <img alt="" src="{{HEALTH_INDEX_IMAGE}}" style="width: 120px; height: 120px"></p>
+				<div>结论： {{phy}} {{healthScore}}分</div>
+				<p>{{healthState}} <img alt="" src="{{HEALTH_INDEX_IMAGE}}" style="width: 120px; height: 120px"></p>
 			</div>
 
 			<div class="col-box">
@@ -47,12 +48,30 @@
 
 		<script>
 			var app = angular.module('myApp', []);
-			app.controller('myCtrl', function($scope){
+			app.config(['$locationProvider', function($locationProvider) {
+				$locationProvider.html5Mode(true);
+			}]);
+			app.controller('myCtrl', function($scope, $location){
 				$scope.faceResult = "无面诊记录";
 				$scope.tongueResult = "无舌诊记录";
+				$scope.healthState = "身体棒棒哒";
 				$scope.date = Date();
-				var faces = ["pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg", "kulian2.jpg", "kulian3.jpg"];
+				var faces = ["xiaolian.jpg", "xiaolian2.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg", "kulian2.jpg", "kulian3.jpg"];
 				$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[0];
+
+				if(undefined!= $location.search().data){
+					console.log($location.search().data);
+					var data = JSON.parse($location.search().data);
+					if(null!=data.faceResult){
+						
+					}
+					if(null!=data.tongueResult){
+
+					}
+					$scope.phy = data.phy;
+					$scope.healthScore = data.healthScore;
+					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(data.healthScore/25)];
+				}
 			});
 			app.directive('suggestion', function(){
 				// 建议模板
@@ -60,6 +79,7 @@
 ,"suggestion_qixu.html"  ,"suggestion_tanshi.html"  ,"suggestion_yangxu.html"  ,"suggestion_yuzhi.html"];
 
 				var url = templates[Math.floor(Math.random()*9)];
+				url = templates[1];
 				console.log(url);
 				return {
 					replace: true,
