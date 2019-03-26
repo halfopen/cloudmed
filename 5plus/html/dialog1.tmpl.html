@@ -4,7 +4,7 @@
 	<link href="../css/chart.css" rel="stylesheet"/>
     <div >
 		<md-dialog-actions>
-			<span  ng-click="cancel()"  class="mui-icon mui-icon-close"></span>
+			<span  ng-click="cancel()"  class="mui-icon mui-icon-checkmarkempty"></span>
 		</md-dialog-actions>
         
     </div>
@@ -18,7 +18,7 @@
 				<form action="" class="mui-input-group" ng-if="qs[id].option_type=='1'">					
 					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose" ng-click="choose($index, id)">
 					  <label>{{c.title}}</label>
-					  <input name="duoxuan" value = {{c.title_result}} type="checkbox" ng-click = "draw(c.score,id)">				  
+					  <input name="duoxuan" value = {{c.title_result}} type="checkbox" ng-click = "choose_control(id);draw(c.score,id)">				  
 					</div>
 								
 				</form>
@@ -39,7 +39,7 @@
 				-->
 			<div class="mui-content-padded">
 				<h5>雷达图</h5>
-				<div class="chart" id="radar" ng-click="draw()"></div>
+				<div class="chart" id="radar"></div>
 
 			</div>
 			

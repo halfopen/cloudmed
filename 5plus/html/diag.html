@@ -74,7 +74,7 @@
 					<div class="mui-row">
 						<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
 							<div class="cir-question-ctn">
-								<div class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
+								<div name="questions" class="mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
 									{{q.short_question}}
 								</div>
 							</div>
@@ -119,18 +119,25 @@
 					c = $scope.questions[qid].choose;
 					if ($scope.questions[qid].option_type == '0'){//单选题
 						var choose = document.getElementsByName("danxuan");
-						for (var i=0; i<choose.length; i++){
-							if (choose[i].checked){
-								c[i].state = "true";						
-							}
-							else {c[i].state = "false";}//为确保多次更改同一题的正确性
-						}
-					}
-					else{ //多选题
-						var choose = document.getElementsByName("duoxuan");
+						var q = document.getElementsByName("questions")[qid];
+			
 						for (var i=0; i<choose.length; i++){
 							if (choose[i].checked){
 								c[i].state = "true";
+								q.innerHTML = c[i].title_result;						
+							}
+							else {c[i].state = "false";}//为确保多次更改同一题的正确性
+						}
+						
+					}
+					else{ //多选题
+						var choose = document.getElementsByName("duoxuan");
+						var q = document.getElementsByName("questions")[qid];
+						q.innerHTML = "";
+						for (var i=0; i<choose.length; i++){
+							if (choose[i].checked){
+								c[i].state = "true";
+								q.innerHTML+=c[i].title_result+" ";
 							}
 							else{c[i].state = "false";}
 						}
@@ -397,6 +404,30 @@
 					$scope.choose = function(index, qid){
 						console.log("choose", index, qid)
 					}
+					$scope.choose_control = function(qid){
+						var box = document.getElementsByName("duoxuan");
+						
+						box[box.length-1].onclick=function(){
+							if(this.checked){
+								for(j=0;j<box.length-1;j++){
+									box[j].checked=false;									
+								}
+							}
+							
+						}
+						
+						for(i=0;i<box.length-1;i++){
+							box[i].onclick = function(){
+								if(this.checked){
+									box[box.length-1].checked=false;
+									
+								}
+								
+							}
+						}
+						
+						
+					}
 					$scope.draw = function(scores, qid){  //added
 						var byId = function(id){
 							return document.getElementById(id)
@@ -406,18 +437,20 @@
 						// 多选
 						if (qs[qid].option_type == '1'){//多选题						
 							var choose = document.getElementsByName("duoxuan");
-							for (var i=0; i<choose.length; i++){
-								if (choose[i].checked){									
-									score[0]+=qs[qid].choose[i].score.yangxu;
-									score[1]+=qs[qid].choose[i].score.yinxu;
-									score[2]+=qs[qid].choose[i].score.tanshi;
-									score[3]+=qs[qid].choose[i].score.yuzhi;
-									score[4]+=qs[qid].choose[i].score.pixu;
-									score[5]+=qs[qid].choose[i].score.shenxu;
-									score[6]+=qs[qid].choose[i].score.qixu;
+							//if (choose[choose.length-1].checked==false){
+								for (var i=0; i<choose.length-1; i++){
+									if (choose[i].checked){									
+										score[0]+=qs[qid].choose[i].score.yangxu;
+										score[1]+=qs[qid].choose[i].score.yinxu;
+										score[2]+=qs[qid].choose[i].score.tanshi;
+										score[3]+=qs[qid].choose[i].score.yuzhi;
+										score[4]+=qs[qid].choose[i].score.pixu;
+										score[5]+=qs[qid].choose[i].score.shenxu;
+										score[6]+=qs[qid].choose[i].score.qixu;
+									}						
 								}
-								
-							}
+							//}
+							
 						}
 						else{score = [scores.yangxu,scores.yinxu, scores.tanshi, scores.yuzhi, scores.pixu, scores.shenxu, scores.qixu];}
 						
