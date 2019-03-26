@@ -32,7 +32,7 @@
 				<p>{{faceResult}}</p>
 			</div>
 			<div class="col-box">
-				<div>舌头诊结果</div>
+				<div>舌诊结果</div>
 				<p>{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
@@ -42,7 +42,7 @@
 
 			<div class="col-box">
 				<div>建议</div>
-				<suggestion ></suggestion>
+				<suggestion stype="{{stype}}"></suggestion>
 			</div>
 		</div>
 
@@ -55,13 +55,15 @@
 				$scope.faceResult = "无面诊记录";
 				$scope.tongueResult = "无舌诊记录";
 				$scope.healthState = "身体棒棒哒";
+				// 建议类型
+				$scope.stype = 7; // 健康
 				$scope.date = Date();
 				var faces = ["xiaolian.jpg", "xiaolian2.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg", "kulian2.jpg", "kulian3.jpg"];
 				$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[0];
 
 				if(undefined!= $location.search().data){
 					console.log($location.search().data);
-					var data = JSON.parse($location.search().data);
+					var data = JSON.parse($location.search().data.replace(/'/g, ""));
 					if(null!=data.faceResult){
 						
 					}
@@ -71,19 +73,37 @@
 					$scope.phy = data.phy;
 					$scope.healthScore = data.healthScore;
 					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(data.healthScore/25)];
+					$scope.stype = data.mainType;
 				}
 			});
 			app.directive('suggestion', function(){
 				// 建议模板
-				var templates = ["suggestion_pixu.html"  ,"suggestion_shenxu.html"  ,"suggestion_xuexu.html"   ,"suggestion_yinxu.html"  ,"suggestion_zhengchang.html"
-,"suggestion_qixu.html"  ,"suggestion_tanshi.html"  ,"suggestion_yangxu.html"  ,"suggestion_yuzhi.html"];
+				// "suggestion_xuexu.html"   ,好像没有血虚
+				var templates = [
+					"suggestion_yangxu.html",
+					"suggestion_yinxu.html"  ,
+					"suggestion_tanshi.html"  ,
+					"suggestion_yuzhi.html", 
+					"suggestion_pixu.html"  ,
+					"suggestion_shenxu.html"  ,
+					"suggestion_qixu.html"  ,
+					"suggestion_zhengchang.html"];
 
-				var url = templates[Math.floor(Math.random()*9)];
-				url = templates[1];
+				var url = templates[Math.floor(Math.random()*8)];
+				//url = templates[1];
 				console.log(url);
 				return {
+					template:'<div ng-include="getContentUrl()"></div>',
 					replace: true,
-					templateUrl: "./suggestions/"+url
+					link: function($scope, $element, $attr){
+						$scope.getContentUrl = function(){
+							var template = "suggestions/"+templates[7];
+							if(undefined != $attr.stype){
+								template = "suggestions/"+templates[parseInt($attr.stype)];
+							}
+							return template;
+						}
+					}
 				}
 			});
 			mui.init();
