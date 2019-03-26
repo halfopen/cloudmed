@@ -1,3 +1,27 @@
+var getfaceResult = function(faceResult){
+
+    if(null==faceResult || faceResult.raw=="0"){
+        return "未检测到人脸";
+    }
+    var result = "";
+    result +="面色："+faceResult.info._2faceColor[faceResult.result._2faceColor]+","+faceResult.info._3faceGloss[faceResult.result._3faceGloss];
+    if(faceResult._4lipDetectRes==1)result +=" 唇色:"+faceResult.info._5lipColor[faceResult.result._5lipColor];
+    return result;
+}
+
+var gettongueResult = function(tongueResult){
+    if(null==tongueResult||tongueResult.raw=="0"){
+        return "未检测到舌头";
+    }
+    var result = "舌头：";
+    if(tongueResult.result._2tongueCrack==1)result+="有裂纹 ";
+    result += tongueResult.info._3tongueFatThin[tongueResult.result._3tongueFatThin]+" ";
+    result += tongueResult.info._4tongueCoatThickness[tongueResult.result._4tongueCoatThickness]+" ";
+    result += tongueResult.info._5tongueCoatColor[tongueResult.result._5tongueCoatColor]+" ";
+    result += tongueResult.info._6tongueNatureColor[tongueResult.result._6tongueNatureColor]+" ";
+    return result;
+}
+
 /**
  * 诊断健康状态
  * @param {问诊回答} questions 
@@ -5,7 +29,7 @@
  * @param {舌诊结果} tongueResult 
  */
 var diagnosis = function(questions, faceResult, tongueResult){
-    console.log("diagnosis");
+    console.log("diagnosis", getfaceResult(faceResult), gettongueResult(tongueResult));
         /**
      * 面部打分
      * @param {面诊结果} faceResult 

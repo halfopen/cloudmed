@@ -14,7 +14,7 @@
 		<script src="../js/angular-animate.min.js"></script>
 		<script src="../js/angular-aria.min.js"></script>
 		<script src="../js/angular-messages.min.js"></script>
-
+		<script src="../js/diagnosis.js"></script>
 	</head>
 	<body>
 		<base href="/html/" />
@@ -65,10 +65,10 @@
 					console.log($location.search().data);
 					var data = JSON.parse($location.search().data.replace(/'/g, ""));
 					if(null!=data.faceResult){
-						
+						$scope.faceResult = getfaceResult(data.faceResult);
 					}
 					if(null!=data.tongueResult){
-
+						$scope.tongueResult = gettongueResult(data.tongueResult);
 					}
 					$scope.phy = data.phy;
 					$scope.healthScore = data.healthScore;
