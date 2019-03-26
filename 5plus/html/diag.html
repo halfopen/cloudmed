@@ -22,6 +22,7 @@
 		<script src="../js/angular-material.min.js"></script>
 		<!-- echarts-->
 		<script src="../js/echarts.min.js"></script>
+		<script src="../js/diagnosis.js"></script>
 	</head>
 	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
@@ -286,10 +287,20 @@
 					myradar.setOption(option);			
 				}
 
-
-
+				/**
+				 *	点击诊断 
+				**/
 				$scope.diagnosis = function(){
+					showLoading(true);
 					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions);
+					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
+					console.log(result);
+					setTimeout(function(){
+						showLoading(false);
+						if(undefined == mui.os.plus){
+							window.location = "report.html?data="+encodeURI(JSON.stringify(result));
+						}
+					}, 1000);
 				}
 
 				$scope.showQuestion = function(ev, index) {
