@@ -16,7 +16,7 @@
 			<div class="mui-content-padded"> 
 				  <!-- set question type -->
 				<form action="" class="mui-input-group" ng-if="qs[id].option_type=='1'">					
-					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose" ng-click="choose($index, id)">
+					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose" ng-click="choose($index, id);draw(c.score,id)">
 					  <label>{{c.title}}</label>
 					  <input name="duoxuan" value = {{c.title_result}} type="checkbox">				  
 					</div>
@@ -26,7 +26,7 @@
 				<form action="" class="mui-input-group" ng-if="qs[id].option_type=='0'">
 					<div class="mui-input-row mui-radio mui-left" ng-repeat="c in qs[id].choose">
 					  <label>{{c.title}}</label>
-					  <input name="danxuan" value = {{c.title_result}} type="radio" ng-click="draw()" >				  
+					  <input name="danxuan" value = {{c.title_result}} type="radio" ng-click="draw(c.score,id)" >				  
 					</div>
 				</form>
 				

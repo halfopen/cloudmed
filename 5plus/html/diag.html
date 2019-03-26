@@ -216,22 +216,22 @@
 				};
 			
 
-				$scope.draw = function(scores){  //added
+				$scope.save_and_draw = function(scores){  //added
 					var byId = function(id){
 						return document.getElementById(id)
 					}
 					var myradar = echarts.init(byId('radar'));
+					var score = [scores.yangxu,scores.yinxu, scores.tanshi, scores.yuzhi, scores.pixu, scores.shenxu, scores.qixu];
+					console.log(scores);
 					var option = {
-						title: {
-							
+						title: {							
 						},
 						tooltip: {},
 						legend: {
 							data: ['体质得分'],
 							tooltip:{
 								color: 'orange'
-							}
-							
+							}							
 						},
 						radar: {
 							// shape: 'circle',
@@ -246,12 +246,13 @@
 								
 							},
 							indicator: [
-								{ name: '阴虚', max: 6500},
-								{ name: '阳虚', max: 16000},
-								{ name: '气虚', max: 30000},
-								{onCompletename: '血瘀', max: 38000},
-								{onCompletename: '肾虚', max: 52000},
-								{onCompletename: '瘀滞', max: 25000}
+								{ name: '阳虚', max: 30},
+								{ name: '阴虚', max: 30},
+								{ name: '痰湿', max: 30},
+								{ name: '瘀滞', max: 30},
+								{ name: '脾虚', max: 30},
+								{ name: '肾虚', max: 30},
+								{ name: '气虚', max: 30}
 							],
 							splitNumber: '2',
 							splitArea: {
@@ -268,12 +269,12 @@
 							
 						},
 						series: [{
-							name: '预算 vs 开销（Budget vs spending）',
+							name: '体质分数',
 							type: 'radar',
 							// areaStyle: {normal: {}},
 							data : [
 								{
-									value : scores,
+									value : score,
 									name : '体质得分',
 									lineStyle:{
 										color: 'darkred',
@@ -286,7 +287,6 @@
 					};
 					myradar.setOption(option);			
 				}
-
 				/**
 				 *	点击诊断 
 				**/
@@ -317,7 +317,9 @@
 						clickOutsideToClose:false,
 						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
 						onComplete: function(){    // 显示完成后的回调函数
-							$scope.draw([1000*index, 10000, 2800*index, 35000, 50000, 19000]);
+							//根据qs的当前值,判断上次保存的情况
+							//choose = qs[id].choose;
+							//$scope.save_and_draw([0, 0, 0, 0, 0, 0, 0]);
 						}
 					})
 					.then(function() {
@@ -340,18 +342,18 @@
 							var choose = document.getElementsByName("danxuan");
 							for (var i=0; i<choose.length; i++){
 								if (choose[i].checked){
-									//console.log(i);
 									c[i].state = "true";						
 								}
+								else {c[i].state = "false";}//为确保多次更改同一题的正确性
 							}
 						}
 						else{ //多选题
 							var choose = document.getElementsByName("duoxuan");
 							for (var i=0; i<choose.length; i++){
 								if (choose[i].checked){
-									//console.log(i);
 									c[i].state = "true";
 								}
+								else{c[i].state = "false";}
 							}
 							
 						}
@@ -368,6 +370,95 @@
 
 					$scope.choose = function(index, qid){
 						console.log("choose", index, qid)
+					}
+					$scope.draw = function(scores, qid){  //added
+						var byId = function(id){
+							return document.getElementById(id)
+						}
+						var myradar = echarts.init(byId('radar'));					
+						var score = [0,0,0,0,0,0,0];
+						// 多选
+						if (qs[qid].option_type == '1'){//多选题						
+							var choose = document.getElementsByName("duoxuan");
+							for (var i=0; i<choose.length; i++){
+								if (choose[i].checked){									
+									score[0]+=qs[qid].choose[i].score.yangxu;
+									score[1]+=qs[qid].choose[i].score.yinxu;
+									score[2]+=qs[qid].choose[i].score.tanshi;
+									score[3]+=qs[qid].choose[i].score.yuzhi;
+									score[4]+=qs[qid].choose[i].score.pixu;
+									score[5]+=qs[qid].choose[i].score.shenxu;
+									score[6]+=qs[qid].choose[i].score.qixu;
+								}
+								
+							}
+						}
+						else{score = [scores.yangxu,scores.yinxu, scores.tanshi, scores.yuzhi, scores.pixu, scores.shenxu, scores.qixu];}
+						
+						//console.log(scores);
+						var option = {
+							title: {							
+							},
+							tooltip: {},
+							legend: {
+								data: ['体质得分'],
+								tooltip:{
+									color: 'orange'
+								}							
+							},
+							radar: {
+								// shape: 'circle',
+								name: {
+									textStyle: {
+										color: '#fff',
+										backgroundColor: '#999',
+										borderRadius: 3,
+										padding: [3, 5],
+										fontSize: 15,
+									}
+									
+								},
+								indicator: [
+									{ name: '阳虚', max: 30},
+									{ name: '阴虚', max: 30},
+									{ name: '痰湿', max: 30},
+									{ name: '瘀滞', max: 30},
+									{ name: '脾虚', max: 30},
+									{ name: '肾虚', max: 30},
+									{ name: '气虚', max: 30}
+								],
+								splitNumber: '2',
+								splitArea: {
+									areaStyle: {
+										color: ['white', 'white', 'white', 'white']
+									}
+								},
+								splitLine:{
+									lineStyle: {
+										color: ['#aaa', '#ddd'],
+										width: '1'
+									}
+								}
+								
+							},
+							series: [{
+								name: '体质分数',
+								type: 'radar',
+								// areaStyle: {normal: {}},
+								data : [
+									{
+										value : score,
+										name : '体质得分',
+										lineStyle:{
+											color: 'darkred',
+											width: '5'
+										}
+									},
+									
+								]
+							}]
+						};
+						myradar.setOption(option);			
 					}
 				}
 			});
