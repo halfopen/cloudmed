@@ -2,6 +2,12 @@ from rest_framework import serializers
 from .models import *
 
 
+class UserSlz(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
 class OpLogSlz(serializers.ModelSerializer):
 
     class Meta:
