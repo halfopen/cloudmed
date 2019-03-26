@@ -72,15 +72,15 @@
 				</div>
 				<div class="mui-content ">
 					<div class="mui-row">
-						<div class="mui-col-sm-3 mui-col-xs-3 " ng-repeat="q in questions">
+						<div class="mui-col-sm-6 mui-col-xs-12 mui-col-md-4" ng-repeat="q in questions">
 							<!--
 							<div ng-class="{true: 'cir-question-ctn', false: 'cir-question-ctn-bad'}[ss]">
 							-->
-							<div>
+							
 								<div name="questions" class="cir-question-ctn mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
 									{{q.short_question}}
 								</div>
-							</div>
+							
 						</div>
 					</div>
 					<div class="footer">
