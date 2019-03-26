@@ -73,7 +73,7 @@
 				<div class="mui-content ">
 					<div class="mui-row">
 						<div class="mui-col-sm-6 mui-col-xs-12 mui-col-md-4" ng-repeat="q in questions">
-							<div class="{{q.choose_result.length!=0 && q.choose[q.choose.length-1].state=='false'? 'cir-question-ctn-bad': 'cir-question-ctn'}}">
+							<div class="{{q.state}}" d="{{q.state}}">
 								<div name="questions" class=" mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
 									{{q.short_question}}
 								</div>
@@ -123,43 +123,42 @@
 					$scope.questions = lastReport.questions;
 					document.getElementById("face-desc").innerHTML = getfaceResult(lastReport.faceResult);
 					document.getElementById("tongue-desc").innerHTML = gettongueResult(lastReport.tongueResult);
+					for(var i=0;i<$scope.questions.length;++i){
+						var chooseIndex = -1;
+						for(var j=0;j<$scope.questions[i].choose.length;++j){
+							if($scope.questions[i].choose[j].state=="true"){
+								chooseIndex = j;
+							}
+						}
+						if(chooseIndex == -1){ // 没选
+							$scope.questions[i].state = "cir-question-ctn";
+						}else if(chooseIndex==$scope.questions[i].choose.length-1){ // 选中了最后一个
+							$scope.questions[i].state = "cir-question-ctn-last-good";
+						}else{
+							$scope.questions[i].state = "cir-question-ctn-last-bad";
+						}
+					}
 				}
 				
 				var updateQuestion = function(qid){ // 考虑同时改变主页面上的问题描述
 					//console.log($scope.questions.reverse());
 					//function changecolor($scope,state){if(state){$scope.ss=true;}else{$scope.ss=false;}}
 					c = $scope.questions[qid].choose;
+					var chooseIndex = -1;
 					if ($scope.questions[qid].option_type == '0'){//单选题
 						var choose = document.getElementsByName("danxuan");
 						var q = document.getElementsByName("questions")[qid];
 						//首先清空choose_result
 						$scope.questions[qid].choose_result = "";
+						var chooseIndex = -1;
 						for (var i=0; i<choose.length; i++){
 							if (choose[i].checked){
 								c[i].state = "true";
+								chooseIndex = i;
 								$scope.questions[qid].choose_result+=c[i].title_result;						
 							}
 							else {c[i].state = "false";}//为确保多次更改同一题的正确性
 						}
-						if ($scope.questions[qid].choose_result!=""){
-							q.innerHTML = $scope.questions[qid].choose_result;
-						}
-						else{q.innerHTML = $scope.questions[qid].short_question;}
-<<<<<<< HEAD
-						/*
-						if(choose[choose.length-1].checked==false){//不健康
-							q.setAttribute("class","cir-question-ctn-bad mui-table-view-cell cir-question");
-						}
-						else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");
-						}
-						*/
-=======
-						
-						// if(choose[choose.length-1].checked==false){//不健康
-						// 	q.setAttribute("class","cir-question-ctn-bad mui-table-view-cell cir-question");
-						// }
-						// else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");}
->>>>>>> 997c1eb1238a011c57f3c13ae8e0ee2b620caafc
 					}
 					else{ //多选题
 						var choose = document.getElementsByName("duoxuan");
@@ -167,24 +166,28 @@
 						//首先清空choose_result
 						$scope.questions[qid].choose_result = "";
 						//q.innerHTML = "";
+						var chooseIndex = -1;
 						for (var i=0; i<choose.length; i++){
 							if (choose[i].checked){
 								c[i].state = "true";
 								$scope.questions[qid].choose_result+=c[i].title_result+" ";
+								chooseIndex = i;
 								//q.innerHTML+=c[i].title_result+" ";
 							}
 							else{c[i].state = "false";}
 						}
-						if ($scope.questions[qid].choose_result!=""){
-							q.innerHTML = $scope.questions[qid].choose_result;
+					}
+					if ($scope.questions[qid].choose_result!=""){
+						//q.innerHTML = $scope.questions[qid].choose_result;
+						if(chooseIndex == c.length-1){	// 选到最后一个
+							$scope.questions[qid].state = "cir-question-ctn-good";
+						}else{
+							$scope.questions[qid].state = "cir-question-ctn-bad";
 						}
-						else{q.innerHTML = $scope.questions[qid].short_question;}
-						/*
-						if(choose[choose.length-1].checked==false && $scope.questions[qid].choose_result!=""){//排除什么都没选
-								q.setAttribute("class","cir-question-ctn-bad mui-table-view-cell cir-question");
-						}
-						else{q.setAttribute("class","cir-question-ctn mui-table-view-cell cir-question");}
-						*/
+					}
+					else{	// 没选
+						//q.innerHTML = $scope.questions[qid].short_question;
+						$scope.questions[qid].state = "cir-question-ctn";
 					}
 					console.log($scope.questions[qid]);
 					

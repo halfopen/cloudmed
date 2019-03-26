@@ -46,12 +46,41 @@
     border-radius: 50px;
     border: 1px solid black;
 }
+
+/* 上一次选了没有症状的选项 */
+.cir-question-ctn-last-good{
+    background: white;
+    border: 1px solid green;
+    color: green;
+    border-radius: 10px;
+    margin: 4px;
+}
+
+/* 上一次选了没有症状的选项 */
+.cir-question-ctn-last-bad{
+    background: white;
+    border: 1px solid orange;
+    color: orange;
+    border-radius: 10px;
+    margin: 4px;
+}
+
+/* 没选 */
 .cir-question-ctn{
+    background: white;
+    margin: 4px;
+    border-radius: 10px;
+    color: black;
+}
+
+/* 选了没有症状的选项 */
+.cir-question-ctn-good{
     background: green;
     margin: 4px;
     border-radius: 10px;
     color: white;
 }
+/* 选了有症状的选项 */
 .cir-question-ctn-bad{
 	background: orange;
 	margin: 4px;
@@ -123,7 +152,7 @@ md-dialog{
     right: 4px
 }
 .color-board div:nth-child(1){
-    color:red;
+    color:orange;
 }
 
 .color-board div:nth-child(2){
