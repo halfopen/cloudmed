@@ -134,43 +134,45 @@ var diagnosis = function(questions, faceResult, tongueResult){
     if(null!= tongueResult && tongueResult.result._4tongueCoatThickness==1){
         dict.healthType[2] = 1;
     }
-
-    
-
+    var symCount = 7; // 最大症状数
+    var symptom_num = 0;
     // 如果气虚症状综述<2或者关键性问题回答否，那么就不是气虚
     if(dict.symCount[6]<2 && dict.healthType[6]==0){
         dict.questionScore[6] = 0;
+        symptom_num++;
     }
     // 肾虚
     if(dict.symCount[5]<2&& dict.healthType[5]==0){
         dict.questionScore[5] = 0;
+        symptom_num++;
     }
     // 脾虚
     if (dict.symCount[4]<2){
         dict.questionScore[4] = 0;
+        symptom_num++;
     }
     // 瘀滞
     if (dict.symCount[3]<2){
         dict.questionScore[3] = 0;
+        symptom_num++;
     }
     // 痰湿
     if (dict.symCount[2]<2 && dict.healthType[2]==0){
         dict.questionScore[2] = 0;
+        symptom_num++;
     }
     // 阴虚
     if (dict.symCount[1]<2){
         dict.questionScore[4] = 0;
+        symptom_num++;
     }
     // 阳虚
     if (dict.symCount[0]<3){
         dict.questionScore[4] = 0;
+        symptom_num++;
     }
-    // 统计症状个数
-    var symptom_num = 0;
-    for (var i=0;i<dict.questionScore.length;++i) {
-        var aQuestionScore = dict.questionScore[i];
-        if (aQuestionScore > 0) symptom_num++;
-    }
+
+    symptom_num = symCount - symptom_num;
 
     var sortedQuestionScore = dict.questionScore.concat();
 

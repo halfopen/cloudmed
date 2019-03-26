@@ -169,9 +169,10 @@ md-dialog{
 }
 
 .footer .btn{
-    background: white;
+    background: #4894e6;
     border-radius: 4px;
     padding: 10px 30px;
+    color: white;
 }
 
 .desc{

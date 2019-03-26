@@ -74,6 +74,16 @@
 					$scope.healthScore = data.healthScore;
 					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(data.healthScore/25)];
 					$scope.stype = data.mainType;
+
+					if(data.healthScore>=0 && data.healthScore<=40){
+						$scope.healthState = "身体较糟糕，可能需要去医院检查";
+						$scope.phy += " 亚健康";
+					}else if(data.healthScore>40 && data.healthScore<=80){
+						$scope.healthState = "身体状况不佳";
+						$scope.phy += " 亚健康";
+					}else{
+						$scope.healthState = "身体棒棒哒！";
+					}
 				}
 			});
 			app.directive('suggestion', function(){
