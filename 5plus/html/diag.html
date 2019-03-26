@@ -113,28 +113,33 @@
 				$scope.qs = $scope.questions;
 				console.log($scope.questions);
 				$scope.name = "7787";
-				/*
-				var updateQuestion = function(qid){
+				
+				var updateQuestion = function(qid){ // 考虑同时改变主页面上的问题描述
 					//console.log($scope.questions.reverse());
-					console.log($scope.questions[qid].choose);
+					c = $scope.questions[qid].choose;
 					if ($scope.questions[qid].option_type == '0'){//单选题
 						var choose = document.getElementsByName("danxuan");
 						for (var i=0; i<choose.length; i++){
 							if (choose[i].checked){
-								console.log(i);
+								c[i].state = "true";						
 							}
+							else {c[i].state = "false";}//为确保多次更改同一题的正确性
 						}
 					}
-				
-				
-					for (c in $scope.questions[qid].choose){
-						if (document.getElementById(c.id).checked){
-							c.state = "true";
-						}						
+					else{ //多选题
+						var choose = document.getElementsByName("duoxuan");
+						for (var i=0; i<choose.length; i++){
+							if (choose[i].checked){
+								c[i].state = "true";
+							}
+							else{c[i].state = "false";}
+						}
+						
 					}
+					console.log($scope.questions[qid]);
 					
 				}
-				*/
+			
 				/**
 					点击面诊或者舌诊
 				**/
@@ -216,13 +221,34 @@
 				};
 			
 
-				$scope.save_and_draw = function(scores){  //added
+				$scope.save_and_draw = function(qs, qid){  //用于重新进入问题页面时,显示上次选择情况
 					var byId = function(id){
 						return document.getElementById(id)
 					}
 					var myradar = echarts.init(byId('radar'));
-					var score = [scores.yangxu,scores.yinxu, scores.tanshi, scores.yuzhi, scores.pixu, scores.shenxu, scores.qixu];
-					console.log(scores);
+					choose = qs[qid].choose;
+					//console.log(choose)
+					var score = [0,0,0,0,0,0,0];
+					
+					if (qs[qid].option_type == '0'){
+						var default_check = document.getElementsByName("danxuan");
+					}
+					else{var default_check = document.getElementsByName("duoxuan");
+					console.log(default_check);}
+					
+					for (var i=0; i<choose.length; i++){
+						if (choose[i].state == "true"){
+							score[0]+=choose[i].score.yangxu;
+							score[1]+=choose[i].score.yinxu;
+							score[2]+=choose[i].score.tanshi;
+							score[3]+=choose[i].score.yuzhi;
+							score[4]+=choose[i].score.pixu;
+							score[5]+=choose[i].score.shenxu;
+							score[6]+=choose[i].score.qixu;
+							default_check[i].checked = true;
+						}
+					}
+					
 					var option = {
 						title: {							
 						},
@@ -318,8 +344,7 @@
 						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
 						onComplete: function(){    // 显示完成后的回调函数
 							//根据qs的当前值,判断上次保存的情况
-							//choose = qs[id].choose;
-							//$scope.save_and_draw([0, 0, 0, 0, 0, 0, 0]);
+							$scope.save_and_draw($scope.questions, index);
 						}
 					})
 					.then(function() {
@@ -334,7 +359,7 @@
 						$mdDialog.hide();
 						console.log("hide")
 					};
-					
+					/*
 					var updateQuestion = function(qid){
 						//console.log($scope.questions.reverse());
 						c = qs[qid].choose;
@@ -357,9 +382,10 @@
 							}
 							
 						}
-						console.log(c);
+						console.log(qs[qid]);
 						
 					}
+					*/
 					$scope.cancel = function() {
 						$mdDialog.cancel();
 						console.log("cancel")
