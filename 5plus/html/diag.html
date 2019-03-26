@@ -73,14 +73,11 @@
 				<div class="mui-content ">
 					<div class="mui-row">
 						<div class="mui-col-sm-6 mui-col-xs-12 mui-col-md-4" ng-repeat="q in questions">
-							<!--
-							<div ng-class="{true: 'cir-question-ctn', false: 'cir-question-ctn-bad'}[ss]">
-							-->
-							
-								<div name="questions" class="cir-question-ctn mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
+							<div class="{{q.choose_result.length==0? 'cir-question-ctn': 'cir-question-ctn-bad'}}">
+								<div name="questions" class=" mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
 									{{q.short_question}}
 								</div>
-							
+							</div>
 						</div>
 					</div>
 					<div class="footer">
@@ -116,6 +113,17 @@
 				$scope.qs = $scope.questions;
 				console.log($scope.questions);
 				$scope.name = "7787";
+
+				// 加载上次记录
+				var lastReport = localStorage.getItem("lastReport");
+				if(null!=lastReport){
+					
+					lastReport = JSON.parse(lastReport);
+					console.log("lastReport", lastReport);
+					$scope.questions = lastReport.questions;
+					document.getElementById("face-desc").innerHTML = getfaceResult(lastReport.faceResult);
+					document.getElementById("tongue-desc").innerHTML = gettongueResult(lastReport.tongueResult);
+				}
 				
 				var updateQuestion = function(qid){ // 考虑同时改变主页面上的问题描述
 					//console.log($scope.questions.reverse());
@@ -360,6 +368,12 @@
 						showLoading(false);
 						if(true || undefined == mui.os.plus){
 							mui.openWindow({"id":"report", "url":"report.html?data='"+encodeURI(JSON.stringify(result))+"'"});
+							var lastReport = {
+								"questions": $scope.questions,
+								"faceResult": $scope.faceResult,
+								"tongueResult": $scope.tongueResult
+							}
+							localStorage.setItem("lastReport", JSON.stringify(lastReport));
 						}
 					}, 1000);
 				}
