@@ -26,7 +26,7 @@
 	</head>
 	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			          <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">健康自检</h1>
 		</header>
 		<!-- 加载中蒙板 -->
@@ -44,14 +44,14 @@
 						<img id="faceimg" src="../images/face.png" />
 						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
 						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
-						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" mutiple="mutiple" capture="camera" />
+						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
 						<div class="desc" id="face-desc">
 							文字描述
 						</div>
 					</div>
 				</div>
 				<div class="pic-diag-sub-ctn"> 
-					<div class="border">
+					<div class="border tongue-diag">
 						<span>舌诊</span>
 						<img id="tongueimg" src="../images/tongue.png" />
 						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
@@ -88,12 +88,19 @@
 		</div>
 		
 		<script>
+			var isApp = false;
+			// app环境下保存结果
+			var faceResult = null;
+			var tongueResult = null;
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
 			// https://blog.xinshangshangxin.com/2015/12/17/ngClick-fires-twice-on-button/
 			app.config(function($mdGestureProvider ) {
 				$mdGestureProvider.skipClickHijack();
 			});
-			mui("#loading-overlay");
+			
+			/************ 函数定义 ******** */
+			
+			// 加载框控制
 			var showLoading = function(show){
 				console.log("show loading"+show);
 				if(show==true){
@@ -102,6 +109,134 @@
 					mui("#loading-overlay")[0].style.display = "none";	
 				}
 			}
+			/**
+			 * 
+			 * 上传图片
+			 * type: "face" , "tongue"
+			 */
+			var uploadImage = function(type){
+				showLoading(true);
+				var id = "facepic";
+				var imgid = "faceimg";
+				var descid = "face-desc";
+				if(type =="face"){
+					// 'facepic', 'faceimg', 'face-desc'
+					id = "facepic";
+					imgid = "faceimg";
+					descid = "face-desc";
+				}else{
+					// 'tonguepic', 'tongueimg', 'tongue-desc'
+					id = "tonguepic";
+					imgid = "tongueimg";
+					descid = "tongue-desc";
+				}
+				//console.log("select file"+id);
+				var files = document.getElementById(id).files;
+				if(0== files.length){
+					showLoading(false);
+					return;
+				}
+				var file = files[0];
+				var reader = new FileReader();
+
+				reader.readAsBinaryString(file);
+				reader.onload = function(f){
+					var result = document.getElementById(imgid);
+					var src = "data:" + file.type + ";base64," + window.btoa(this.result);
+					result.src = src;
+
+					// upload img
+					var url = "http://facestory.cn:8080/upload"
+					var form = new FormData();
+					form.append("file", file);
+					form.append("type", type);
+		　		 	mui.ajax({
+						url:url,
+						type:"post",
+						data:form,
+						processData:false,
+						contentType:false,
+						success:function(data){
+							setTimeout(function(){
+								if(type=="face"){
+									$scope.faceResult = data;
+								}else{
+									$scope.tongueResult = data;
+								}
+								showLoading(false);
+								if("0"==data.raw){
+									console.log("检测失败");
+									return;
+								}
+								var html = "";
+								var short_html = "";
+								for(var key in data.result){
+									console.log(data.key[key]);
+									console.log(data.info[key][data.result[key]]);
+									html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
+								}
+								if(type=="face"){
+									document.getElementById(descid).innerHTML = getfaceResult(data);
+								}else{
+									document.getElementById(descid).innerHTML = gettongueResult(data);
+								}
+								
+							}, 1000);
+							console.log("over..");
+							
+							console.log(data);
+						},
+						error: function(req, status, error){
+							setTimeout(function(){
+								showLoading(false);
+								alert(status);
+							}, 1000);
+						}
+					});
+				}
+			};
+			
+			/**
+			 * 压缩并上传照片
+			 */
+			var compressAndUpload= function(path, type){
+				plus.zip.compressImage({
+					src: path,
+					dst: "_www/compress/"+path,
+					quality:20,
+					overwrite:true
+				}, function(e){
+					console.log("压缩成功", e, e.target);
+					document.getElementById(type+"img").src = e.target;
+					var task = plus.uploader.createUpload("http://facestory.cn:8080/upload",
+						{method: "POST"},
+						function(t, status){
+							console.log("upload finish", t.responseText, status);
+							if(200==status){
+								var data = JSON.parse( t.responseText);
+								if(type=="face"){
+									faceResult = data;
+									document.getElementById("face-desc").innerHTML = getfaceResult(faceResult);
+									//console.log(data.result, faceResult);
+								}else{
+									tongueResult = data;
+									document.getElementById("tongue-desc").innerHTML = gettongueResult(tongueResult);
+									//console.log(data.result, tongueResult);
+								}
+							}
+							showLoading(false);
+						}
+					);
+					task.addFile(e.target, {key:"file"});
+					task.addData("type", type);
+					task.start();
+				}, function(err){
+					console.log("压缩失败");
+					showLoading(false);
+				});
+			}
+			/*******  函数定义结束 ********/
+			
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.questions = questions.rows;
 				$scope.faceResult = null;
@@ -196,87 +331,7 @@
 				/**
 					点击面诊或者舌诊
 				**/
-				$scope.selectFile = function(type){
-					showLoading(true);
-					var id = "facepic";
-					var imgid = "faceimg";
-					var descid = "face-desc";
-					if(type =="face"){
-						// 'facepic', 'faceimg', 'face-desc'
-						id = "facepic";
-						imgid = "faceimg";
-						descid = "face-desc";
-					}else{
-						// 'tonguepic', 'tongueimg', 'tongue-desc'
-						id = "tonguepic";
-						imgid = "tongueimg";
-						descid = "tongue-desc";
-					}
-					//console.log("select file"+id);
-					var files = document.getElementById(id).files;
-					if(0== files.length){
-						showLoading(false);
-						return;
-					}
-					var file = files[0];
-					var reader = new FileReader();
-
-					reader.readAsBinaryString(file);
-					reader.onload = function(f){
-						var result = document.getElementById(imgid);
-						var src = "data:" + file.type + ";base64," + window.btoa(this.result);
-						result.src = src;
-
-						// upload img
-						var url = "http://facestory.cn:8080/upload"
-						var form = new FormData();
-						form.append("file", file);
-						form.append("type", type);
-			　		 	mui.ajax({
-							url:url,
-							type:"post",
-							data:form,
-							processData:false,
-							contentType:false,
-							success:function(data){
-								setTimeout(function(){
-									if(type=="face"){
-										$scope.faceResult = data;
-									}else{
-										$scope.tongueResult = data;
-									}
-									showLoading(false);
-									if("0"==data.raw){
-										console.log("检测失败");
-										return;
-									}
-									var html = "";
-									var short_html = "";
-									for(var key in data.result){
-										console.log(data.key[key]);
-										console.log(data.info[key][data.result[key]]);
-										html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
-									}
-									if(type=="face"){
-										document.getElementById(descid).innerHTML = getfaceResult(data);
-									}else{
-										document.getElementById(descid).innerHTML = gettongueResult(data);
-									}
-									
-								}, 1000);
-								console.log("over..");
-								
-								console.log(data);
-							},
-							error: function(req, status, error){
-								setTimeout(function(){
-									showLoading(false);
-									alert(status);
-								}, 1000);
-							}
-						});
-					}
-				};
+				$scope.selectFile = uploadImage;
 			
 
 				$scope.save_and_draw = function(qs, qid){  //用于重新进入问题页面时,显示上次选择情况
@@ -376,7 +431,13 @@
 				**/
 				$scope.diagnosis = function(){
 					showLoading(true);
-					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions);
+					
+					if(isApp){
+						$scope.faceResult = faceResult;
+						$scope.tongueResult = tongueResult;
+					}
+					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions, isApp);
+					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
 					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
 					console.log(result);
 					setTimeout(function(){
@@ -579,6 +640,92 @@
 				}
 			});
 			mui.init();
+			mui.plusReady(function () {
+				isApp = true;
+				console.log("app环境");
+				mui("#facepic")[0].style.zIndex = -1; // 不可点击
+				mui("#tonguepic")[0].style.zIndex = -1; // 不可点击
+				
+				mui("body").on("tap", ".face-diag", function(){
+					console.log("tap");
+					plus.nativeUI.actionSheet({
+						cancel:"取消",
+						buttons:[
+							{title: "相机"},
+							{title: "相册"}
+						]
+					}, function(e){
+						console.log("点击了"+e.index);
+						switch(e.index){
+							case 1:
+								showLoading(true);
+								plus.camera.getCamera().captureImage(function(path){
+									console.log(path);
+									compressAndUpload(path, "face");
+								}, function(err){
+									showLoading(false);
+									console.log("拍照出错");
+								})
+							break;
+							case 2:
+							showLoading(true);
+							// 打开相册
+							plus.gallery.pick(function(path){
+								// 回调函数返回图片路径
+								console.log(path);
+								compressAndUpload(path, "face");
+								
+							}, function(){
+								showLoading(false);
+							},{
+								filter: "image"
+							});
+							break;
+						}
+					});
+				});
+				
+				mui("body").on("tap", ".tongue-diag", function(){
+					console.log("tap");
+					plus.nativeUI.actionSheet({
+						cancel:"取消",
+						buttons:[
+							{title: "相机"},
+							{title: "相册"}
+						]
+					}, function(e){
+						console.log("点击了"+e.index);
+						switch(e.index){
+							case 1:
+								showLoading(true);
+								plus.camera.getCamera().captureImage(function(path){
+									console.log(path);
+									compressAndUpload(path, "tongue");
+								}, function(err){
+									showLoading(false);
+									console.log("拍照出错");
+								})
+							break;
+							case 2:
+							showLoading(true);
+							// 打开相册
+							plus.gallery.pick(function(path){
+								// 回调函数返回图片路径
+								console.log(path);
+								compressAndUpload(path, "tongue");
+								
+							}, function(){
+								showLoading(false);
+							},{
+								filter: "image"
+							});
+							break;
+						}
+					});
+				})
+				
+				
+			});
 			showLoading(false);
 		</script>
 	</body>

@@ -17,7 +17,6 @@
 		<script src="../js/diagnosis.js"></script>
 	</head>
 	<body>
-		<base href="/html/" />
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">检测报告</h1>
@@ -37,12 +36,28 @@
 			</div>
 			<div class="col-box">
 				<div>结论： {{phy}} {{healthScore}}分</div>
-				<p>{{healthState}} <img ng-src="{{HEALTH_INDEX_IMAGE}}" style="width: 120px; height: 120px"></p>
+				<p>{{healthState}}
+					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
+					<img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px" />
+					<img ng-show="HEALTH_INDEX==1" src="./resource/html/image/pinglian.jpg" width="120px" height="120px"/>
+					<img ng-show="HEALTH_INDEX==2" src="./resource/html/image/pinglian2.jpg" width="120px" height="120px"/>
+					<img ng-show="HEALTH_INDEX==3" src="./resource/html/image/kulian.jpg" width="120px" height="120px"/>
+					<img ng-show="HEALTH_INDEX==4" src="./resource/html/image/kulian2.jpg" width="120px" height="120px"/>
+					<!-- <img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px"/> -->
+				</p>
 			</div>
 
 			<div class="col-box">
 				<div>建议</div>
-				<suggestion stype="{{stype}}"></suggestion>
+				<!-- <suggestion stype="{{stype}}"></suggestion> -->
+				<div ng-show="stype==0" ng-include="'./suggestions/suggestion_yangxu.html'"></div>
+				<div ng-show="stype==1" ng-include="'./suggestions/suggestion_yinxu.html'"></div>
+				<div ng-show="stype==2" ng-include="'./suggestions/suggestion_tanxu.html'"></div>
+				<div ng-show="stype==3" ng-include="'./suggestions/suggestion_yuzhi.html'"></div>
+				<div ng-show="stype==4" ng-include="'./suggestions/suggestion_pixu.html'"></div>
+				<div ng-show="stype==5" ng-include="'./suggestions/suggestion_shenxu.html'"></div>
+				<div ng-show="stype==6" ng-include="'./suggestions/suggestion_qixu.html'"></div>
+				<div ng-show="stype==7" ng-include="'./suggestions/suggestion_zhengchang.html'"></div>
 			</div>
 		</div>
 
@@ -65,20 +80,19 @@
 				 return get_par;
 			 }
 			var app = angular.module('myApp', []);
-			app.config(['$locationProvider', function($locationProvider) {
-				$locationProvider.html5Mode(true);
-			}]);
-			app.controller('myCtrl', function($scope, $location){
+			app.controller('myCtrl', function($scope){
 				$scope.faceResult = "无面诊记录";
 				$scope.tongueResult = "无舌诊记录";
 				$scope.healthState = "身体棒棒哒";
+				//$scope.templateUrl = './suggestions/suggestion_yangxu.html';
 				// 建议类型
 				$scope.stype = 7; // 健康
 				$scope.date = Date();
 				var faces = ["xiaolian2.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg"];
-				$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[0];
-				console.log(getPar("data"))
+				$scope.HEALTH_INDEX = 0;
+				//console.log(getPar("data"))
 				pdata = getPar("data");
+
 				if(pdata.length>0){
 					console.log(decodeURI(pdata), decodeURI(pdata));
 					var data = JSON.parse(decodeURI(pdata));
@@ -91,7 +105,8 @@
 					$scope.phy = data.phy;
 					$scope.healthScore = data.healthScore;
 					// console.log(Math.floor(data.healthScore/20), 4-Math.floor(data.healthScore/20));
-					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(parseInt(data.healthScore)/25)];
+					$scope.HEALTH_INDEX = 4-Math.floor(parseInt(data.healthScore)/25);
+					console.log($scope.HEALTH_INDEX)
 					$scope.stype = data.mainType;
 
 					if(data.healthScore>=0 && data.healthScore<=40){
@@ -103,6 +118,7 @@
 					}else{
 						$scope.healthState = "身体棒棒哒！";
 					}
+					console.log("处理data完成");
 				}
 			});
 			app.directive('suggestion', function(){
@@ -126,9 +142,9 @@
 					replace: true,
 					link: function($scope, $element, $attr){
 						$scope.getContentUrl = function(){
-							var template = "suggestions/"+templates[7];
+							var template = "/html/suggestions/"+templates[7];
 							if(undefined != $attr.stype){
-								template = "suggestions/"+templates[parseInt($attr.stype)];
+								template = "/html/suggestions/"+templates[parseInt($attr.stype)];
 							}
 							return template;
 						}
