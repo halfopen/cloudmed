@@ -54,6 +54,10 @@
     color: green;
     border-radius: 10px;
     margin: 4px;
+
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    -webkit-box-sizing:border-box; /* Safari */
 }
 
 /* 上一次选了没有症状的选项 */
@@ -63,6 +67,10 @@
     color: orange;
     border-radius: 10px;
     margin: 4px;
+
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    -webkit-box-sizing:border-box; /* Safari */
 }
 
 /* 没选 */
@@ -71,6 +79,7 @@
     margin: 4px;
     border-radius: 10px;
     color: black;
+    border:solid 1px transparent
 }
 
 /* 选了没有症状的选项 */
@@ -79,6 +88,7 @@
     margin: 4px;
     border-radius: 10px;
     color: white;
+    border:solid 1px transparent
 }
 /* 选了有症状的选项 */
 .cir-question-ctn-bad{
@@ -86,7 +96,7 @@
 	margin: 4px;
 	border-radius: 10px;
 	color: white;
-	
+	border:solid 1px transparent
 	
 }
 .cir-question{
