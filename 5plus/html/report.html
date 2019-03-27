@@ -37,7 +37,7 @@
 			</div>
 			<div class="col-box">
 				<div>结论： {{phy}} {{healthScore}}分</div>
-				<p>{{healthState}} <img alt="" src="{{HEALTH_INDEX_IMAGE}}" style="width: 120px; height: 120px"></p>
+				<p>{{healthState}} <img ng-src="{{HEALTH_INDEX_IMAGE}}" style="width: 120px; height: 120px"></p>
 			</div>
 
 			<div class="col-box">
@@ -90,7 +90,8 @@
 					}
 					$scope.phy = data.phy;
 					$scope.healthScore = data.healthScore;
-					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(data.healthScore/20)];
+					// console.log(Math.floor(data.healthScore/20), 4-Math.floor(data.healthScore/20));
+					$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[4-Math.floor(parseInt(data.healthScore)/25)];
 					$scope.stype = data.mainType;
 
 					if(data.healthScore>=0 && data.healthScore<=40){
