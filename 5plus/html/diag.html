@@ -44,7 +44,7 @@
 						<img id="faceimg" src="../images/face.png" />
 						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
 						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
-						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" multiple"/>
+						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" mutiple="mutiple" capture="camera" />
 						<div class="desc" id="face-desc">
 							文字描述
 						</div>
@@ -54,7 +54,7 @@
 					<div class="border">
 						<span>舌诊</span>
 						<img id="tongueimg" src="../images/tongue.png" />
-						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" multiple"/>
+						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
 						<div class="desc" id="tongue-desc">
 							文字描述
 						</div>
