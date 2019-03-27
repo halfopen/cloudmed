@@ -44,7 +44,7 @@
 						<img id="faceimg" src="../images/face.png" />
 						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
 						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
-						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic"/>
+						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" multiple"/>
 						<div class="desc" id="face-desc">
 							文字描述
 						</div>
@@ -54,7 +54,7 @@
 					<div class="border">
 						<span>舌诊</span>
 						<img id="tongueimg" src="../images/tongue.png" />
-						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic"/>
+						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" multiple"/>
 						<div class="desc" id="tongue-desc">
 							文字描述
 						</div>
@@ -212,7 +212,7 @@
 						imgid = "tongueimg";
 						descid = "tongue-desc";
 					}
-					console.log("select file"+id);
+					//console.log("select file"+id);
 					var files = document.getElementById(id).files;
 					if(0== files.length){
 						showLoading(false);
@@ -268,9 +268,10 @@
 								
 								console.log(data);
 							},
-							error: function(){
+							error: function(req, status, error){
 								setTimeout(function(){
 									showLoading(false);
+									alert(status);
 								}, 1000);
 							}
 						});
