@@ -47,6 +47,23 @@
 		</div>
 
 		<script>
+			function getPar(par){
+				 //获取当前URL
+				 var local_url = document.location.href;
+				 //获取要取得的get参数位置
+				 var get = local_url.indexOf(par +"=");
+				 if(get == -1){
+					 return false;  
+				 }  
+				 //截取字符串
+				 var get_par = local_url.slice(par.length + get + 1);   
+				 //判断截取后的字符串是否还有其他get参数
+				 var nextPar = get_par.indexOf("&");
+				 if(nextPar != -1){
+					 get_par = get_par.slice(0, nextPar);
+				 }
+				 return get_par;
+			 }
 			var app = angular.module('myApp', []);
 			app.config(['$locationProvider', function($locationProvider) {
 				$locationProvider.html5Mode(true);
@@ -60,10 +77,11 @@
 				$scope.date = Date();
 				var faces = ["xiaolian2.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg"];
 				$scope.HEALTH_INDEX_IMAGE = "./resource/html/image/"+faces[0];
-
-				if(undefined!= $location.search().data){
-					console.log($location.search().data);
-					var data = JSON.parse($location.search().data.replace(/'/g, ""));
+				console.log(getPar("data"))
+				pdata = getPar("data");
+				if(pdata.length>0){
+					console.log(decodeURI(pdata), decodeURI(pdata));
+					var data = JSON.parse(decodeURI(pdata));
 					if(null!=data.faceResult){
 						$scope.faceResult = getfaceResult(data.faceResult);
 					}
