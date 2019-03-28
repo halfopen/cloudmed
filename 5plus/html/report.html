@@ -39,10 +39,10 @@
 				<p>{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
 					<img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px" />
-					<img ng-show="HEALTH_INDEX==1" src="./resource/html/image/pinglian.jpg" width="120px" height="120px"/>
-					<img ng-show="HEALTH_INDEX==2" src="./resource/html/image/pinglian2.jpg" width="120px" height="120px"/>
-					<img ng-show="HEALTH_INDEX==3" src="./resource/html/image/kulian.jpg" width="120px" height="120px"/>
-					<img ng-show="HEALTH_INDEX==4" src="./resource/html/image/kulian2.jpg" width="120px" height="120px"/>
+					<img ng-show="HEALTH_INDEX==1" src="./resource/html/image/xiaolian.jpg" width="120px" height="120px"/>
+					<img ng-show="HEALTH_INDEX==2" src="./resource/html/image/pinglian.jpg" width="120px" height="120px"/>
+					<img ng-show="HEALTH_INDEX==3" src="./resource/html/image/pinglian2.jpg" width="120px" height="120px"/>
+					<img ng-show="HEALTH_INDEX==4" src="./resource/html/image/pinglian3.jpg" width="120px" height="120px"/>
 					<!-- <img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px"/> -->
 				</p>
 			</div>
@@ -88,7 +88,7 @@
 				// 建议类型
 				$scope.stype = 7; // 健康
 				$scope.date = Date();
-				var faces = ["xiaolian2.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg", "kulian.jpg"];
+				var faces = ["xiaolian2.jpg", "xiaolian.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg"];
 				$scope.HEALTH_INDEX = 0;
 				//console.log(getPar("data"))
 				pdata = getPar("data");

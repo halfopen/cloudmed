@@ -103,10 +103,12 @@
 			// 加载框控制
 			var showLoading = function(show){
 				console.log("show loading"+show);
+				var element = mui("#loading-overlay")[0];
 				if(show==true){
-					mui("#loading-overlay")[0].style.display = "block";	
+					element.style.top = document.scrollingElement.scrollTop+"px";
+					element.style.display = "block";	
 				}else{
-					mui("#loading-overlay")[0].style.display = "none";	
+					element.style.display = "none";	
 				}
 			}
 			/**
@@ -159,9 +161,9 @@
 						success:function(data){
 							setTimeout(function(){
 								if(type=="face"){
-									$scope.faceResult = data;
+									faceResult = data;
 								}else{
-									$scope.tongueResult = data;
+									tongueResult = data;
 								}
 								showLoading(false);
 								if("0"==data.raw){
@@ -432,10 +434,9 @@
 				$scope.diagnosis = function(){
 					showLoading(true);
 					
-					if(isApp){
-						$scope.faceResult = faceResult;
-						$scope.tongueResult = tongueResult;
-					}
+					
+					$scope.faceResult = faceResult;
+					$scope.tongueResult = tongueResult;
 					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions, isApp);
 					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
 					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
