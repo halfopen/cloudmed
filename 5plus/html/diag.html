@@ -204,7 +204,7 @@
 			var compressAndUpload= function(path, type){
 				plus.zip.compressImage({
 					src: path,
-					dst: "_www/compress/"+path,
+					dst: "_doc/compress/"+path,
 					quality:20,
 					overwrite:true
 				}, function(e){
@@ -235,6 +235,7 @@
 				}, function(err){
 					console.log("压缩失败");
 					showLoading(false);
+					alert("压缩图片失败"+err)
 				});
 			}
 			/*******  函数定义结束 ********/
@@ -666,6 +667,7 @@
 								}, function(err){
 									showLoading(false);
 									console.log("拍照出错");
+									alert("拍照出错"+err);
 								})
 							break;
 							case 2:
@@ -676,8 +678,9 @@
 								console.log(path);
 								compressAndUpload(path, "face");
 								
-							}, function(){
+							}, function(err){
 								showLoading(false);
+								alert("读取相册出错"+err);
 							},{
 								filter: "image"
 							});

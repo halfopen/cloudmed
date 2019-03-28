@@ -48,11 +48,11 @@
 			</div>
 
 			<div class="col-box">
-				<div>建议</div>
+				<div>建议{{stype}}</div>
 				<!-- <suggestion stype="{{stype}}"></suggestion> -->
 				<div ng-show="stype==0" ng-include="'./suggestions/suggestion_yangxu.html'"></div>
 				<div ng-show="stype==1" ng-include="'./suggestions/suggestion_yinxu.html'"></div>
-				<div ng-show="stype==2" ng-include="'./suggestions/suggestion_tanxu.html'"></div>
+				<div ng-show="stype==2" ng-include="'./suggestions/suggestion_tanshi.html'"></div>
 				<div ng-show="stype==3" ng-include="'./suggestions/suggestion_yuzhi.html'"></div>
 				<div ng-show="stype==4" ng-include="'./suggestions/suggestion_pixu.html'"></div>
 				<div ng-show="stype==5" ng-include="'./suggestions/suggestion_shenxu.html'"></div>
@@ -103,6 +103,7 @@
 						$scope.tongueResult = gettongueResult(data.tongueResult);
 					}
 					$scope.phy = data.phy;
+					data.healthScore = 65;
 					$scope.healthScore = data.healthScore;
 					// console.log(Math.floor(data.healthScore/20), 4-Math.floor(data.healthScore/20));
 					$scope.HEALTH_INDEX = 4-Math.floor(parseInt(data.healthScore)/25);
@@ -119,36 +120,6 @@
 						$scope.healthState = "身体棒棒哒！";
 					}
 					console.log("处理data完成");
-				}
-			});
-			app.directive('suggestion', function(){
-				// 建议模板
-				// "suggestion_xuexu.html"   ,好像没有血虚
-				var templates = [
-					"suggestion_yangxu.html",
-					"suggestion_yinxu.html"  ,
-					"suggestion_tanshi.html"  ,
-					"suggestion_yuzhi.html", 
-					"suggestion_pixu.html"  ,
-					"suggestion_shenxu.html"  ,
-					"suggestion_qixu.html"  ,
-					"suggestion_zhengchang.html"];
-
-				var url = templates[Math.floor(Math.random()*8)];
-				//url = templates[1];
-				console.log(url);
-				return {
-					template:'<div ng-include="getContentUrl()"></div>',
-					replace: true,
-					link: function($scope, $element, $attr){
-						$scope.getContentUrl = function(){
-							var template = "/html/suggestions/"+templates[7];
-							if(undefined != $attr.stype){
-								template = "/html/suggestions/"+templates[parseInt($attr.stype)];
-							}
-							return template;
-						}
-					}
 				}
 			});
 			mui.init();
