@@ -44,7 +44,7 @@
 						<img id="faceimg" src="../images/face.png" />
 						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
 						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
-						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
+						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/jpg" capture="camera" />
 						<div class="desc" id="face-desc">
 							文字描述
 						</div>
@@ -54,7 +54,7 @@
 					<div class="border tongue-diag">
 						<span>舌诊</span>
 						<img id="tongueimg" src="../images/tongue.png" />
-						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
+						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/jpg" mutiple="mutiple" capture="camera" />
 						<div class="desc" id="tongue-desc">
 							文字描述
 						</div>
@@ -520,32 +520,22 @@
 					};
 					$scope.id = id;
 					$scope.qs = qs;
-
-					$scope.choose = function(index, qid){
-						console.log("choose", index, qid)
-					}
-					$scope.choose_control = function(qid){
+					$scope.choose_control = function(index, qid){
 						var box = document.getElementsByName("duoxuan");
-						
-						box[box.length-1].onclick=function(){
-							if(this.checked){
-								for(j=0;j<box.length-1;j++){
-									box[j].checked=false;									
+
+						var cur = box[index];
+						console.log(cur.checked);
+
+						if(cur.checked){
+							// 选中最后一个
+							if(index == box.length-1){
+								for(var i=0;i<box.length-1;++i){
+									box[i].checked = false;
 								}
-							}
-							
-						}
-						
-						for(i=0;i<box.length-1;i++){
-							box[i].onclick = function(){
-								if(this.checked){
-									box[box.length-1].checked=false;
-									
-								}
-								
+							}else{ // 点击其他
+								box[box.length-1].checked = false;
 							}
 						}
-						
 						
 					}
 					$scope.draw = function(scores, qid){  //added
