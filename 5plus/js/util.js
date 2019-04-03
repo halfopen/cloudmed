@@ -103,5 +103,17 @@ var util = {
 			currTag = nviewObj.tags[currIndex]; // 获取当前需重绘的tag
 
 		nviewEvent.drawText(currTag.text, currTag.position, util.changeColor(currTag.textStyles, color), currTag.id);
+	},
+
+	// 加载框控制
+	showLoading :function(show){
+		console.log("show loading"+show);
+		var element = mui("#loading-overlay")[0];
+		if(show==true){
+			element.style.top = document.scrollingElement.scrollTop+"px";
+			element.style.display = "block";	
+		}else{
+			element.style.display = "none";	
+		}
 	}
 };

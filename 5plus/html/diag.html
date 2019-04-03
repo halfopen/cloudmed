@@ -23,6 +23,7 @@
 		<!-- echarts-->
 		<script src="../js/echarts.min.js"></script>
 		<script src="../js/diagnosis.js"></script>
+		<script src="../js/util.js"></script>
 	</head>
 	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
@@ -88,6 +89,7 @@
 		</div>
 		
 		<script>
+			var showLoading = util.showLoading;
 			var isApp = false;
 			// app环境下保存结果
 			var faceResult = null;
@@ -99,18 +101,7 @@
 			});
 			
 			/************ 函数定义 ******** */
-			
-			// 加载框控制
-			var showLoading = function(show){
-				console.log("show loading"+show);
-				var element = mui("#loading-overlay")[0];
-				if(show==true){
-					element.style.top = document.scrollingElement.scrollTop+"px";
-					element.style.display = "block";	
-				}else{
-					element.style.display = "none";	
-				}
-			}
+		
 			/**
 			 * 
 			 * 上传图片

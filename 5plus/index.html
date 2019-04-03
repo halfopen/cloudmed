@@ -135,8 +135,12 @@
 					}
 				}else{
 					console.log("app 环境");
+					
 				}
 			});
+			if(localStorage.getItem("userPhone")==null){
+				mui.openWindow("./html/login.html");
+			}
 		</script>
 	</body>
 
