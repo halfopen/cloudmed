@@ -157,8 +157,14 @@
 									tongueResult = data;
 								}
 								showLoading(false);
+								if(type=="face"){
+									document.getElementById(descid).innerHTML = getfaceResult(data);
+								}else{
+									document.getElementById(descid).innerHTML = gettongueResult(data);
+								}
 								if("0"==data.raw){
 									console.log("检测失败");
+									//document.getElementById(descid).innerHTML
 									return;
 								}
 								var html = "";
@@ -168,11 +174,7 @@
 									console.log(data.info[key][data.result[key]]);
 									html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
 								}
-								if(type=="face"){
-									document.getElementById(descid).innerHTML = getfaceResult(data);
-								}else{
-									document.getElementById(descid).innerHTML = gettongueResult(data);
-								}
+								
 								
 							}, 1000);
 							console.log("over..");
