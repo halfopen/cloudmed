@@ -6,8 +6,11 @@ from cloudmed.settings import BASE_DIR, MEDIA_ROOT, UPLOAD_ROOT
 from django import forms
 from so.tcm import TcmPro
 from .models import *
-
+from .utils import sendSMS
+from random import Random
 tcmPro = TcmPro()
+code_dict = {}
+r = Random()
 
 
 def face(req):
@@ -40,6 +43,40 @@ def upload_image(req):
         return JsonResponse(d)
 
 
+def sendVrfCode(req):
+    phone = req.GET.get("phone", None)
+    d = {}
+    if phone is not None:
+        code = r.randint(1000, 9999)
+        code_dict[str(phone)] = str(code)
+        sendSMS(str(phone), str(code))
+
+        d['code'] = 0
+        d['msg'] = "发送成功"
+        return JsonResponse(d)
+
+    d['code'] = -1
+    d['msg'] = "缺少参数"
+    return JsonResponse(d)
+
+
+def checkVrfCode(req):
+    phone = req.GET.get("phone", None)
+    code = req.GET.get("code", None)
+    d = {}
+    if phone is not None and code is not None:
+        print(code_dict)
+        if code_dict.get(str(phone)) == str(code):
+            d['code'] = 0
+            d['msg'] = "验证通过"
+        else:
+            d['code'] = -1
+            d['msg'] = "验证失败"
+        return JsonResponse(d)
+
+    d['code'] = -1
+    d['msg'] = "缺少参数"
+    return JsonResponse(d)
 
 """
 面诊返回值：  31251

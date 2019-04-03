@@ -30,7 +30,9 @@ urlpatterns = [
     url(r'^$', face),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(CloudMedLog.urls)),
-    url(r'^upload', upload_image), 
+    url(r'^upload', upload_image),
+    url(r'^send_code', sendVrfCode),
+    url(r'^check_code', checkVrfCode)
 ]
 
 if settings.DEBUG:
