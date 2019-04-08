@@ -73,10 +73,13 @@
 				</div>
 				<div class="mui-content ">
 					<div class="mui-row">
-						<div class="mui-col-sm-6 mui-col-xs-12 mui-col-md-4" ng-repeat="q in questions">
+						<div class="mui-col-sm-4 mui-col-xs-6 mui-col-md-3" ng-repeat="q in questions">
 							<div class="{{q.state}}" d="{{q.state}}">
-								<div name="questions" class=" mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13">
+								<div name="questions" class=" mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13&& q.choose_result.length==0">
 									{{q.short_question}}
+								</div>
+								<div name="questions" class=" mui-table-view-cell cir-question" ng-click="showQuestion($event, $index)" ng-if="$index<13 && q.choose_result.length!=0">
+									{{q.choose_result}}
 								</div>
 							</div>
 						</div>
@@ -272,6 +275,7 @@
 				}
 				
 				var updateQuestion = function(qid){ // 考虑同时改变主页面上的问题描述
+					console.log("updateQuestion");
 					//console.log($scope.questions.reverse());
 					//function changecolor($scope,state){if(state){$scope.ss=true;}else{$scope.ss=false;}}
 					c = $scope.questions[qid].choose;
