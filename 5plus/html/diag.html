@@ -513,11 +513,11 @@
 					};
 					$scope.id = id;
 					$scope.qs = qs;
-					$scope.choose_control = function(index, qid){
+					$scope.choose = function(index, qid){
 						var box = document.getElementsByName("duoxuan");
 
 						var cur = box[index];
-						console.log(cur.checked);
+						console.log(index, cur, cur.checked);
 
 						if(cur.checked){
 							// 选中最后一个
