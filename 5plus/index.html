@@ -13,12 +13,8 @@
 		<link rel="stylesheet" href="../css/angular-material.min.css" />
 		<script src="./data/question.js" ></script>
 		<script src="./js/angular.min.js"></script>
-		<script src="./js/angular-animate.min.js"></script>
-		<script src="../js/angular-aria.min.js"></script>
-		<script src="../js/angular-messages.min.js"></script>
-
-		<!-- Angular Material Library -->
-		<script src="../js/angular-material.min.js"></script>
+		<script src="js/util.js"></script>
+		<script src="js/moment.js"></script>
 		<style>
 			html,
 			body {
@@ -89,44 +85,72 @@
 		</style>
 	</head>
 
-	<body>
+	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
-			<h1 class="mui-title">首页</h1>
+			<h1 class="mui-title">{{titles[tabIndex]}}</h1>
 		</header>
-		<div class="mui-content" ng-app="myApp" ng-controller="myCtrl">
-			<div class="notify"> 
-				<div>{{date}}</div> 
-				<div>{{tip}}</div>
-			</div>
+				<!-- 加载中蒙板 -->
+		<div class="loading-overlay" id="loading-overlay">
+			<img src="../images/loading.svg"  style="height:80px; width:80px;"/>
+		</div>
+		<div class="mui-content home" ng-show="tabIndex==0">
+				<div class="notify"> 
+					<div>{{date}}</div> 
+					<div>{{tip}}</div>
+				</div>
 
-			<div class="entry-ctn mui-row">
-				<div class="mui-col-sm-6 mui-col-xs-6">
-					<div class="mui-table-view-cell" ng-click="goDiagnosis(0)" id="diagnosis"><span>新版中医体检</span></div>
+				<div class="entry-ctn mui-row">
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<div class="mui-table-view-cell" ng-click="goDiagnosis(0)" id="diagnosis"><span>新版中医体检</span></div>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<div class="mui-table-view-cell" ng-click="goDiagnosis(1)"><span>旧版中医体检</span></div>
+					</div>
+					<!-- <div class="mui-col-sm-6 mui-col-xs-6">
+						<div class="mui-table-view-cell"><span>健康咨询</span></div>
+					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6">
+						<div class="mui-table-view-cell"><span>档案管理</span></div>
+					</div> -->
 				</div>
-				<div class="mui-col-sm-6 mui-col-xs-6">
-					<div class="mui-table-view-cell" ng-click="goDiagnosis(1)"><span>旧版中医体检</span></div>
-				</div>
-				<!-- <div class="mui-col-sm-6 mui-col-xs-6">
-					<div class="mui-table-view-cell"><span>健康咨询</span></div>
-				</div>
-				<div class="mui-col-sm-6 mui-col-xs-6">
-					<div class="mui-table-view-cell"><span>档案管理</span></div>
-				</div> -->
-			</div>
+			
+		</div>
+
+		<div class="record content-ctn mui-content" ng-show="tabIndex==1">
+			<ul class="mui-table-view" id="refreshContainer">
+				<li class="mui-table-view-cell" ng-repeat="i in records">
+					<a class="mui-navigate-right" ng-click="goRecord($index)">
+						<div style="width: 30px; float: left;">{{moment(i.date).fromNow()}}</div>
+						<div style="float: right; padding-right: 15px;">{{i.tizhi+" "+i.score}}分</div>
+					</a>
+				</li>
+			</ul>
 		</div>
 
 		<nav class="mui-bar mui-bar-tab">  
-				<a class="mui-tab-item">  
-					<span class="mui-icon mui-icon-home"></span>  
-					<span class="mui-tab-label">首页</span>  
-				</a>  
-			</nav>
+			<span class="mui-tab-item" ng-click="clickTab(0)">  
+				<span class="mui-icon mui-icon-home"></span>  
+				<span class="mui-tab-label">首页</span>  
+			</span>
+			<span class="mui-tab-item" ng-click="clickTab(1)">  
+				<span class="mui-icon mui-icon-list"></span>  
+				<span class="mui-tab-label">诊断记录</span>  
+			</span>	
+		</nav>
 
 		<script src="js/util.js"></script>
+		<script src="js/config.js"></script>
 		<script type="text/javascript">
+			moment.locale('zh-cn');
 			var app = angular.module('myApp', []);
+			var showLoading = util.showLoading;
 			app.controller('myCtrl', function($scope){
 				$scope.date = Date();
+				$scope.tabIndex = 0;
+				$scope.titles = ["首页", "诊断记录"];
+				$scope.moment = moment;
+				$scope.records = [];
+				
 				if(true || undefined == mui.os.plus){
 					console.log("web 环境");
 					$scope.goDiagnosis = function(id){
@@ -136,9 +160,49 @@
 					}
 				}else{
 					console.log("app 环境");
-					
 				}
+				
+				$scope.clickTab = function(index){
+					console.log("tab", index);
+					$scope.tabIndex = index;
+					
+					if(index==1){
+						showLoading(true);
+						
+						mui.ajax(config.server_root+"api/report/",{
+							data:{
+								
+							},
+							type:'get',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							success:function(data){
+								showLoading(false);
+								$scope.records = data.results;
+								$scope.$digest();
+								console.log(data);
+							},
+							error:function(xhr,type,errorThrown){
+								showLoading(false);
+							}
+						});
+					}
+				}
+				
+				$scope.goRecord = function(index){
+					console.log(index);
+					showLoading(true);
+					setTimeout(function(){
+						showLoading(false);
+						mui.openWindow({"id":"report", "url":"./html/report.html?data="+encodeURI($scope.records[index].result_json)});
+					}, 500);
+				}
+				
+				showLoading(false);
 			});
+			mui.init({
+			  
+			});
+			
 			if(localStorage.getItem("userPhone")==null){
 				mui.openWindow("./html/login.html");
 			}
