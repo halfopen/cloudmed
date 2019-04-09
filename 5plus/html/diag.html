@@ -24,6 +24,7 @@
 		<script src="../js/echarts.min.js"></script>
 		<script src="../js/diagnosis.js"></script>
 		<script src="../js/util.js"></script>
+		<script src="../js/config.js"></script>
 	</head>
 	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
@@ -93,7 +94,9 @@
 		
 		<script>
 			var showLoading = util.showLoading;
+			var userPhone = localStorage.getItem("userPhone");
 			var isApp = false;
+	
 			// app环境下保存结果
 			var faceResult = null;
 			var tongueResult = null;
@@ -439,6 +442,27 @@
 					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
 					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
 					console.log(result);
+					mui.ajax(config.server_root+"api/report/",{
+						data:{
+							"tizhi": result.phy,
+							"score": result.healthScore,
+							"tongue": JSON.stringify($scope.tongueResult),
+							"face": JSON.stringify($scope.faceResult),
+							"questions": JSON.stringify($scope.questions),
+							"phone": userPhone,
+							"result_json": JSON.stringify(result)
+						},
+						dataType:"json",
+						headers:{'Content-Type': 'application/json'},
+						type:'POST',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							showLoading(false);
+						},
+						error:function(xhr,type,errorThrown){
+							showLoading(false);
+						}
+					});
 					setTimeout(function(){
 						showLoading(false);
 						if(true || undefined == mui.os.plus){
