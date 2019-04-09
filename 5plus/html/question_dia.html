@@ -77,6 +77,7 @@
 		<script src="../js/config.js"></script>
 		<script type="text/javascript">
 			var showLoading = util.showLoading;
+			var userPhone = localStorage.getItem("userPhone");
 			showLoading(false);
 			mui.init();
 			var app = angular.module('myApp', []);
@@ -97,6 +98,17 @@
 			
 				}
 				$scope.next = function(){
+					// 回答了问题才能下一步
+					var flag = false;
+					for(var i=0;i<$scope.questions[$scope.index].choose.length;i++){
+						if($scope.questions[$scope.index].choose[i].state=="true"){
+							flag = true;
+						}
+					}
+					if(false==flag){
+						mui.toast("请先回答问题");
+						return;
+					}
 					console.log($scope.questions[$scope.index]);
 					if($scope.index==$scope.question_length-1){
 						showLoading(true);
@@ -109,6 +121,7 @@
 				
 				// 选中某个选项
 				$scope.choose = function(index, cindex){
+					
 					console.log(index, cindex);
 					var choose_size = $scope.questions[index].choose.length;
 					
