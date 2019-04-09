@@ -125,7 +125,7 @@ md-dialog{
     top: 0px;
     height: 100%;
     width: 100%;
-    z-index: 10;
+    z-index: 9;
     cursor: pointer;
     /* visibility: hidden; */
     opacity: 0;

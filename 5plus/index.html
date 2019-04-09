@@ -82,6 +82,58 @@
 				margin: 5px;
 				color: white;
 			}
+			
+			/* 自己重写样式 */
+			.mmui-bar-tab {
+				bottom: 0;
+				display: table;
+				width: 100%;
+				height: 50px;
+				padding: 0;
+				table-layout: fixed;
+				border-top: 0;
+				border-bottom: 0;
+				-webkit-touch-callout: none
+				padding-top: 10px;
+				border-top: 1px solid gray;
+				background: white;
+			}
+
+			.mmui-bar-tab .mmui-tab-item {
+				display: table-cell;
+				overflow: hidden;
+				width: 1%;
+				height: 50px;
+				text-align: center;
+				vertical-align: middle;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				color: #929292
+			}
+
+			.mmui-bar-tab span.mmui-active {
+				color: #007aff
+			}
+
+			.mmui-bar-tab .mmui-tab-item .mmui-icon {
+				top: 3px;
+				width: 24px;
+				height: 24px;
+				padding-top: 0;
+				padding-bottom: 0
+			}
+
+			.mmui-bar-tab .mmui-tab-item .mmui-icon~.mmui-tab-label {
+				font-size: 11px;
+				display: block;
+				overflow: hidden;
+				text-overflow: ellipsis
+			}
+
+			.mmui-bar-tab .mmui-tab-item .mmui-icon:active {
+				background: 0 0
+			}
+
 		</style>
 	</head>
 
@@ -91,7 +143,7 @@
 		</header>
 				<!-- 加载中蒙板 -->
 		<div class="loading-overlay" id="loading-overlay">
-			<img src="../images/loading.svg"  style="height:80px; width:80px;"/>
+			<img src="./images/loading.svg"  style="height:80px; width:80px;"/>
 		</div>
 		<div class="mui-content home" ng-show="tabIndex==0">
 				<div class="notify"> 
@@ -117,6 +169,7 @@
 		</div>
 
 		<div class="record content-ctn mui-content" ng-show="tabIndex==1">
+			<div style="padding: 10px;">用户：{{userPhone}} <span ng-click="clearUserInfo()" style="padding-left: 20px; color:blue">切换用户</span></div>
 			<ul class="mui-table-view" id="refreshContainer">
 				<li class="mui-table-view-cell" ng-repeat="i in records">
 					<a class="mui-navigate-right" ng-click="goRecord($index)">
@@ -127,14 +180,14 @@
 			</ul>
 		</div>
 
-		<nav class="mui-bar mui-bar-tab">  
-			<span class="mui-tab-item" ng-click="clickTab(0)">  
-				<span class="mui-icon mui-icon-home"></span>  
-				<span class="mui-tab-label">首页</span>  
+		<nav style="position: fixed;" class="mmui-bar mmui-bar-tab">  
+			<span class="mmui-tab-item" >  
+				<span ng-class="tabIndex==0?'mmui-active':''" class="mmui-icon mui-icon mui-icon-home" style="width: 100%;" ng-click="clickTab(0)"></span>  
+				<span ng-class="tabIndex==0?'mmui-active':''" class="mmui-tab-label">首页</span>  
 			</span>
-			<span class="mui-tab-item" ng-click="clickTab(1)">  
-				<span class="mui-icon mui-icon-list"></span>  
-				<span class="mui-tab-label">诊断记录</span>  
+			<span class="mmui-tab-item" >  
+				<span ng-class="tabIndex==1?'mmui-active':''" class="mmui-icon mui-icon mui-icon-list" style="width: 100%;" ng-click="clickTab(1)"></span>  
+				<span ng-class="tabIndex==1?'mmui-active':''" class="mmui-tab-label">诊断记录</span>  
 			</span>	
 		</nav>
 
@@ -161,9 +214,10 @@
 				}else{
 					console.log("app 环境");
 				}
-				
+				$scope.userPhone = localStorage.getItem("userPhone");
 				$scope.clickTab = function(index){
 					console.log("tab", index);
+					mui.toast("tab"+index);
 					$scope.tabIndex = index;
 					
 					if(index==1){
@@ -171,7 +225,7 @@
 						
 						mui.ajax(config.server_root+"api/report/",{
 							data:{
-								
+								phone: $scope.userPhone
 							},
 							type:'get',//HTTP请求类型
 							timeout:10000,//超时时间设置为10秒；
@@ -186,6 +240,11 @@
 							}
 						});
 					}
+				}
+				
+				$scope.clearUserInfo = function(){
+					localStorage.removeItem("userPhone");
+					mui.openWindow("./html/login.html");
 				}
 				
 				$scope.goRecord = function(index){

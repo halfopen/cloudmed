@@ -23,13 +23,13 @@
 				</div>
 				<div class="mui-input-row">
 					<label>验证码</label>
-					<input ng-model="vrfCode" style="width: 35%; float: left" type="number" placeholder="4位数字">
+					<input ng-model="vrfCode" style="width: 25%; float: left" type="number" placeholder="4位数字">
 					<span ng-click="sendCode()" type="button" value="ddd" style="
 						line-height: 40px;
 						float: right;
 						padding-right: 5px;
 						color: gray;
-						width: 25%;
+						width: 35%;
 					">{{tipSend}}</span>
 				</div>
 				<div class="mui-button-row"><button ng-click="submit()" type="button" class="mui-btn mui-btn-primary">提交</button></div>
@@ -107,6 +107,7 @@
 					if(null==localStorage.getItem("countDown") && checkPhone()==true){  // 可以发送
 						// send
 						var url = "http://facestory.cn:8080/send_code?phone="+$scope.phone;
+						showLoading(true);
 						mui.ajax({
 							url:url,
 							type:"get",
@@ -114,11 +115,13 @@
 							contentType:false,
 							success:function(data){
 								console.log(data);
+								showLoading(false);
 								localStorage.setItem("countDown", 120);
 								timer();
 							},
 							error: function(req, status, error){
 								localStorage.setItem("countDown", 120);
+								showLoading(false);
 								timer();
 							}
 						});
