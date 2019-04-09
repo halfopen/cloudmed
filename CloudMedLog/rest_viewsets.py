@@ -27,3 +27,5 @@ class ReportViewset(viewsets.ModelViewSet):
     queryset = Report.objects.order_by("-id").all()
     serializer_class = ReportSlz
     pagination_class = DataSetPaging
+
+    filter_fields = ('phone', )

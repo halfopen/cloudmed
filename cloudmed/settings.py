@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'CloudMedLog.apps.CloudmedlogConfig',
     'rest_framework',
 	'corsheaders',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,8 @@ CORS_ALLOW_HEADERS = (
 'x-requested-with',
 )
 CORS_ALLOW_CREDENTIALS = True
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend', )
+}

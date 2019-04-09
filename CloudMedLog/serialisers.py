@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import *
-
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
 class OpLogSlz(serializers.ModelSerializer):
 
