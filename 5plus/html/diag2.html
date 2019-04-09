@@ -1,0 +1,165 @@
+<html><head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link href="../css/mui.css" rel="stylesheet">
+		<link href="../css/diag.css" rel="stylesheet">
+		<link href="../css/app.css" rel="stylesheet">
+		<style>
+			.head-tip{
+				text-align: center;
+			}
+			
+			.dia-container{
+				vertical-align: middle;
+				width: 300px;
+				background: white;
+				display: flex;
+				margin: auto;
+				margin-top: 60px;
+			}
+			.dia-container .col{
+				float: left;
+				width: 100px;
+				height: 100px;
+				
+			}
+			.dia-container .image-ctn{
+				display: flex;
+				align-items: center;
+			}
+			
+			.dia-container .image-ctn.face{
+				background: goldenrod;
+			}
+			.dia-container .image-ctn.tongue{
+				background: cadetblue;
+			}
+			.dia-container .image-ctn.question{
+				background: lightgreen;
+			}
+			
+			.dia-container .image-ctn .ctn{
+				margin: auto;
+			}
+			
+			.dia-container .mid-ctn .ctn{
+				margin: 20px;
+			}
+			.dia-container .button-ctn div{
+				height: 50%;
+				float: right;
+			}
+			
+			.dia-container .button-ctn img{
+				height: 48px;
+				margin-top: 1px;
+			}
+		</style>
+	</head>
+
+	<body class="mui-android mui-android-5 mui-android-5-0">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">健康自检</h1>
+		</header>
+		<!-- 加载中蒙板 -->
+		<div class="loading-overlay" id="loading-overlay" style="display: none;">
+			<img src="../images/loading.svg" style="height:80px; width:80px;">
+		</div>
+		<div class="mui-content " ng-app="myApp" ng-controller="myCtrl">
+			<div class="head-tip">分别完成下面三步内容后出结果</div>
+			<div class="dia-container">
+				<div class="col image-ctn face">
+					<div class="ctn"><img width="60px" height="60px" src="../images/face_photo.png"/></div>
+				</div>
+				<div class="col mid-ctn">
+					<div class="ctn">
+						<h4>面诊</h4>
+						<div class="desc face-desc">面诊文字说明</div>
+					</div>
+
+				</div>
+				<div class="col button-ctn">
+					<div class="face_cam"><img src="../images/temp_camera.bmp" /></div>
+					<div class="face_gal"><img src="../images/temp_photo.bmp" /></div>
+				</div>
+				
+			</div>
+			<div class="dia-container">
+				<div class="col image-ctn tongue">
+					<div class="ctn"><img width="60px" height="60px" src="../images/tongue_photo.png"/></div>
+				</div>
+				<div class="col mid-ctn">
+					<div class="ctn">
+						<h4>舌诊</h4>
+						<div class="desc face-desc">舌诊文字说明</div>
+					</div>
+			
+				</div>
+				<div class="col button-ctn">
+					<div class="tongue_cam"><img src="../images/temp_camera.bmp" /></div>
+					<div class="tongue_gal"><img src="../images/temp_photo.bmp" /></div>
+				</div>
+				
+			</div>
+			<div class="dia-container">
+				<div class="col image-ctn question">
+					<div class="ctn"><img width="60px" height="60px" src="../images/question_photo.png"/></div>
+				</div>
+				<div class="col mid-ctn">
+					<div class="ctn">
+						<h4>问诊</h4>
+						<div class="desc face-desc">问诊文字说明</div>
+					</div>
+			
+				</div>
+				<div class="col button-ctn" ng-click="goQuestion()">
+					<div style="
+						height: 100%;
+						display: flex;
+						align-items: center;
+						width: 58.89px;
+						background: rgb(242, 243, 243);
+						text-align: center;
+					"><img style="margin: auto;" src="../images/questions.png" height="99px"/></div>
+				</div>
+				
+			</div>
+		</div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/util.js"></script>
+		<script src="../js/angular.min.js"></script>
+		<script type="text/javascript">
+			var showLoading = util.showLoading;
+			showLoading(false);
+			mui.init();
+			var app = angular.module('myApp', []);
+			app.controller('myCtrl', function($scope){
+				console.log("controller");
+				
+				$scope.goQuestion = function(){
+					mui.openWindow({"id":"question_dia", "url":"/html/question_dia.html"});
+				}
+			});
+			
+			mui.mui.plusReady(function () {
+			    mui("body").on("tap", ".tongue-cam", function(){
+					console.log("cam");
+				});
+				
+				mui("body").on("tap", ".tongue-gal", function(){
+					console.log("cam");
+				});
+				
+				mui("body").on("tap", ".face-cam", function(){
+					console.log("cam");
+				});
+				
+				mui("body").on("tap", ".face-gal", function(){
+					console.log("cam");
+				});
+			});
+		</script>
+
+</body></html>

@@ -1,0 +1,127 @@
+<html><head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link href="../css/mui.css" rel="stylesheet">
+		<link href="../css/diag.css" rel="stylesheet">
+		<link href="../css/app.css" rel="stylesheet">
+		
+		<style>
+			.invisible{
+				visibility: hidden;
+			}
+			.choose{
+				padding: 10px;
+				margin: 10px;
+				background: white;
+				margin: 10px 0px;
+			}
+			
+			.question-content{
+				padding: 20px;
+				font-size: 18px;
+			}
+			
+			.bottom-ctn{
+				
+			}
+			.bottom-ctn div{
+				float: left;
+				width: 33%;
+				text-align: center;
+			}
+			.bottom-ctn .button{
+				padding: 10px 20px;
+				color: white;
+				background: #0062CC;
+			}
+		</style>
+	</head>
+
+	<body class="mui-android mui-android-5 mui-android-5-0">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">问诊</h1>
+		</header>
+		<!-- 加载中蒙板 -->
+		<div class="loading-overlay" id="loading-overlay" style="display: none;">
+			<img src="../images/loading.svg" style="height:80px; width:80px;">
+		</div>
+		<div class="mui-content " ng-app="myApp" ng-controller="myCtrl">
+			<!-- 问题 -->
+			<div class="question-content">
+				{{questions[index].question}}<span>(多选)</span>
+			</div>
+			<!-- 选项 -->
+			<div class="choose-ctn">
+				<div class="choose" ng-repeat="q in questions[index].choose">{{q.title}}</div>
+			</div>
+
+			
+			<div class="bottom-ctn">
+				<div class="button" ng-click="pre()" ng-class="index==0?'invisible':''">上一步</div>
+				<div class="step">{{index+1}}/{{question_length}}</div>
+				<div class="button" ng-click="next()" >{{index==question_length-1?'诊断':'下一步'}}</div>
+				
+			</div>
+		</div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/util.js"></script>
+		<script src="../data/question.js"></script>
+		<script src="../js/diagnosis.js"></script>
+		<script src="../js/angular.min.js"></script>
+		<script type="text/javascript">
+			var showLoading = util.showLoading;
+			showLoading(false);
+			mui.init();
+			var app = angular.module('myApp', []);
+			app.controller('myCtrl', function($scope){
+				console.log("controller", questions);
+				$scope.index = 0;
+				$scope.questions = questions.rows;
+				$scope.faceResult = null;
+				$scope.tongueResult = null;
+				
+				$scope.question_length = questions.rows.length;
+				console.log($scope.questions[$scope.index]); 
+					
+				$scope.pre = function(){
+					$scope.index--;
+				}
+				$scope.next = function(){
+					if($scope.index==$scope.question_length-1){
+						showLoading(true);
+						
+						$scope.diagnosis();
+						return;
+					}
+					$scope.index++;
+				}
+				
+				/**
+				 *	点击诊断 
+				**/
+				$scope.diagnosis = function(){
+					showLoading(true);
+					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions);
+					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
+					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
+					console.log(result);
+					setTimeout(function(){
+						showLoading(false);
+						if(true || undefined == mui.os.plus){
+							mui.openWindow({"id":"report", "url":"report.html?data="+encodeURI(JSON.stringify(result))});
+							var lastReport = {
+								"questions": $scope.questions,
+								"faceResult": $scope.faceResult,
+								"tongueResult": $scope.tongueResult
+							}
+							localStorage.setItem("lastReport", JSON.stringify(lastReport));
+						}
+					}, 1000);
+				}
+				
+			});
+		</script>
+
+</body></html>

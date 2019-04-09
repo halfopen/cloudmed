@@ -101,10 +101,10 @@
 
 			<div class="entry-ctn mui-row">
 				<div class="mui-col-sm-6 mui-col-xs-6">
-					<div class="mui-table-view-cell" ng-click="goDiagnosis()" id="diagnosis"><span>新版中医体检</span></div>
+					<div class="mui-table-view-cell" ng-click="goDiagnosis(0)" id="diagnosis"><span>新版中医体检</span></div>
 				</div>
 				<div class="mui-col-sm-6 mui-col-xs-6">
-					<div class="mui-table-view-cell"><span>旧版中医体检</span></div>
+					<div class="mui-table-view-cell" ng-click="goDiagnosis(1)"><span>旧版中医体检</span></div>
 				</div>
 				<!-- <div class="mui-col-sm-6 mui-col-xs-6">
 					<div class="mui-table-view-cell"><span>健康咨询</span></div>
@@ -129,9 +129,10 @@
 				$scope.date = Date();
 				if(true || undefined == mui.os.plus){
 					console.log("web 环境");
-					$scope.goDiagnosis = function(){
+					$scope.goDiagnosis = function(id){
 						// window.location = "/html/diag.html";
-						mui.openWindow({"id":"diag", "url":"/html/diag.html"});
+						if(id==0)mui.openWindow({"id":"diag", "url":"/html/diag.html"});
+						else mui.openWindow({"id":"diag2", "url":"/html/diag2.html"});
 					}
 				}else{
 					console.log("app 环境");
