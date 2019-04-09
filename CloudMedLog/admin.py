@@ -5,7 +5,7 @@ from .models import *
 
 @admin.register(OpLog)
 class OpLogAdmin(admin.ModelAdmin):
-    list_display = ('user', 'device', 'op', 'info', 'date')
+    list_display = ('phone', 'device', 'op', 'info', 'date')
     date_hierarchy = 'date'
-    list_filter = ('user', 'device', 'op')
+    list_filter = ('phone', 'device', 'op')
     search_fields = ('info',)

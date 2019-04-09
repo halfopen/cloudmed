@@ -1,13 +1,6 @@
 from django.db import models
 
 
-class User(models.Model):
-    username = models.CharField(max_length=48, verbose_name="用户名")
-    phone = models.CharField(max_length=16, verbose_name="用户手机号")
-    password = models.CharField(max_length=2048, verbose_name="用户密码")
-    date = models.DateTimeField(auto_now=True)
-
-
 class Diagnosis(models.Model):
     """
         一次面诊或者舌诊记录
@@ -15,7 +8,8 @@ class Diagnosis(models.Model):
     img = models.ImageField(upload_to="upload")
     type = models.IntegerField(default=0, verbose_name="类型", choices=((0, "脸部"), (1, "舌头")))
     date = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=24, verbose_name="手机号")
+    result_code = models.CharField(max_length=16, verbose_name="结果", default="0")
 
 
 class Report(models.Model):
@@ -24,17 +18,19 @@ class Report(models.Model):
     """
     tizhi = models.CharField(verbose_name="体质", default="正常", max_length=16)       # 主要体质
     score = models.IntegerField(verbose_name="分数")                      # 健康分数
-    tongue = models.CharField(max_length=2048, verbose_name="舌诊")       # tongueJson
-    face = models.CharField(max_length=2048, verbose_name="面诊")     # faceJson
+    tongue = models.CharField(max_length=2048, verbose_name="舌诊", null=True)       # tongueJson
+    face = models.CharField(max_length=2048, verbose_name="面诊", null=True)     # faceJson
     date = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    questions = models.TextField(verbose_name="回答的问题", default="")
+    result_json = models.TextField(verbose_name="原始json", default="")
+    phone = models.CharField(max_length=24, verbose_name="手机号")
 
 
 class OpLog(models.Model):
     """
         操作日志
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=24, verbose_name="手机号")
     device = models.CharField(max_length=1024, verbose_name="设备名", default="")
     op = models.CharField(max_length=1024, verbose_name="操作名", default="")
     info = models.TextField(verbose_name="操作信息", blank=True, default="")

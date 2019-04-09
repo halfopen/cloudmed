@@ -11,11 +11,6 @@ class DataSetPaging(LimitOffsetPagination):
     offset_query_param = "offset"  # 当前所在的位置
 
 
-class UserViewset(viewsets.ModelViewSet):
-    queryset = User.objects.order_by("-id").all()
-    serializer_class = UserSlz
-    pagination_class = DataSetPaging
-
 class OpLogViewset(viewsets.ModelViewSet):
     queryset = OpLog.objects.order_by("-id").all()
     serializer_class = OpLogSlz
