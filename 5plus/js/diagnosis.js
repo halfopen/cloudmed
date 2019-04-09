@@ -1,6 +1,6 @@
 var getfaceResult = function(faceResult){
-
-    if(null==faceResult || faceResult.raw=="0"){
+	console.log(faceResult, typeof(faceResult));
+    if( typeof(faceResult)!="object" || null==faceResult|| faceResult.raw=="0"){
         return "未检测到人脸";
     }
     var result = "";
@@ -10,7 +10,8 @@ var getfaceResult = function(faceResult){
 }
 
 var gettongueResult = function(tongueResult){
-    if(null==tongueResult||tongueResult.raw=="0"){
+	console.log(tongueResult, typeof(tongueResult));
+    if( typeof(tongueResult)!="object" || null==tongueResult ||tongueResult.raw=="0"){
         return "未检测到舌头";
     }
     var result = "舌头：";
@@ -37,7 +38,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
     var getFaceScore = function(faceResult){
         var score = new Array(7);
         for(var i=0;i<7;++i)score[i] = 0;
-        if(null!=faceResult){
+        if(null!=faceResult && typeof(faceResult)=="object"){
             if(faceResult.result._2faceColor == 0){ // 面白
                 score[0] += 5;
                 score[5] += 8;
@@ -52,7 +53,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
     var getTongueScore = function(tongueResult){
         var score = new Array(7);
         for(var i=0;i<7; ++i)score[i] = 0;
-        if(null!=tongueResult){
+        if(null!=tongueResult && typeof(tongueResult)=="object"){
             if(tongueResult.result_6tongueNatureColor==1){ // 舌淡白
                 score[0] += 8;
                 score[4] += 10;

@@ -1,0 +1,274 @@
+<html><head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link href="../css/mui.css" rel="stylesheet">
+		<link href="../css/diag.css" rel="stylesheet">
+		<link href="../css/app.css" rel="stylesheet">
+		<style>
+			.head-tip{
+				text-align: center;
+			}
+			
+			.dia-container{
+				vertical-align: middle;
+				width: 300px;
+				background: white;
+				display: flex;
+				margin: auto;
+				margin-top: 60px;
+			}
+			.dia-container .col{
+				float: left;
+				width: 100px;
+				height: 100px;
+				overflow: scroll;
+			}
+			.dia-container .image-ctn{
+				display: flex;
+				align-items: center;
+			}
+			
+			.dia-container .image-ctn.face{
+				background: goldenrod;
+			}
+			.dia-container .image-ctn.tongue{
+				background: cadetblue;
+			}
+			.dia-container .image-ctn.question{
+				background: lightgreen;
+			}
+			
+			.dia-container .image-ctn .ctn{
+				margin: auto;
+			}
+			
+			.dia-container .mid-ctn .ctn{
+				margin: 20px;
+			}
+			.dia-container .button-ctn div{
+				height: 50%;
+				float: right;
+			}
+			
+			.dia-container .button-ctn img{
+				height: 48px;
+				margin-top: 1px;
+			}
+			
+			.desc{
+				height: auto;
+				word-break: break-all;
+			}
+		</style>
+	</head>
+
+	<body class="mui-android mui-android-5 mui-android-5-0">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">健康自检</h1>
+		</header>
+		<!-- 加载中蒙板 -->
+		<div class="loading-overlay" id="loading-overlay" style="display: none;">
+			<img src="../images/loading.svg" style="height:80px; width:80px;">
+		</div>
+		<div class="mui-content " ng-app="myApp" ng-controller="myCtrl">
+			<div class="head-tip">分别完成下面三步内容后出结果</div>
+			<div class="dia-container">
+				<div class="col image-ctn face">
+					<div class="ctn"><img width="60px" height="60px" src="../images/face_photo.png"/></div>
+				</div>
+				<div class="col mid-ctn">
+					<div class="ctn">
+						<h4>面诊</h4>
+						<div class="desc" id="face-desc">面诊文字说明</div>
+					</div>
+
+				</div>
+				<div class="col button-ctn">
+					<div class="face-cam"><img src="../images/temp_camera.bmp" /></div>
+					<div class="face-gal"><img src="../images/temp_photo.bmp" /></div>
+				</div>
+				
+			</div>
+			<div class="dia-container">
+				<div class="col image-ctn tongue">
+					<div class="ctn"><img width="60px" height="60px" src="../images/tongue_photo.png"/></div>
+				</div>
+				<div class="col mid-ctn">
+					<div class="ctn">
+						<h4>舌诊</h4>
+						<div class="desc" id="tongue-desc">舌诊文字说明</div>
+					</div>
+			
+				</div>
+				<div class="col button-ctn">
+					<div class="tongue-cam"><img src="../images/temp_camera.bmp" /></div>
+					<div class="tongue-gal"><img src="../images/temp_photo.bmp" /></div>
+				</div>
+				
+			</div>
+			<div class="dia-container">
+				<div class="col image-ctn question">
+					<div class="ctn"><img width="60px" height="60px" src="../images/question_photo.png"/></div>
+				</div>
+				<div class="col mid-ctn">
+					<div class="ctn">
+						<h4>问诊</h4>
+						<div class="desc face-desc">问诊文字说明</div>
+					</div>
+			
+				</div>
+				<div class="col button-ctn" ng-click="goQuestion()">
+					<div style="
+						height: 100%;
+						display: flex;
+						align-items: center;
+						width: 58.89px;
+						background: rgb(242, 243, 243);
+						text-align: center;
+					"><img style="margin: auto;" src="../images/questions.png" height="99px"/></div>
+				</div>
+				
+			</div>
+		</div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/util.js"></script>
+		<script src="../js/diagnosis.js"></script>
+		<script src="../js/angular.min.js"></script>
+		<script type="text/javascript">
+			var showLoading = util.showLoading;
+			var faceResult = null;
+			var tongueResult = null;
+			localStorage.removeItem("faceResult");
+			localStorage.removeItem("tongueResult");
+			showLoading(false);
+			mui.init();
+			var app = angular.module('myApp', []);
+			app.controller('myCtrl', function($scope){
+				console.log("controller");
+				
+				$scope.goQuestion = function(){
+					
+					if(faceResult==null){
+						mui.toast("请先完成面诊");
+						return;
+					}
+					if(tongueResult==null){
+						mui.toast("请先完成舌诊");
+						return;
+					}
+					
+					showLoading(true);
+					if(null!=faceResult)localStorage.setItem("faceResult", JSON.stringify(faceResult));
+					if(null!=tongueResult)localStorage.setItem("tongueResult", JSON.stringify(tongueResult));
+					setTimeout(function(){
+						showLoading(false);
+						mui.openWindow({"id":"question_dia", "url":"/html/question_dia.html"});
+						}, 1000);
+					};
+					
+			});
+			
+			mui.plusReady(function () {
+				console.log("plus ready");
+			    mui("body").on("tap", ".tongue-cam", function(){
+					console.log("cam");
+					showLoading(true);
+					plus.camera.getCamera().captureImage(function(path){
+						console.log(path);
+						compressAndUpload(path, "tongue");
+					}, function(err){
+						showLoading(false);
+						console.log("拍照出错");
+						alert("拍照出错"+err);
+					})
+				});
+				
+				mui("body").on("tap", ".tongue-gal", function(){
+					console.log("cam");
+					showLoading(true);
+					plus.gallery.pick(function(path){
+						// 回调函数返回图片路径
+						console.log(path);
+						compressAndUpload(path, "tongue");
+						
+					}, function(){
+						showLoading(false);
+					},{
+						filter: "image"
+					});
+				});
+				
+				mui("body").on("tap", ".face-cam", function(){
+					console.log("cam");
+					showLoading(true);
+					plus.camera.getCamera().captureImage(function(path){
+						console.log(path);
+						compressAndUpload(path, "face");
+					}, function(err){
+						showLoading(false);
+						console.log("拍照出错");
+						alert("拍照出错"+err);
+					})
+				});
+				
+				mui("body").on("tap", ".face-gal", function(){
+					console.log("cam");
+					showLoading(true);
+					plus.gallery.pick(function(path){
+						// 回调函数返回图片路径
+						console.log(path);
+						compressAndUpload(path, "face");
+						
+					}, function(){
+						showLoading(false);
+					},{
+						filter: "image"
+					});
+				});
+			});
+			
+			/**
+			 * 压缩并上传照片
+			 */
+			var compressAndUpload= function(path, type){
+				plus.zip.compressImage({
+					src: path,
+					dst: "_doc/compress/"+path,
+					quality:20,
+					overwrite:true
+				}, function(e){
+					console.log("压缩成功", e, e.target);
+					//document.getElementById(type+"img").src = e.target;
+					var task = plus.uploader.createUpload("http://facestory.cn:8080/upload",
+						{method: "POST"},
+						function(t, status){
+							console.log("upload finish", t.responseText, status);
+							if(200==status){
+								var data = JSON.parse( t.responseText);
+								if(type=="face"){
+									faceResult = data;
+									document.getElementById("face-desc").innerHTML = getfaceResult(faceResult);
+									//console.log(data.result, faceResult);
+								}else{
+									tongueResult = data;
+									document.getElementById("tongue-desc").innerHTML = gettongueResult(tongueResult);
+									//console.log(data.result, tongueResult);
+								}
+							}
+							showLoading(false);
+						}
+					);
+					task.addFile(e.target, {key:"file"});
+					task.addData("type", type);
+					task.start();
+				}, function(err){
+					console.log("压缩失败");
+					showLoading(false);
+					alert("压缩图片失败"+err)
+				});
+			}
+		</script>
+
+</body></html>
