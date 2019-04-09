@@ -35,6 +35,10 @@
 				color: white;
 				background: #0062CC;
 			}
+			
+			.choose_selected{
+				background: lightblue;
+			}
 		</style>
 	</head>
 
@@ -50,11 +54,11 @@
 		<div class="mui-content " ng-app="myApp" ng-controller="myCtrl">
 			<!-- 问题 -->
 			<div class="question-content">
-				{{questions[index].question}}<span>(多选)</span>
+				{{questions[index].question}}<span ng-show="questions[index].option_type=='1'">(多选)</span>
 			</div>
 			<!-- 选项 -->
 			<div class="choose-ctn">
-				<div class="choose" ng-repeat="q in questions[index].choose">{{q.title}}</div>
+				<div class="choose" ng-repeat="c in questions[index].choose" ng-class="c.state=='true'?'choose_selected':''"  ng-click="choose(index, $index)">{{c.title}}</div>
 			</div>
 
 			
@@ -78,30 +82,65 @@
 			app.controller('myCtrl', function($scope){
 				console.log("controller", questions);
 				$scope.index = 0;
+
 				$scope.questions = questions.rows;
-				$scope.faceResult = null;
-				$scope.tongueResult = null;
-				
+				$scope.faceResult = JSON.parse(localStorage.getItem("faceResult"));
+				$scope.tongueResult = JSON.parse(localStorage.getItem("tongueResult"));
+				console.log($scope.faceResult, $scope.tongueResult, "results")
 				$scope.question_length = questions.rows.length;
 				console.log($scope.questions[$scope.index]); 
-					
+				
 				$scope.pre = function(){
+					console.log($scope.questions[$scope.index]);
 					$scope.index--;
+			
 				}
 				$scope.next = function(){
+					console.log($scope.questions[$scope.index]);
 					if($scope.index==$scope.question_length-1){
 						showLoading(true);
-						
 						$scope.diagnosis();
 						return;
 					}
 					$scope.index++;
+					
+				}
+				
+				// 选中某个选项
+				$scope.choose = function(index, cindex){
+					console.log(index, cindex);
+					var choose_size = $scope.questions[index].choose.length;
+					
+					// 如果是单选
+					if($scope.questions[index].option_type=="0"){
+						for(var i=0;i<choose_size;++i){
+							$scope.questions[index].choose[i].state = "false";
+						}
+						
+					}else{
+						if($scope.questions[index].choose[cindex].state=="false"){
+							
+							// 选中最后一个,取消前几个
+							if(cindex==choose_size-1){
+								for(var i=0;i<choose_size-1;++i){
+									$scope.questions[index].choose[i].state = "false";
+								}
+							}else{ // 选中前几个,取消最后一个
+								$scope.questions[index].choose[choose_size-1].state="false";
+							}
+							
+						}
+						
+					}
+					$scope.questions[index].choose[cindex].state=$scope.questions[index].choose[cindex].state=="true"?"false":"true";
 				}
 				
 				/**
 				 *	点击诊断 
 				**/
 				$scope.diagnosis = function(){
+					
+					
 					showLoading(true);
 					console.log("diagnosis", $scope.faceResult, $scope.tongueResult, $scope.questions);
 					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
