@@ -150,7 +150,9 @@
 					form.append("file", file);
 					form.append("type", type);
 					var timeoutCallback = setTimeout(function(){
+						showLoading(false);
 						mui.alert("请检查网络连接后重试", '连接超时', null);
+
 					}, 10000);
 		　		 	mui.ajax({
 						url:url,
