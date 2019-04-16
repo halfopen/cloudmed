@@ -1,0 +1,50 @@
+<md-dialog>
+    <div >
+		<md-dialog-actions>
+			<div style="position: absolute; width: 100%; text-align: center">诊断结果解释</div>
+			<span  ng-click="cancel()" style="font-size: 36px; z-index: 1;"  class="mui-icon mui-icon-checkmarkempty"></span>
+		</md-dialog-actions>
+        
+    </div>
+	<md-dialog-content>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<p>面诊舌诊</p>
+				<div>面黄： 阴虚+3</div>
+				<div>舌苔厚：xxx+4</div>
+			</div>
+			<div class="mui-row mui-content-padded">				
+				<p>回答的相关问题：<span ng-if="qs[id].option_type=='1'">(多选)</span></p>
+			</div>
+			<div class="mui-content-padded"> 
+				<div>
+						<div style="font-weight: bold">问题1</div>
+						<div>回答是</div>
+						<div>结果的影响： 肾虚+3</div>
+				</div>
+				<div>
+						<div style="font-weight: bold">问题2</div>
+						<div>回答是</div>
+						<div>结果的影响： 肾虚+30, 阳虚=0 因为这个问题选了A，您肯定不属于阳虚体质</div>
+				</div>
+				...
+			</div>
+			<div class="mui-content-padded">
+				<p>雷达图（4个症状）:</p>
+				<div class="chart" id="radar">这里有个图</div>
+
+			</div>
+			<div class="mui-content-padded">
+				 <p>健康分数计算公式：</p>
+				 <ul>
+					 <li>没有症状：100分</li>
+					 <li>一个症状： 100 - SymScore*0.8</li>
+					 <li>两个症状： 100 - SymScore*0.8</li>
+				 </ul>
+				 最终得分：100-10×0.8=92分。
+			</div>
+		</div>
+	</md-dialog-content>
+</md-dialog>
+
+	

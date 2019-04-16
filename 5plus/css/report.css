@@ -38,3 +38,12 @@ padding: 4px;
 .suggestions-red-text{
     font-family: '微软雅黑','sans-serif'; color: red; font-size: 12pt
 }
+
+.explain-text{
+    padding-left: 10px;
+    color: blue;
+}
+
+md-dialog{
+    width: 95%;
+}

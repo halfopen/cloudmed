@@ -15,14 +15,17 @@
 		<script src="../js/angular-aria.min.js"></script>
 		<script src="../js/angular-messages.min.js"></script>
 		<script src="../js/diagnosis.js"></script>
+		<!-- Angular Material Library -->
+		<script src="../js/angular-material.min.js"></script>
+		<link rel="stylesheet" href="../css/angular-material.min.css" />
 	</head>
-	<body>
+	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">检测报告</h1>
 		</header>
 		
-		<div class="mui-content" ng-app="myApp" ng-controller="myCtrl">
+		<div class="mui-content" >
 			<div class="tip">
 				您在{{date}}的体检报告
 			</div>
@@ -35,7 +38,7 @@
 				<p>{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
-				<div>结论： {{phy}} {{healthScore}}分</div>
+				<div>结论： {{phy}} {{healthScore}}分 <span class="explain-text" ng-click="showExplainDialog($event)">想知道为什么是这个结果吗？</span></div>
 				<p>{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
 					<img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px" />
@@ -79,8 +82,8 @@
 				 }
 				 return get_par;
 			 }
-			var app = angular.module('myApp', []);
-			app.controller('myCtrl', function($scope){
+			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
+			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.faceResult = "无面诊记录";
 				$scope.tongueResult = "无舌诊记录";
 				$scope.healthState = "身体棒棒哒";
@@ -120,6 +123,40 @@
 						$scope.healthState = "身体棒棒哒！";
 					}
 					console.log("处理data完成");
+				}
+
+				$scope.showExplainDialog = function(ev){
+					$mdDialog.show({
+						controller: DialogController,
+						locals:{
+							id: 1,
+							qs: 2
+						},
+						templateUrl: './explain-dialog.tmpl.html',
+						parent: angular.element(document.body),
+						targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+						onComplete: function(){    // 显示完成后的回调函数
+							
+						}
+					})
+					.then(function() {
+						console.log("then")
+					}, function() {
+						$scope.status = 'You cancelled the dialog.';
+					});
+				};
+
+				function DialogController($scope, $mdDialog, id, qs) {
+					$scope.hide = function() {
+						$mdDialog.hide();
+						console.log("hide")
+					};
+
+					$scope.cancel = function(){
+						$mdDialog.hide();
+					}
 				}
 			});
 			mui.init();
