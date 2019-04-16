@@ -48,7 +48,7 @@
 						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
 						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/jpg" capture="camera" />
 						<div class="desc" id="face-desc">
-							文字描述
+							点击上面图片进行面诊
 						</div>
 					</div>
 				</div>
@@ -58,7 +58,7 @@
 						<img id="tongueimg" src="../images/tongue.png" />
 						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/jpg" mutiple="mutiple" capture="camera" />
 						<div class="desc" id="tongue-desc">
-							文字描述
+							点击上面图片进行舌诊
 						</div>
 					</div>
 				</div>
@@ -149,6 +149,9 @@
 					var form = new FormData();
 					form.append("file", file);
 					form.append("type", type);
+					var timeoutCallback = setTimeout(function(){
+						mui.alert("请检查网络连接后重试", '连接超时', null);
+					}, 10000);
 		　		 	mui.ajax({
 						url:url,
 						type:"post",
@@ -156,6 +159,7 @@
 						processData:false,
 						contentType:false,
 						success:function(data){
+							clearTimeout(timeoutCallback);
 							setTimeout(function(){
 								if(type=="face"){
 									faceResult = data;
@@ -188,9 +192,10 @@
 							console.log(data);
 						},
 						error: function(req, status, error){
+							clearTimeout(timeoutCallback);
 							setTimeout(function(){
 								showLoading(false);
-								alert(status);
+								mui.alert(status, "请求出错", null);
 							}, 1000);
 						}
 					});
