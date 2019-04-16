@@ -16,7 +16,7 @@
 			<div class="mui-content-padded"> 
 				  <!-- set question type -->
 				<form action="" class="mui-input-group" ng-if="qs[id].option_type=='1'">					
-					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose" ng-click="choose($index, id)">
+					<div class="mui-input-row mui-checkbox mui-left" ng-repeat="c in qs[id].choose" ng-click="choose($index, id);draw(c.score,id)">
 					  <label>{{c.title}}</label>
 					  <input name="duoxuan" value = {{c.title_result}} type="checkbox" ng-click = "draw(c.score,id)">				  
 					</div>
@@ -31,7 +31,6 @@
 				</form>
 			</div>
 			<div class="mui-content-padded">
-				<h5>雷达图</h5>
 				<div class="chart" id="radar"></div>
 
 			</div>	

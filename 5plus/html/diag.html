@@ -48,7 +48,7 @@
 						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
 						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/jpg" capture="camera" />
 						<div class="desc" id="face-desc">
-							点击上面图片进行面诊
+							请拍面部
 						</div>
 					</div>
 				</div>
@@ -58,7 +58,7 @@
 						<img id="tongueimg" src="../images/tongue.png" />
 						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/jpg" mutiple="mutiple" capture="camera" />
 						<div class="desc" id="tongue-desc">
-							点击上面图片进行舌诊
+							请拍舌头
 						</div>
 					</div>
 				</div>
@@ -352,7 +352,7 @@
 					choose = qs[qid].choose;
 					//console.log(choose)
 					var score = [0,0,0,0,0,0,0];
-					
+					var description = ""
 					if (qs[qid].option_type == '0'){
 						var default_check = document.getElementsByName("danxuan");
 					}
@@ -371,9 +371,19 @@
 							default_check[i].checked = true;
 						}
 					}
-					
+					if (score[0]>0){description+="有点阳虚";}
+					if (score[1]>0){description+="有点阴虚";}
+					if (score[2]>0){description+="有点痰湿";}
+					if (score[3]>0){description+="有点瘀滞";}
+					if (score[4]>0){description+="有点脾虚";}
+					if (score[5]>0){description+="有点肾虚";}
+					if (score[6]>0){description+="有点气虚";}
+						
 					var option = {
-						title: {							
+						title: {text: description,
+								textStyle:{
+									fontSize: 15
+								}			
 						},
 						tooltip: {},
 						legend: {
@@ -572,6 +582,7 @@
 						}
 						var myradar = echarts.init(byId('radar'));					
 						var score = [0,0,0,0,0,0,0];
+						var description = "";
 						// 多选
 						if (qs[qid].option_type == '1'){//多选题						
 							var choose = document.getElementsByName("duoxuan");
@@ -591,10 +602,19 @@
 							
 						}
 						else{score = [scores.yangxu,scores.yinxu, scores.tanshi, scores.yuzhi, scores.pixu, scores.shenxu, scores.qixu];}
-						
+						if (score[0]>0){description+="有点阳虚";}
+						if (score[1]>0){description+="有点阴虚";}
+						if (score[2]>0){description+="有点痰湿";}
+						if (score[3]>0){description+="有点瘀滞";}
+						if (score[4]>0){description+="有点脾虚";}
+						if (score[5]>0){description+="有点肾虚";}
+						if (score[6]>0){description+="有点气虚";}
 						//console.log(scores);
 						var option = {
-							title: {							
+							title: {text: description,
+									textStyle:{
+										fontSize: 15
+									}								
 							},
 							tooltip: {},
 							legend: {
