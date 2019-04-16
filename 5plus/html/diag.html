@@ -459,6 +459,8 @@
 					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
 					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
 					console.log(result);
+					
+					
 					mui.ajax(config.server_root+"api/report/",{
 						data:{
 							"tizhi": result.phy,
@@ -483,7 +485,8 @@
 					setTimeout(function(){
 						showLoading(false);
 						if(true || undefined == mui.os.plus){
-							mui.openWindow({"id":"report", "url":"report.html?data="+encodeURI(JSON.stringify(result))});
+							
+							mui.openWindow({"id":"report", "url":"report.html?data="+encodeURI(JSON.stringify(result))+"&questions="+encodeURI(JSON.stringify($scope.questions))});
 							var lastReport = {
 								"questions": $scope.questions,
 								"faceResult": $scope.faceResult,

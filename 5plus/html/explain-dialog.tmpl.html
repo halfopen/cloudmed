@@ -10,8 +10,8 @@
 		<div class="mui-content">
 			<div class="mui-content-padded">
 				<p>面诊舌诊</p>
-				<div>面黄： 阴虚+3</div>
-				<div>舌苔厚：xxx+4</div>
+				<div>{{faceResult}}：{{score_desc(data.faceScore)}}</div>
+				<div>{{tongueResult}}：{{score_desc(data.tongueScore)}}</div>
 			</div>
 			<div class="mui-row mui-content-padded">				
 				<p>回答的相关问题：<span ng-if="qs[id].option_type=='1'">(多选)</span></p>

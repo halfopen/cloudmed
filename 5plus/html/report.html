@@ -95,7 +95,14 @@
 				$scope.HEALTH_INDEX = 0;
 				//console.log(getPar("data"))
 				pdata = getPar("data");
-
+				pquestions = getPar("questions");
+				if (pquestions.length>0){
+					var questions = JSON.parse(decodeURI(pquestions));
+					console.log("url questions");
+					console.log(questions)
+				}
+				
+				
 				if(pdata.length>0){
 					console.log(decodeURI(pdata), decodeURI(pdata));
 					var data = JSON.parse(decodeURI(pdata));
@@ -107,6 +114,12 @@
 					}
 					$scope.phy = data.phy;
 					//data.healthScore = 65;
+					
+					// added
+					$scope.faceScore = data.faceScore;
+					$scope.tongueScore = data.tongueScore;
+					$scope.data = data;
+					$scope.questions = questions;
 					$scope.healthScore = data.healthScore;
 					// console.log(Math.floor(data.healthScore/20), 4-Math.floor(data.healthScore/20));
 					$scope.HEALTH_INDEX = 4-Math.floor(parseInt(data.healthScore)/25);
@@ -130,7 +143,8 @@
 						controller: DialogController,
 						locals:{
 							id: 1,
-							qs: 2
+							qs: $scope.questions,
+							data: $scope.data
 						},
 						templateUrl: './explain-dialog.tmpl.html',
 						parent: angular.element(document.body),
@@ -148,7 +162,7 @@
 					});
 				};
 
-				function DialogController($scope, $mdDialog, id, qs) {
+				function DialogController($scope, $mdDialog, id, qs, data) {
 					$scope.hide = function() {
 						$mdDialog.hide();
 						console.log("hide")
@@ -157,6 +171,30 @@
 					$scope.cancel = function(){
 						$mdDialog.hide();
 					}
+					
+					// added
+					//console.log("data for final window")
+					//console.log(data)
+					$scope.data = data;
+					$scope.questions = qs;
+					console.log("question explain");
+					console.log(qs);
+					$scope.faceResult = getfaceResult(data.faceResult);
+					if ($scope.faceResult.substr(0,3)!="未检测"){$scope.faceResult = $scope.faceResult.substr(3);}
+					$scope.tongueResult = gettongueResult(data.tongueResult);
+					if ($scope.tongueResult.substr(0,3)!="未检测"){$scope.tongueResult = $scope.tongueResult.substr(3);}
+					$scope.score_desc = function(scores){
+						var tizhi = ["阳虚","阴虚","痰湿","瘀滞","脾虚","肾虚","气虚"];
+						var desc = ""
+						for(var i=0; i<tizhi.length; i++){
+							if (scores[i] > 0){
+								desc += tizhi[i]+"+"+ scores[i] +"分 ";
+							}
+							
+						}
+						return desc
+					}
+					
 				}
 			});
 			mui.init();
