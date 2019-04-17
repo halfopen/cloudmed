@@ -1,4 +1,8 @@
 <md-dialog>
+	<script src="../data/tizhi.js" ></script>
+	<script src="../js/echarts.min.js"></script>
+	<link href="../css/chart.css" rel="stylesheet"/>
+	<link href="../css/explain.css" rel="stylesheet"/>
     <div >
 		<md-dialog-actions>
 			<div style="position: absolute; width: 100%; text-align: center">诊断结果解释</div>
@@ -9,10 +13,33 @@
 	<md-dialog-content>
 		<div class="mui-content">
 			<div class="mui-content-padded">
+				<p>主要体质</p>
+				<div><span class="type-text">{{tizhi_expl.type}}</span><span style="padding:10px; color:gray;">{{tizhi_expl.keyword}}</span></div>				
+				<div>{{tizhi_expl.summary}}</div>
+				<div><span style="font-weight:bold">常见症状:</span>{{tizhi_expl.general}}</div>
+				<div><span style="font-weight:bold">体貌特征:</span>{{tizhi_expl.expression}}</div>
+				<div><span style="font-weight:bold">心理特征:</span>{{tizhi_expl.mental}}</div>
+				<div><span style="font-weight:bold">环境适应能力:</span>{{tizhi_expl.disease}}</div>			
+			</div>
+			<div class="mui-content-padded">
 				<p>面诊舌诊</p>
 				<div>{{faceResult}}：{{score_desc(data.faceScore)}}</div>
 				<div>{{tongueResult}}：{{score_desc(data.tongueScore)}}</div>
 			</div>
+			
+			<div class="mui-row mui-content-padded">				
+				<p>回答的相关问题：</p>
+			</div>
+			<div class="mui-content-padded" ng-repeat="q in questions" ng-if="q.choose_result!=''">
+				<div>
+					<div style="font-weight:bold">问题{{$index+1}}:{{q.short_question}}<span ng-if="q.option_type=='1'">(多选)</span></div>
+					<div>回答是:{{q.choose_result}}</div>
+					<div>结果的影响：{{answer_expl(q)}}</div>
+					
+				</div>
+			</div>
+			
+			
 			<div class="mui-row mui-content-padded">				
 				<p>回答的相关问题：<span ng-if="qs[id].option_type=='1'">(多选)</span></p>
 			</div>
@@ -30,10 +57,12 @@
 				...
 			</div>
 			<div class="mui-content-padded">
-				<p>雷达图（4个症状）:</p>
-				<div class="chart" id="radar">这里有个图</div>
-
+				<p>雷达图（7种体质得分）:</p>
 			</div>
+			<div class="mui-content-padded">
+				<div class="chart" id="radar"></div>
+			
+			</div>	
 			<div class="mui-content-padded">
 				 <p>健康分数计算公式：</p>
 				 <ul>
