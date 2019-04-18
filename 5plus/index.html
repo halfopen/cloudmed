@@ -250,10 +250,10 @@
 				$scope.goRecord = function(index){
 					console.log(index);
 					showLoading(true);
-					//localStorage.setItem("record", JSON.stringify($scope.records[index]));
+					localStorage.setItem("record", JSON.stringify($scope.records[index]));
 					setTimeout(function(){
 						showLoading(false);
-						mui.openWindow({"id":"report", "url":"./html/report.html?data="+encodeURI(JSON.stringify($scope.records[index].result_json))+"&questions="+encodeURI(JSON.stringify($scope.records[index].questions))});
+						mui.openWindow({"id":"report", "url":"./html/report.html"});
 
 					}, 500);
 				}

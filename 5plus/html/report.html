@@ -97,50 +97,41 @@
 				var faces = ["xiaolian2.jpg", "xiaolian.jpg", "pinglian.jpg", "pinglian2.jpg", "pinglian3.jpg"];
 				$scope.HEALTH_INDEX = 0;
 				//console.log(getPar("data"))
-				pdata = getPar("data");
-				pquestions = getPar("questions");
-				if (pquestions.length>0){
-					$scope.questions = JSON.parse(JSON.parse(decodeURI(pquestions)));
-					console.log("url questions");
-					console.log(questions)
+				// 获取需要的参数
+				$scope.record = JSON.parse(localStorage.getItem("record"));
+				var data = JSON.parse($scope.record.result_json);
+				$scope.questions = JSON.parse($scope.record.questions);
+				console.log("get record", $scope.record);
+				if(null!=data.faceResult){
+					$scope.faceResult = getfaceResult(data.faceResult);
 				}
+				if(null!=data.tongueResult){
+					$scope.tongueResult = gettongueResult(data.tongueResult);
+				}
+				$scope.phy = data.phy;
+				//data.healthScore = 65;
 				
-				
-				if(pdata.length>0){
-					
-					var data = JSON.parse(JSON.parse(decodeURI(pdata)));
-					//console.log(JSON.parse(data));
-					if(null!=data.faceResult){
-						$scope.faceResult = getfaceResult(data.faceResult);
-					}
-					if(null!=data.tongueResult){
-						$scope.tongueResult = gettongueResult(data.tongueResult);
-					}
-					$scope.phy = data.phy;
-					//data.healthScore = 65;
-					
-					// added
-					$scope.faceScore = data.faceScore;
-					$scope.tongueScore = data.tongueScore;
-					$scope.data = data;
-					//$scope.questions = questions;
-					$scope.healthScore = data.healthScore;
-					// console.log(Math.floor(data.healthScore/20), 4-Math.floor(data.healthScore/20));
-					$scope.HEALTH_INDEX = 4-Math.floor(parseInt(data.healthScore)/25);
-					console.log($scope.HEALTH_INDEX)
-					$scope.stype = data.mainType;
+				// added
+				$scope.faceScore = data.faceScore;
+				$scope.tongueScore = data.tongueScore;
+				$scope.data = data;
+				//$scope.questions = questions;
+				$scope.healthScore = data.healthScore;
+				// console.log(Math.floor(data.healthScore/20), 4-Math.floor(data.healthScore/20));
+				$scope.HEALTH_INDEX = 4-Math.floor(parseInt(data.healthScore)/25);
+				console.log($scope.HEALTH_INDEX)
+				$scope.stype = data.mainType;
 
-					if(data.healthScore>=0 && data.healthScore<=40){
-						$scope.healthState = "身体较糟糕，可能需要去医院检查";
-						$scope.phy += " 亚健康";
-					}else if(data.healthScore>40 && data.healthScore<=80){
-						$scope.healthState = "身体状况不佳";
-						$scope.phy += " 亚健康";
-					}else{
-						$scope.healthState = "身体棒棒哒！";
-					}
-					console.log("处理data完成");
+				if(data.healthScore>=0 && data.healthScore<=40){
+					$scope.healthState = "身体较糟糕，可能需要去医院检查";
+					$scope.phy += " 亚健康";
+				}else if(data.healthScore>40 && data.healthScore<=80){
+					$scope.healthState = "身体状况不佳";
+					$scope.phy += " 亚健康";
+				}else{
+					$scope.healthState = "身体棒棒哒！";
 				}
+				console.log("处理data完成");
 				
 				$scope.draw = function(score){
 					var byId = function(id){

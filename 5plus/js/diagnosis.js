@@ -199,6 +199,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
     if(tizhi[0]>=0){
         dict.mainType = tizhi[0];
     }
+    var baseScore = 0;
     if(symptom_num>3){
         baseScore = sortedQuestionScore[6];
         dict.healthType[tizhi[0]] = 1;
@@ -207,7 +208,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         dict.phy +=" "+ phyTypes[tizhi[1]];
         dict.healthScore = 40 - Math.abs(40-baseScore);
     }else if(symptom_num==3){
-        baseScore = sortedQuestionScore[6-2];
+        baseScore = sortedQuestionScore[6-2];  // 去
         dict.healthType[tizhi[0]] = 1;
         dict.healthType[tizhi[1]] = 1;
         dict.phy +=" "+ phyTypes[tizhi[0]];
@@ -252,7 +253,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         dict.phy = "健康";
         dict.healthScore = 100;
     }
-    console.log(JSON.stringify(dict));
+    console.log(baseScore, JSON.stringify(dict));
 
     return dict;
 };

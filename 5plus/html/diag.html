@@ -478,24 +478,20 @@
 						timeout:10000,//超时时间设置为10秒；
 						success:function(data){
 							showLoading(false);
-						},
-						error:function(xhr,type,errorThrown){
-							showLoading(false);
-						}
-					});
-					setTimeout(function(){
-						showLoading(false);
-						if(true || undefined == mui.os.plus){
-							
-							mui.openWindow({"id":"report", "url":"report.html?data="+encodeURI(JSON.stringify(result))+"&questions="+encodeURI(JSON.stringify($scope.questions))});
+							console.log(data);
+							localStorage.setItem("record", JSON.stringify(data));
+							mui.openWindow({"id":"report", "url":"report.html"});
 							var lastReport = {
 								"questions": $scope.questions,
 								"faceResult": $scope.faceResult,
 								"tongueResult": $scope.tongueResult
 							}
 							localStorage.setItem("lastReport", JSON.stringify(lastReport));
+						},
+						error:function(xhr,type,errorThrown){
+							showLoading(false);
 						}
-					}, 1000);
+					});
 				}
 
 				$scope.showQuestion = function(ev, index) {
