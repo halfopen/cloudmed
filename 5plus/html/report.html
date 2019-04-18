@@ -41,7 +41,7 @@
 				<p>{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
-				<div>结论： {{phy}} {{healthScore}}分 <span class="explain-text" ng-click="showExplainDialog($event)">想知道为什么是这个结果吗？</span></div>
+				<div>结论：<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> {{healthScore}}分 <span class="explain-text" ng-click="showExplainDialog($event)">想知道为什么是这个结果吗？</span></div>
 				<p>{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
 					<img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px" />
@@ -98,7 +98,11 @@
 				$scope.HEALTH_INDEX = 0;
 				//console.log(getPar("data"))
 				// 获取需要的参数
+				//var a = localStorage.getItem("record")
+				//console.log(a)
+				//$scope.record = a
 				$scope.record = JSON.parse(localStorage.getItem("record"));
+				console.log($scope.record);
 				var data = JSON.parse($scope.record.result_json);
 				$scope.questions = JSON.parse($scope.record.questions);
 				console.log("get record", $scope.record);
@@ -108,7 +112,16 @@
 				if(null!=data.tongueResult){
 					$scope.tongueResult = gettongueResult(data.tongueResult);
 				}
+				
 				$scope.phy = data.phy;
+				$scope.phyType = data.phy.split(' ');
+				for(var i=0; i<$scope.phyType.length;i++){
+					if ($scope.phyType[i] == ""){
+						$scope.phyType.splice(i,1);
+						i = i-1;
+					}			
+				}
+				console.log($scope.phyType);
 				//data.healthScore = 65;
 				
 				// added
@@ -283,6 +296,95 @@
 					$scope.tizhi_expl = tizhi.rows[$scope.data.mainType];
 					
 				}
+				
+				// for phy explain
+				$scope.showPhyExplainDialog = function(ev,index){
+					var phyTypes = ["阳虚","阴虚", "痰湿","瘀滞", "脾虚", "肾虚", "气虚", "健康"];
+					p = phyTypes.indexOf($scope.phyType[index]);
+					//console.log(p);
+					console.log("questions", $scope.questions)
+					$mdDialog.show({
+						controller: DialogController1,
+						locals:{
+							id: p,
+							qs: $scope.questions,
+							data: $scope.data
+						},
+						templateUrl: './explain-dialog.tmpl.phy.html',
+						parent: angular.element(document.body),
+						targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+						onComplete: function(){    // 显示完成后的回调函数
+							
+							
+						}
+					})
+					.then(function() {
+						console.log("then")
+					}, function() {
+						$scope.status = 'You cancelled the dialog.';
+					});
+				};
+				function DialogController1($scope, $mdDialog, id, qs, data) {
+					$scope.hide = function() {
+						$mdDialog.hide();
+						console.log("hide")
+					};
+				
+					$scope.cancel = function(){
+						$mdDialog.hide();
+					}
+					
+					// added
+					// 以下控制页面显示信息
+					$scope.data = data;
+					$scope.questions = qs;
+					
+					
+					$scope.faceResult = getfaceResult(data.faceResult);
+					if ($scope.faceResult.substr(0,3)!="未检测"){$scope.faceResult = $scope.faceResult.substr(3);}
+					$scope.tongueResult = gettongueResult(data.tongueResult);
+					if ($scope.tongueResult.substr(0,3)!="未检测"){$scope.tongueResult = $scope.tongueResult.substr(3);}
+					
+					$scope.score_desc = function(scores){
+						var tizhi = ["阳虚","阴虚","痰湿","瘀滞","脾虚","肾虚","气虚"];
+						var desc = ""
+						if (id == 7) return desc
+							
+						if (scores[id] > 0){
+							desc = tizhi[id]+"+"+ scores[id] +"分 ";
+						}		
+						else{
+							desc = "对"+tizhi[id]+"无影响";
+						}
+						return desc
+					}
+					
+					$scope.answer_expl = function(question){
+						var choose = question.choose;
+						score = [0,0,0,0,0,0,0];
+						for(var j=0;j<choose.length;++j){
+						    // console.log(choose[j]);
+						    if(choose[j].state=="true"){
+								score[0] += choose[j].score.yangxu;
+								score[1] += choose[j].score.yinxu;
+								score[2] += choose[j].score.tanshi;
+								score[3] += choose[j].score.yuzhi;
+								score[4] += choose[j].score.pixu;
+								score[5] += choose[j].score.shenxu;
+								score[6] += choose[j].score.qixu;
+							}
+						}
+						return $scope.score_desc(score)
+					}
+					
+					$scope.tizhi_expl = tizhi.rows[id];
+					
+				}
+				
+				
+				
 			});
 			mui.init();
 		</script>
