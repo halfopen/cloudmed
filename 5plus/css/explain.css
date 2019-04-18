@@ -1,0 +1,9 @@
+.suggestions-text{
+    font-family: 宋体; color: red; font-size: 12pt; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'
+}
+.type-text{
+	font-family: 微软雅黑; color: darkslategrey; font-size: 12pt; font-weight: bolder; 
+}
+.keyword{
+	font-family:微软雅黑; border:2px solid darkslategrey; font-size: 10pt;
+}

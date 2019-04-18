@@ -10,6 +10,7 @@
 		<link href="../css/app.css" rel="stylesheet" />
 		<link href="../css/report.css" rel="stylesheet" />
 		<script src="../data/question.js" ></script>
+		<script src="../data/tizhi.js" ></script>
 		<script src="../js/angular.min.js"></script>
 		<script src="../js/angular-animate.min.js"></script>
 		<script src="../js/angular-aria.min.js"></script>
@@ -18,6 +19,8 @@
 		<!-- Angular Material Library -->
 		<script src="../js/angular-material.min.js"></script>
 		<link rel="stylesheet" href="../css/angular-material.min.css" />
+		<!-- Eharts js-->
+		<script src="../js/echarts.min.js"></script>
 	</head>
 	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
@@ -137,7 +140,78 @@
 					}
 					console.log("处理data完成");
 				}
-
+				
+				$scope.draw = function(score){
+					var byId = function(id){
+						return document.getElementById(id)
+					}
+					var myradar = echarts.init(byId('radar'));
+					//var myradar = echarts.init(document.getElementById('radar'));
+					var option = {
+						title: {},
+						tooltip: {},
+						legend: {
+							data: ['体质得分'],
+							tooltip:{
+								color: 'orange'
+							}							
+						},
+						radar: {
+							// shape: 'circle',
+							name: {
+								textStyle: {
+									color: '#fff',
+									backgroundColor: '#999',
+									borderRadius: 3,
+									padding: [3, 5],
+									fontSize: 15,
+								}
+								
+							},
+							indicator: [
+								{ name: '阳虚', max: 60},
+								{ name: '阴虚', max: 60},
+								{ name: '痰湿', max: 60},
+								{ name: '瘀滞', max: 60},
+								{ name: '脾虚', max: 60},
+								{ name: '肾虚', max: 60},
+								{ name: '气虚', max: 60}
+							],
+							splitNumber: '2',
+							splitArea: {
+								areaStyle: {
+									color: ['white', 'white', 'white', 'white']
+								}
+							},
+							splitLine:{
+								lineStyle: {
+									color: ['#aaa', '#ddd'],
+									width: '1'
+								}
+							}
+							
+						},
+						series: [{
+							name: '体质分数',
+							type: 'radar',
+							// areaStyle: {normal: {}},
+							data : [
+								{
+									value : score,
+									name : '体质得分',
+									lineStyle:{
+										color: 'darkred',
+										width: '5'
+									}
+								},
+								
+							]
+						}]
+					};
+					myradar.setOption(option);
+					
+				}
+				
 				$scope.showExplainDialog = function(ev){
 					$mdDialog.show({
 						controller: DialogController,
@@ -153,6 +227,7 @@
 						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
 						onComplete: function(){    // 显示完成后的回调函数
 							
+							$scope.draw($scope.data.questionScore);
 						}
 					})
 					.then(function() {
@@ -173,16 +248,15 @@
 					}
 					
 					// added
-					//console.log("data for final window")
-					//console.log(data)
+					// 以下控制页面显示信息
 					$scope.data = data;
 					$scope.questions = qs;
-					console.log("question explain");
-					console.log(qs);
+					
 					$scope.faceResult = getfaceResult(data.faceResult);
 					if ($scope.faceResult.substr(0,3)!="未检测"){$scope.faceResult = $scope.faceResult.substr(3);}
 					$scope.tongueResult = gettongueResult(data.tongueResult);
 					if ($scope.tongueResult.substr(0,3)!="未检测"){$scope.tongueResult = $scope.tongueResult.substr(3);}
+					
 					$scope.score_desc = function(scores){
 						var tizhi = ["阳虚","阴虚","痰湿","瘀滞","脾虚","肾虚","气虚"];
 						var desc = ""
@@ -194,6 +268,25 @@
 						}
 						return desc
 					}
+					
+					$scope.answer_expl = function(question){
+						var choose = question.choose;
+						score = [0,0,0,0,0,0,0];
+						for(var j=0;j<choose.length;++j){
+						    // console.log(choose[j]);
+						    if(choose[j].state=="true"){
+								score[0] += choose[j].score.yangxu;
+								score[1] += choose[j].score.yinxu;
+								score[2] += choose[j].score.tanshi;
+								score[3] += choose[j].score.yuzhi;
+								score[4] += choose[j].score.pixu;
+								score[5] += choose[j].score.shenxu;
+								score[6] += choose[j].score.qixu;
+							}
+						}
+						return $scope.score_desc(score)
+					}
+					$scope.tizhi_expl = tizhi.rows[$scope.data.mainType];
 					
 				}
 			});
