@@ -36,11 +36,50 @@
 			</div>
 			<div class="mui-content-padded">
 				 <p>健康分数计算公式：</p>
-				 <ul>
-					 <li>没有症状：100分</li>
-					 <li>一个症状： 100 - SymScore*0.8</li>
-					 <li>两个症状： 100 - SymScore*0.8</li>
-				 </ul>
+				 <ul class="mui-table-view"> 
+						<li class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">没有症状</a>
+							<div class="mui-collapse-content">
+									<p>体质：健康</p>
+									<p>健康分数：100</p>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">1种症状</a>
+							<div class="mui-collapse-content">
+									<p>体质：当前症状对应的体质</p>
+									<p>症状分数=当前症状对应的体质得分</p>
+									<p>症状分数>40,健康分数：50+(80-症状分数)×0.8</p>
+									<p>症状分数<=40,健康分数：100-症状分数</p>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">2种症状</a>
+							<div class="mui-collapse-content">
+									<p>体质：两种症状对应的体质</p>
+									<p>症状分数=两个症状对应的体质得分中较小值</p>
+									<p>症状分数>40,健康分数：45+(80-症状分数)×0.8</p>
+									<p>症状分数<=40,健康分数：95-症状分数</p>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">3种症状</a>
+							<div class="mui-collapse-content">
+								<p>体质：得分最高的两种症状对应的体质</p>
+								<p>症状分数=三个症状对应的体质得分中较小值</p>
+								<p>症状分数>40,健康分数：40+(80-症状分数)×0.8</p>
+								<p>症状分数<=40,健康分数：90-症状分数</p>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-collapse">
+							<a class="mui-navigate-right" href="#">大于3种症状</a>
+							<div class="mui-collapse-content">
+								<p>体质：所有症状中得分最高的两个对应的体质</p>
+								<p>症状分数=所有症状对应的体质得分中最大值</p>
+								<p>健康分数：40-绝对值(40-症状分数)</p>
+							</div>
+						</li>
+				</ul>
 				 最终得分：100-10×0.8=92分。
 			</div>
 		</div>
