@@ -100,15 +100,16 @@
 				pdata = getPar("data");
 				pquestions = getPar("questions");
 				if (pquestions.length>0){
-					var questions = JSON.parse(decodeURI(pquestions));
+					$scope.questions = JSON.parse(JSON.parse(decodeURI(pquestions)));
 					console.log("url questions");
 					console.log(questions)
 				}
 				
 				
 				if(pdata.length>0){
-					console.log(decodeURI(pdata), decodeURI(pdata));
-					var data = JSON.parse(decodeURI(pdata));
+					
+					var data = JSON.parse(JSON.parse(decodeURI(pdata)));
+					//console.log(JSON.parse(data));
 					if(null!=data.faceResult){
 						$scope.faceResult = getfaceResult(data.faceResult);
 					}
@@ -122,7 +123,7 @@
 					$scope.faceScore = data.faceScore;
 					$scope.tongueScore = data.tongueScore;
 					$scope.data = data;
-					$scope.questions = questions;
+					//$scope.questions = questions;
 					$scope.healthScore = data.healthScore;
 					// console.log(Math.floor(data.healthScore/20), 4-Math.floor(data.healthScore/20));
 					$scope.HEALTH_INDEX = 4-Math.floor(parseInt(data.healthScore)/25);
@@ -213,6 +214,7 @@
 				}
 				
 				$scope.showExplainDialog = function(ev){
+					console.log("questions", $scope.questions)
 					$mdDialog.show({
 						controller: DialogController,
 						locals:{
@@ -251,6 +253,7 @@
 					// 以下控制页面显示信息
 					$scope.data = data;
 					$scope.questions = qs;
+					console.log("qs", qs)
 					
 					$scope.faceResult = getfaceResult(data.faceResult);
 					if ($scope.faceResult.substr(0,3)!="未检测"){$scope.faceResult = $scope.faceResult.substr(3);}
