@@ -1,0 +1,25 @@
+<md-dialog>
+    <style>
+        #imgBox{
+            height: 300px!important;
+            width: 300px!important;
+            margin: 30px auto;
+            background: url('../crop/js/plugins/cropper/images/bg.png');
+        }
+    </style>
+    <div >
+		<md-dialog-actions>
+			<div style="position: absolute; width: 100%; text-align: center">裁剪图片</div>
+		</md-dialog-actions>
+    </div>
+	<md-dialog-content>
+        <div id="imgBox">
+            <img id="target-img" width="300" height="300" />
+        </div>
+        <div style="text-align: center; padding-bottom: 20px;">
+            <button class="mui-btn mui-btn-red" ng-click="hide()">取消裁剪</button>
+            <button class="mui-btn mui-btn-blue" ng-click="confirm()">确认裁剪</button>
+        </div>
+    </md-dialog-content>
+    
+</md-dialog>

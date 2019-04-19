@@ -26,6 +26,11 @@
 		<script src="../js/diagnosis.js"></script>
 		<script src="../js/util.js"></script>
 		<script src="../js/config.js"></script>
+
+		<!-- 剪切图片 -->
+		<script type="text/javascript" src="../crop/js/plugins/jquery-3.1.1.slim.min.js" ></script>
+		<script type="text/javascript" src="../crop/js/plugins/cropper/js/cropper.min.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../crop/js/plugins/cropper/css/cropper.min.css"/>
 	</head>
 	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
@@ -38,6 +43,7 @@
 		</div>
 		
 		<div class="mui-content" >
+			
 			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估 </p>
 			<!-- 面诊和舌诊容器 -->
 			<div class="pic-diag-ctn">
@@ -342,7 +348,98 @@
 				/**
 					点击面诊或者舌诊
 				**/
-				$scope.selectFile = uploadImage;
+				$scope.selectFile = function(type){
+					var id = "facepic";
+					var imgid = "faceimg";
+					var descid = "face-desc";
+					if(type =="face"){
+						// 'facepic', 'faceimg', 'face-desc'
+						id = "facepic";
+						imgid = "faceimg";
+						descid = "face-desc";
+					}else{
+						// 'tonguepic', 'tongueimg', 'tongue-desc'
+						id = "tonguepic";
+						imgid = "tongueimg";
+						descid = "tongue-desc";
+					}
+					//console.log("select file"+id);
+					var files = document.getElementById(id).files;
+					if(0== files.length){
+						showLoading(false);
+						return;
+					}
+					var file = files[0];
+
+					var updateImage = function(src){
+						document.getElementById(imgid).src = src;
+					}
+					
+					$mdDialog.show({
+						controller: function($scope, $mdDialog, type, file){
+							console.log("show dialog", type, file)
+							$scope.confirm = function(){
+								console.log("hide");
+								var data = $("#target-img").cropper("getCroppedCanvas" , {
+									width: 300 , height: 300
+								});
+								var imgUrl = data.toDataURL("image/png", 1);
+								updateImage(imgUrl);
+								console.log(data, imgUrl);
+								$("#target-img").cropper("disable");
+								$mdDialog.hide();
+							}
+							$scope.hide = function(){
+								$mdDialog.hide();
+							}
+
+							var reader = new FileReader();
+
+							reader.readAsBinaryString(file);
+							reader.onload = function(f){
+								var result = document.getElementById("target-img");
+								var src = "data:" + file.type + ";base64," + window.btoa(this.result);
+								result.src = src;
+								$("#target-img").cropper("enable");
+							};
+
+							
+						},
+						locals:{
+							type: type,
+							file: file
+						},
+						templateUrl: './crop-image.tmpl.html',
+						parent: angular.element(document.body),
+						//targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+						onComplete: function(){    // 显示完成后的回调函数
+							console.log("show complete")
+							// 初始化剪切
+							$("#target-img").cropper({
+								aspectRatio: 3/3 , 
+								autoCropArea: 1,
+								dragMode: "move",//设置移动图片、重新绘制选图区域
+								cropBoxResizable: false,
+								//movable: true,//是否允许移动裁切框
+								zoomable: true,//是否允许放大图片
+								guides: true,//取消显示裁切线中间的虚线网格
+								minContainerWidth: 300,
+								minContainerHeight: 300,
+								minCanvasWidth: 300,
+								minCanvasHeight: 300,
+								crop: function(data){
+									//初始化
+									window._scaleX = data.scaleX;
+									window._scaleY = data.scaleY;
+								}
+							});
+							
+						}
+					})
+					// uploadImage(type);
+				};
 			
 
 				$scope.save_and_draw = function(qs, qid){  //用于重新进入问题页面时,显示上次选择情况
