@@ -1,0 +1,13 @@
+{
+	"index.html": {
+		"resources": [
+			"js/plugins/jquery-3.1.1.slim.min.js",
+			"js/plugins/cropper/css/cropper.min.css",
+			"js/plugins/cropper/js/cropper.min.js",
+			"js/mui.min.js",
+			"js/plugins/cropper/images/bg.png",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	}
+}

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title></title>
+<link href="css/mui.min.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="js/plugins/cropper/css/cropper.min.css"/>
+<style type="text/css">
+.mui-bar{
+	background-color: #1FBBA6;
+}
+.mui-title{
+	color: #FAFAFA;
+}
+#imgBox{
+	height: 300px!important;
+	width: 300px!important;
+	margin: 30px auto;
+	background: url('js/plugins/cropper/images/bg.png');
+}
+</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+    <h1 class="mui-title">头像</h1>
+    <a id="moreMenus" class="mui-icon mui-icon-compose mui-pull-right" style="color:white;font-weight: bold;"></a>
+</header>
+<div class="mui-content">
+	<div id="imgBox">
+		<img id="userImage_id" width="300" height="300" />
+	</div>
+	<table align="center">
+		<tr>
+			<td style="padding:2px 5px;"><button type="button" disabled id="scaleX_id" class="mui-btn mui-btn-blue toolbutton">左右变换</button></td>
+			<td style="padding:2px 5px;"><button type="button" disabled id="scaleY_id" class="mui-btn mui-btn-blue toolbutton">上下变换</button></td>
+			<td style="padding:2px 5px;"><button type="button" disabled id="rotateMax_id" class="mui-btn mui-btn-blue toolbutton">旋转90°</button></td>
+		</tr>
+		<tr>
+			<td colspan="3" style="padding:5px 5px;"><button type="button" disabled id="confirm_id" class="mui-btn mui-btn-green mui-btn-block toolbutton">确定并保存</button>	</td>
+		</tr>
+	</table>
+	<div style="padding: 10px; color:red;">
+		上传后图片服务端下载地址为：<span id="imagePath_div"></span>反斜杠我就不管了~~~可以将地址复制到浏览器进行预览下载等。
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery-3.1.1.slim.min.js" ></script>
+<script type="text/javascript" src="js/plugins/cropper/js/cropper.min.js" ></script>
+<script type="text/javascript" charset="utf-8">
+mui.init();
+
+mui.plusReady(function(){
+	plus.navigator.setStatusBarBackground( "#1FBBA6" );
+	document.getElementById("moreMenus").addEventListener("tap" , function(){
+		var editButtons = new Array();
+		editButtons.push({title:"拍照上传",style:"default"});
+		editButtons.push({title:"从相册选择",style:"default"});
+		plus.nativeUI.actionSheet( {
+			cancel:"取消",
+			buttons:editButtons
+		}, function(e){
+			var index = e.index;
+			switch (index){
+				case 1:
+					captureImage();//拍照
+					break;
+				case 2:
+					selectImage();//相册选择
+					break;
+			}
+		});
+	});
+	document.getElementById("scaleX_id").addEventListener("tap" , function(){
+		window._scaleX = window._scaleX * -1;
+		$("#userImage_id").cropper("scaleX" , window._scaleX);
+		
+	});
+	document.getElementById("scaleY_id").addEventListener("tap" , function(){
+		window._scaleY = window._scaleY * -1;
+		$("#userImage_id").cropper("scaleY" , window._scaleY);
+	});
+	document.getElementById("rotateMax_id").addEventListener("tap" , function(){
+		$("#userImage_id").cropper("rotate" , 90);
+	});
+	//确定裁切
+	document.getElementById("confirm_id").addEventListener("tap" , function(e){
+		var dataURL = $("#userImage_id").cropper("getCroppedCanvas" , {
+			width: 300 , height: 300
+		});
+		var imgUrl = dataURL.toDataURL("image/png", 1);
+//		$("#userImage_id").attr("src" , imgUrl);
+		$("#userImage_id").cropper("replace" , imgUrl);
+		$("#userImage_id").cropper("clear");//裁切完成取消显示裁切框
+		$("#userImage_id").cropper("disable");
+		//确定裁切后销毁裁切组件，标记一下，下次继续裁切时需要初始化一下裁切组件
+		window.imageDisable = true;
+		//禁用几个功能按钮
+		$("button.toolbutton").prop("disabled" , true);
+		//向后台提供数据
+		uploadFile(imgUrl);
+	});
+	//初始化裁切组件
+	initImageCropper();
+});
+
+//拍照
+function captureImage(){
+	var cmr = plus.camera.getCamera(2);
+	cmr.captureImage(
+		function(path){
+			//将图片地址转换
+			plus.io.resolveLocalFileSystemURL(path , function(entry){
+				var newPath = entry.toLocalURL() + "?version=" + Math.random();
+				loadImage(newPath);
+			});
+		},
+		function(error){
+			mui.toast(error.message);
+		},
+		{
+			filename: "_documents/"
+		}
+	);
+	
+}
+
+//文件上传
+function uploadFile(image){
+	var rootPath = "http://www.chendd.cn";
+	var url =  rootPath + "/testaa.servlet";
+	mui.ajax(url , {
+		dataType: "json",
+		type: "post",
+		data: {
+			imageBase64: image
+		},
+		success: function(data){
+			if(data.result == "success"){
+				mui.toast("上传成功!");
+				document.getElementById("imagePath_div").innerText = rootPath + "/" + data.message + ".image";
+				return;
+			}
+			mui.toast(data.message);
+		},
+		error: function(a,b,c){
+			mui.toast("上传头像出现错误，请稍后再试!");
+		}
+	});
+}
+
+function initImageCropper(){
+	//初始化组件
+	$("#userImage_id").cropper({
+		aspectRatio: 3/3 , 
+		autoCropArea: 1,
+		dragMode: "move",//设置移动图片、重新绘制选图区域
+		cropBoxResizable: false,
+		//movable: true,//是否允许移动裁切框
+		zoomable: true,//是否允许放大图片
+		guides: true,//取消显示裁切线中间的虚线网格
+		minContainerWidth: 300,
+		minContainerHeight: 300,
+		minCanvasWidth: 300,
+		minCanvasHeight: 300,
+		crop: function(data){
+			//初始化
+			window._scaleX = data.scaleX;
+			window._scaleY = data.scaleY;
+		}
+	});
+}
+
+//选择图片
+function selectImage(){
+	plus.gallery.pick(function(path){
+		loadImage(path);
+	}, function(e){
+		mui.toast("没有选择图片.");
+	});
+}
+
+//确定选择图片
+function loadImage(path){
+	var img = document.getElementById("userImage_id");
+	img.src = path;
+	if(window.imageDisable == true){
+		$("#userImage_id").cropper("enable");
+	}
+	$("#userImage_id").cropper("replace" , path);
+	//启用几个功能按钮
+	$("button.toolbutton").prop("disabled" , false);
+	document.getElementById("userImage_id").onclick = function(){
+		plus.runtime.openFile(path);
+	}
+}
+</script>
+</body>
+</html>
