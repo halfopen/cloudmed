@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http.response import *
 import os
 import time
+import base64
 from cloudmed.settings import BASE_DIR, MEDIA_ROOT, UPLOAD_ROOT
 from django import forms
 from so.tcm import TcmPro
@@ -15,6 +16,32 @@ r = Random()
 
 def face(req):
     return render(req, "face.html")
+
+
+def upload_image_base64(req):
+    if req.method == "POST":
+        print(req.POST, req.body)
+        # 获取参数
+        base64_str = req.POST.get("base64", None)
+        type = req.POST.get("type", "face")
+        ext = req.POST.get("ext", ".png")
+
+        if not base64_str:
+            print("no file to upload")
+            return HttpResponse("no base64 str")
+
+        img = base64.b64decode(base64_str)
+        filename = str(time.time())+ext
+        with open( os.path.join(UPLOAD_ROOT, filename), "wb") as f:
+            f.write(img)
+        if type == "face":
+            result = tcmPro.facePro(os.path.join(UPLOAD_ROOT, filename))
+        else:
+            result = tcmPro.tongPro(os.path.join(UPLOAD_ROOT, filename))
+        d = decode_result(result, type)
+        d['file'] = filename
+        d['base64'] = base64_str
+        return JsonResponse(d)
 
 
 def upload_image(req):
@@ -40,6 +67,7 @@ def upload_image(req):
             result = tcmPro.tongPro(os.path.join(UPLOAD_ROOT, filename))
         d = decode_result(result, type)
         d['file'] = filename
+        d['base64'] = ""
         return JsonResponse(d)
 
 

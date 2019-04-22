@@ -22,6 +22,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 import CloudMedLog.urls
 from CloudMedLog.views import *
+from django.views.static import serve
 
 
 DIRNAME = os.path.dirname(__file__)
@@ -31,8 +32,10 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(CloudMedLog.urls)),
     url(r'^upload', upload_image),
+    url(r'^upload_image_base64', upload_image_base64),
     url(r'^send_code', sendVrfCode),
-    url(r'^check_code', checkVrfCode)
+    url(r'^check_code', checkVrfCode),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
 ]
 
 if settings.DEBUG:

@@ -6,6 +6,7 @@ class Diagnosis(models.Model):
         一次面诊或者舌诊记录
     """
     img = models.ImageField(upload_to="upload")
+    crop_img_base64 = models.TextField(verbose_name="剪切图的base64编码", blank=True, default="")
     type = models.IntegerField(default=0, verbose_name="类型", choices=((0, "脸部"), (1, "舌头")))
     date = models.DateTimeField(auto_now=True)
     phone = models.CharField(max_length=24, verbose_name="手机号")
