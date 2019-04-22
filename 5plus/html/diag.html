@@ -621,33 +621,6 @@
 						$mdDialog.hide();
 						console.log("hide")
 					};
-					/*
-					var updateQuestion = function(qid){
-						//console.log($scope.questions.reverse());
-						c = qs[qid].choose;
-						if (qs[qid].option_type == '0'){//单选题
-							var choose = document.getElementsByName("danxuan");
-							for (var i=0; i<choose.length; i++){
-								if (choose[i].checked){
-									c[i].state = "true";						
-								}
-								else {c[i].state = "false";}//为确保多次更改同一题的正确性
-							}
-						}
-						else{ //多选题
-							var choose = document.getElementsByName("duoxuan");
-							for (var i=0; i<choose.length; i++){
-								if (choose[i].checked){
-									c[i].state = "true";
-								}
-								else{c[i].state = "false";}
-							}
-							
-						}
-						console.log(qs[qid]);
-						
-					}
-					*/
 					$scope.cancel = function() {
 						$mdDialog.cancel();
 						console.log("cancel")
