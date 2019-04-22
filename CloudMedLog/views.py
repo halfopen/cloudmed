@@ -20,7 +20,7 @@ def face(req):
 
 def upload_image_base64(req):
     if req.method == "POST":
-        print(req.POST, req.body)
+        #print(req.POST, req.body)
         # 获取参数
         base64_str = req.POST.get("base64", None)
         type = req.POST.get("type", "face")
