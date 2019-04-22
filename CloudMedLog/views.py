@@ -30,7 +30,7 @@ def upload_image_base64(req):
             print("no file to upload")
             return HttpResponse("no base64 str")
 
-        img = base64.b64decode(base64_str)
+        img = base64.b64decode(base64_str.replace("data:image/png;base64,", ""))
         filename = str(time.time())+ext
         with open( os.path.join(UPLOAD_ROOT, filename), "wb") as f:
             f.write(img)
