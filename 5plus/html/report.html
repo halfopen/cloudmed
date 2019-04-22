@@ -41,7 +41,7 @@
 				<p>{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
-				<div>结论：<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> {{healthScore}}分 <span class="explain-text" ng-click="showExplainDialog($event)">想知道为什么是这个结果吗？</span></div>
+				<div>结论：<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> <span class="explain-text" ng-click="showExplainDialog($event)">{{healthScore}}分</span> <span>点击蓝色文字查看对结果的解释</span></div>
 				<p>{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
 					<img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px" />
