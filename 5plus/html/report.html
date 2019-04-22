@@ -224,7 +224,7 @@
 						locals:{
 							id: 1,
 							qs: $scope.questions,
-							data: $scope.data
+							data: $scope.data,
 						},
 						templateUrl: './explain-dialog.tmpl.html',
 						parent: angular.element(document.body),
@@ -258,6 +258,7 @@
 					$scope.data = data;
 					$scope.questions = qs;
 					console.log("qs", qs)
+					console.log("data", $scope.data);
 					
 					$scope.faceResult = getfaceResult(data.faceResult);
 					if ($scope.faceResult.substr(0,3)!="未检测"){$scope.faceResult = $scope.faceResult.substr(3);}
