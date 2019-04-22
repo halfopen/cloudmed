@@ -761,16 +761,18 @@
 							
 						}
 						else{score = [scores.yangxu,scores.yinxu, scores.tanshi, scores.yuzhi, scores.pixu, scores.shenxu, scores.qixu];}
-						if (score[0]>0){description+="有点阳虚";}
-						if (score[1]>0){description+="有点阴虚";}
-						if (score[2]>0){description+="有点痰湿";}
-						if (score[3]>0){description+="有点瘀滞";}
-						if (score[4]>0){description+="有点脾虚";}
-						if (score[5]>0){description+="有点肾虚";}
-						if (score[6]>0){description+="有点气虚";}
+						if (score[0]>0){description+=" 有点阳虚";}
+						if (score[1]>0){description+=" 有点阴虚";}
+						if (score[2]>0){description+=" 有点痰湿";}
+						if (score[3]>0){description+=" 有点瘀滞";}
+						if (score[4]>0){description+=" 有点脾虚";}
+						if (score[5]>0){description+=" 有点肾虚";}
+						if (score[6]>0){description+=" 有点气虚";}
+
+						$scope.description = description;
 						//console.log(scores);
 						var option = {
-							title: {text: description,
+							title: {
 									textStyle:{
 										fontSize: 15
 									}								
