@@ -462,6 +462,7 @@
 					$mdDialog.show({
 						controller: function($scope, $mdDialog, type, file){
 							console.log("show dialog", type, file)
+							
 							$scope.confirm = function(){
 								console.log("hide");
 								var data = $("#target-img").cropper("getCroppedCanvas" , {
@@ -479,6 +480,7 @@
 								$mdDialog.hide();
 							}
 
+							
 							var reader = new FileReader();
 
 							reader.readAsBinaryString(file);
@@ -486,10 +488,9 @@
 								var result = document.getElementById("target-img");
 								var src = "data:" + file.type + ";base64," + window.btoa(this.result);
 								result.src = src;
-								$("#target-img").cropper("enable");
+								
 							};
 
-							
 						},
 						locals:{
 							type: type,
@@ -503,12 +504,13 @@
 						onComplete: function(){    // 显示完成后的回调函数
 							console.log("show complete")
 							// 初始化剪切
+							console.log("7777777777")
 							$("#target-img").cropper({
 								aspectRatio: 3/3 , 
 								autoCropArea: 1,
 								dragMode: "move",//设置移动图片、重新绘制选图区域
 								cropBoxResizable: false,
-								//movable: true,//是否允许移动裁切框
+								movable: false,//是否允许移动裁切框
 								zoomable: true,//是否允许放大图片
 								guides: true,//取消显示裁切线中间的虚线网格
 								minContainerWidth: 300,
@@ -519,8 +521,10 @@
 									//初始化
 									window._scaleX = data.scaleX;
 									window._scaleY = data.scaleY;
+									console.log("crop", data);
 								}
 							});
+							$("#target-img").cropper("enable");
 							
 						}
 					})
