@@ -25,9 +25,10 @@ def upload_image_base64(req):
         base64_str = req.POST.get("base64", None)
         type = req.POST.get("type", "face")
         ext = req.POST.get("ext", ".png")
-
+        print("7777777777777777777")
+        print("canshu", type, ext, base64_str)
         if not base64_str:
-            print("no file to upload")
+            print("no file to upload:", ext, type, base64_str)
             return HttpResponse("no base64 str")
 
         img = base64.b64decode(base64_str.replace("data:image/png;base64,", ""))
