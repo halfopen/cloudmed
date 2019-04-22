@@ -19,8 +19,8 @@ class Report(models.Model):
     """
     tizhi = models.CharField(verbose_name="体质", default="正常", max_length=16)       # 主要体质
     score = models.IntegerField(verbose_name="分数")                      # 健康分数
-    tongue = models.CharField(max_length=2048, verbose_name="舌诊", null=True)       # tongueJson
-    face = models.CharField(max_length=2048, verbose_name="面诊", null=True)     # faceJson
+    tongue = models.TextField(verbose_name="舌诊", null=True)       # tongueJson
+    face = models.TextField(verbose_name="面诊", null=True)     # faceJson
     date = models.DateTimeField(auto_now=True)
     questions = models.TextField(verbose_name="回答的问题", default="")
     result_json = models.TextField(verbose_name="原始json", default="")
