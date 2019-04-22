@@ -83,10 +83,12 @@ var diagnosis = function(questions, faceResult, tongueResult){
         symCount: [0, 0, 0, 0, 0, 0, 0],         // 各种体质症状个数
         phy: "",                             // 最终体质
         faceScore: getFaceScore(faceResult),
-        tongueScore: getTongueScore(tongueResult)
+        tongueScore: getTongueScore(tongueResult),
+        symptom_num: 0, 
+        baseScore: null,
     }
 
-    console.log(dict);
+    
 
     // 遍历所有选项
     for(var i=0;i<questions.length;++i){
@@ -200,6 +202,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         dict.mainType = tizhi[0];
     }
     var baseScore = 0;
+    dict.symptom_num = symptom_num;
     if(symptom_num>3){
         baseScore = sortedQuestionScore[6];
         dict.healthType[tizhi[0]] = 1;
@@ -254,6 +257,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         dict.healthScore = 100;
     }
     console.log(baseScore, JSON.stringify(dict));
-
+    dict.baseScore = baseScore;
+    console.log(dict);
     return dict;
 };
