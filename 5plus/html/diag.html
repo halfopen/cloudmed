@@ -210,6 +210,82 @@
 					});
 				}
 			};
+			// 上传图片的base64,获取面诊结果
+			var uploadBase64Image = function(type, base64str){
+				showLoading(true);
+				var id = "facepic";
+				var imgid = "faceimg";
+				var descid = "face-desc";
+				if(type =="face"){
+					// 'facepic', 'faceimg', 'face-desc'
+					id = "facepic";
+					imgid = "faceimg";
+					descid = "face-desc";
+				}else{
+					// 'tonguepic', 'tongueimg', 'tongue-desc'
+					id = "tonguepic";
+					imgid = "tongueimg";
+					descid = "tongue-desc";
+				}
+				// upload img
+				var url = config.server_root+"upload_image_base64"
+					var form = new FormData();
+					form.append("base64", base64str);
+					form.append("type", type);
+					var timeoutCallback = setTimeout(function(){
+						showLoading(false);
+						mui.alert("请检查网络连接后重试", '连接超时', null);
+
+					}, 10000);
+		　		 	mui.ajax({
+						url:url,
+						type:"post",
+						data:form,
+						processData:false,
+						contentType:false,
+						success:function(data){
+							clearTimeout(timeoutCallback);
+							setTimeout(function(){
+								if(type=="face"){
+									faceResult = data;
+								}else{
+									tongueResult = data;
+								}
+								showLoading(false);
+								if(type=="face"){
+									document.getElementById(descid).innerHTML = getfaceResult(data);
+								}else{
+									document.getElementById(descid).innerHTML = gettongueResult(data);
+								}
+								if("0"==data.raw){
+									console.log("检测失败");
+									//document.getElementById(descid).innerHTML
+									return;
+								}
+								var html = "";
+								var short_html = "";
+								for(var key in data.result){
+									console.log(data.key[key]);
+									console.log(data.info[key][data.result[key]]);
+									html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
+								}
+								
+								
+							}, 1000);
+							console.log("over..");
+							
+							console.log(data);
+						},
+						error: function(req, status, error){
+							clearTimeout(timeoutCallback);
+							setTimeout(function(){
+								showLoading(false);
+								mui.alert(status, "请求出错", null);
+							}, 1000);
+						}
+					});
+				
+			};
 			
 			/**
 			 * 压缩并上传照片
@@ -272,8 +348,16 @@
 					lastReport = JSON.parse(lastReport);
 					console.log("lastReport", lastReport);
 					$scope.questions = lastReport.questions;
+					faceResult = lastReport.faceResult;
+					tongueResult = lastReport.tongueResult;
+					// 还原上次面诊舌诊结果
 					document.getElementById("face-desc").innerHTML = getfaceResult(lastReport.faceResult);
 					document.getElementById("tongue-desc").innerHTML = gettongueResult(lastReport.tongueResult);
+
+					// 还原上次图片
+					document.getElementById("faceimg").src = lastReport.faceResult.base64;
+					document.getElementById("tongueimg").src = lastReport.tongueResult.base64;
+
 					for(var i=0;i<$scope.questions.length;++i){
 						var chooseIndex = -1;
 						for(var j=0;j<$scope.questions[i].choose.length;++j){
@@ -385,9 +469,11 @@
 								});
 								var imgUrl = data.toDataURL("image/png", 1);
 								updateImage(imgUrl);
-								console.log(data, imgUrl);
+								console.log("crop end", data, imgUrl);
 								$("#target-img").cropper("disable");
 								$mdDialog.hide();
+								// 上传图片到服务器
+								uploadBase64Image(type, imgUrl);
 							}
 							$scope.hide = function(){
 								$mdDialog.hide();
@@ -549,7 +635,6 @@
 				**/
 				$scope.diagnosis = function(){
 					showLoading(true);
-					
 					
 					$scope.faceResult = faceResult;
 					$scope.tongueResult = tongueResult;
