@@ -355,8 +355,8 @@
 					document.getElementById("tongue-desc").innerHTML = gettongueResult(lastReport.tongueResult);
 
 					// 还原上次图片
-					if(null!= lastReport.faceResult)document.getElementById("faceimg").src = lastReport.faceResult.base64;
-					if(null!= lastReport.tongueResult)document.getElementById("tongueimg").src = lastReport.tongueResult.base64;
+					if(null!= lastReport.faceResult)document.getElementById("faceimg").src = config.media_root+lastReport.faceResult.file;
+					if(null!= lastReport.tongueResult)document.getElementById("tongueimg").src = config.media_root+lastReport.tongueResult.file;
 
 					for(var i=0;i<$scope.questions.length;++i){
 						var chooseIndex = -1;
