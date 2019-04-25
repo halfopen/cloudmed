@@ -41,7 +41,7 @@ def upload_image_base64(req):
             result = tcmPro.tongPro(os.path.join(UPLOAD_ROOT, filename))
         d = decode_result(result, type)
         d['file'] = filename
-        d['base64'] = base64_str
+        # d['base64'] = base64_str
         return JsonResponse(d)
 
 
@@ -68,7 +68,7 @@ def upload_image(req):
             result = tcmPro.tongPro(os.path.join(UPLOAD_ROOT, filename))
         d = decode_result(result, type)
         d['file'] = filename
-        d['base64'] = ""
+        # d['base64'] = ""
         return JsonResponse(d)
 
 
