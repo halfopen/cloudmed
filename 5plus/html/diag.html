@@ -53,7 +53,7 @@
 						<img id="faceimg" src="../images/face.png" />
 						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
 						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
-						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/jpg" capture="camera" />
+						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
 						<div class="desc" id="face-desc">
 							请拍面部
 						</div>
@@ -63,7 +63,7 @@
 					<div class="border tongue-diag">
 						<span>舌诊</span>
 						<img id="tongueimg" src="../images/tongue.png" />
-						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/jpg" mutiple="mutiple" capture="camera" />
+						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
 						<div class="desc" id="tongue-desc">
 							请拍舌头
 						</div>
@@ -510,7 +510,7 @@
 								autoCropArea: 1,
 								dragMode: "move",//设置移动图片、重新绘制选图区域
 								cropBoxResizable: false,
-								movable: false,//是否允许移动裁切框
+								movable: true,//是否允许移动裁切框
 								zoomable: true,//是否允许放大图片
 								guides: true,//取消显示裁切线中间的虚线网格
 								minContainerWidth: 300,

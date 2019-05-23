@@ -267,13 +267,15 @@
 					
 					$scope.score_desc = function(scores){
 						var tizhi = ["阳虚","阴虚","痰湿","瘀滞","脾虚","肾虚","气虚"];
-						var desc = ""
+						var desc = "";
+						var flag = false;
 						for(var i=0; i<tizhi.length; i++){
 							if (scores[i] > 0){
+								flag = true;
 								desc += tizhi[i]+"+"+ scores[i] +"分 ";
 							}
-							
 						}
+						if(false== flag)desc = "无";
 						return desc
 					}
 					

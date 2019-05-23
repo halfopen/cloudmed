@@ -38,7 +38,8 @@ var diagnosis = function(questions, faceResult, tongueResult){
     var getFaceScore = function(faceResult){
         var score = new Array(7);
         for(var i=0;i<7;++i)score[i] = 0;
-        if(null!=faceResult && typeof(faceResult)=="object"){
+        if(null!=faceResult && typeof(faceResult)=="object" && faceResult.raw!="0"){
+			console.log("myraw", faceResult.raw);
             if(faceResult.result._2faceColor == 0){ // 面白
                 score[0] += 5;
                 score[5] += 8;
@@ -53,7 +54,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
     var getTongueScore = function(tongueResult){
         var score = new Array(7);
         for(var i=0;i<7; ++i)score[i] = 0;
-        if(null!=tongueResult && typeof(tongueResult)=="object"){
+        if(null!=tongueResult && typeof(tongueResult)=="object" && tongueResult.raw!="0"){
             if(tongueResult.result_6tongueNatureColor==1){ // 舌淡白
                 score[0] += 8;
                 score[4] += 10;
