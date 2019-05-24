@@ -1,14 +1,11 @@
 var option = {
-    title: {
-        
-    },
+    title: {},
     tooltip: {},
     legend: {
         data: ['体质得分'],
         tooltip:{
             color: 'orange'
-        }
-        
+        }							
     },
     radar: {
         // shape: 'circle',
@@ -19,16 +16,17 @@ var option = {
                 borderRadius: 3,
                 padding: [3, 5],
                 fontSize: 15,
-           }
-           
+            }
+            
         },
         indicator: [
-           { name: '阴虚', max: 6500},
-           { name: '阳虚', max: 16000},
-           { name: '气虚', max: 30000},
-           { name: '血瘀', max: 38000},
-           { name: '肾虚', max: 52000},
-           { name: '瘀滞', max: 25000}
+            { name: '阳虚', max: 60},
+            { name: '阴虚', max: 60},
+            { name: '痰湿', max: 60},
+            { name: '瘀滞', max: 60},
+            { name: '脾虚', max: 60},
+            { name: '肾虚', max: 60},
+            { name: '气虚', max: 60}
         ],
         splitNumber: '2',
         splitArea: {
@@ -45,19 +43,19 @@ var option = {
         
     },
     series: [{
-        name: '预算 vs 开销（Budget vs spending）',
+        name: '体质分数',
         type: 'radar',
         // areaStyle: {normal: {}},
         data : [
             {
-                value : [1000, 10000, 28000, 35000, 50000, 19000],
+                value : [0,0,0,0,0,0,0],
                 name : '体质得分',
                 lineStyle:{
                     color: 'darkred',
                     width: '5'
                 }
             },
-           
+            
         ]
     }]
 };

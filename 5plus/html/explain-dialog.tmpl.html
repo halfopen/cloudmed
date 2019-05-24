@@ -27,7 +27,7 @@
 					<div style="font-weight:bold">问题{{$index+1}}:{{q.short_question}}<span ng-if="q.option_type=='1'">(多选)</span></div>
 					<div>回答是:{{q.choose_result}}</div>
 					<div>结果的影响：{{answer_expl(q)}}</div>
-					
+					<div style="color:red">{{q.special_info}}</div>
 				</div>
 			</div>
 			

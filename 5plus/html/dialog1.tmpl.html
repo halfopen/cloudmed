@@ -1,3 +1,4 @@
+<!-- 问诊弹出框 -->
 <md-dialog>
 	<script src="../data/question.js" ></script>
 	<script src="../js/echarts.min.js"></script>
@@ -12,6 +13,7 @@
 		<div class="mui-content">
 			<div class="mui-row">				
 				<p>{{qs[id].question}}<span ng-if="qs[id].option_type=='1'">(可多选)</span></p>
+				
 			</div>
 			<div class="mui-content-padded"> 
 				  <!-- set question type -->
@@ -31,6 +33,7 @@
 				</form>
 			</div>
 			<div ng-if="userType=='2' || userType=='3'" class="mui-content-padded">
+					<p style="color:red">{{qs[id].special_info}}</p>
 				<p id="description" style="color:black">{{description}}</p>
 				<div class="chart" id="radar"></div>
 

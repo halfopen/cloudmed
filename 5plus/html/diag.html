@@ -26,7 +26,7 @@
 		<script src="../js/diagnosis.js"></script>
 		<script src="../js/util.js"></script>
 		<script src="../js/config.js"></script>
-
+		<script src="../js/radar-option.js"></script>
 		<!-- 剪切图片 -->
 		<script type="text/javascript" src="../crop/js/plugins/jquery-3.1.1.slim.min.js" ></script>
 		<script type="text/javascript" src="../crop/js/plugins/cropper/js/cropper.min.js" ></script>
@@ -572,68 +572,7 @@
 					if (score[6]>0){description+=" 有点气虚";}
 						
 					document.getElementById("description").innerHTML = description;
-					var option = {
-						title: {
-								textStyle:{
-									fontSize: 15
-								}			
-						},
-						tooltip: {},
-						legend: {
-							data: ['体质得分'],
-							tooltip:{
-								color: 'orange'
-							}							
-						},
-						radar: {
-							// shape: 'circle',
-							name: {
-								textStyle: {
-									color: '#fff',
-									backgroundColor: '#999',
-									borderRadius: 3,
-									padding: [3, 5],
-									fontSize: 15,
-								}
-							},
-							indicator: [
-								{ name: '阳虚', max: 30},
-								{ name: '阴虚', max: 30},
-								{ name: '痰湿', max: 30},
-								{ name: '瘀滞', max: 30},
-								{ name: '脾虚', max: 30},
-								{ name: '肾虚', max: 30},
-								{ name: '气虚', max: 30}
-							],
-							splitNumber: '2',
-							splitArea: {
-								areaStyle: {
-									color: ['white', 'white', 'white', 'white']
-								}
-							},
-							splitLine:{
-								lineStyle: {
-									color: ['#aaa', '#ddd'],
-									width: '1'
-								}
-							}
-						},
-						series: [{
-							name: '体质分数',
-							type: 'radar',
-							// areaStyle: {normal: {}},
-							data : [
-								{
-									value : score,
-									name : '体质得分',
-									lineStyle:{
-										color: 'darkred',
-										width: '5'
-									}
-								},
-							]
-						}]
-					};
+					option.series[0].data[0].value = score;
 					myradar.setOption(option);	
 					return description;
 				}
@@ -779,71 +718,7 @@
 						//console.log(scores);
 						
 						var myradar = echarts.init(byId('radar'));
-						var option = {
-							title: {
-									textStyle:{
-										fontSize: 15
-									}								
-							},
-							tooltip: {},
-							legend: {
-								data: ['体质得分'],
-								tooltip:{
-									color: 'orange'
-								}							
-							},
-							radar: {
-								// shape: 'circle',
-								name: {
-									textStyle: {
-										color: '#fff',
-										backgroundColor: '#999',
-										borderRadius: 3,
-										padding: [3, 5],
-										fontSize: 15,
-									}
-									
-								},
-								indicator: [
-									{ name: '阳虚', max: 30},
-									{ name: '阴虚', max: 30},
-									{ name: '痰湿', max: 30},
-									{ name: '瘀滞', max: 30},
-									{ name: '脾虚', max: 30},
-									{ name: '肾虚', max: 30},
-									{ name: '气虚', max: 30}
-								],
-								splitNumber: '2',
-								splitArea: {
-									areaStyle: {
-										color: ['white', 'white', 'white', 'white']
-									}
-								},
-								splitLine:{
-									lineStyle: {
-										color: ['#aaa', '#ddd'],
-										width: '1'
-									}
-								}
-								
-							},
-							series: [{
-								name: '体质分数',
-								type: 'radar',
-								// areaStyle: {normal: {}},
-								data : [
-									{
-										value : score,
-										name : '体质得分',
-										lineStyle:{
-											color: 'darkred',
-											width: '5'
-										}
-									},
-									
-								]
-							}]
-						};
+						option.series[0].data[0].value = score;
 						myradar.setOption(option);			
 					}
 				}

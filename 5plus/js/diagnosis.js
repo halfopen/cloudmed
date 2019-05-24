@@ -116,20 +116,22 @@ var diagnosis = function(questions, faceResult, tongueResult){
                 if(choose[j].score.shenxu!=0)dict.symCount[5]++;
                 if(choose[j].score.qixu!=0)dict.symCount[6]++;
 
-                // 第一题选了A就是肾虚
+                // 第一题选了A就是肾虚 i问题id j选项
                 if(i==0 && j==0){
+                    
                     dict.healthType[6] = 1;
+                    console.log("标记气虚", dict.healthType);
                 }
                 // 
                 if(i==12 && j==0){
-                    dict.healthType[5] == 0;
+                    
+                    dict.healthType[5] = 1;
+                    console.log("标记肾虚", dict.healthType)
                 }
-            }
-
-            
+            } 
         }
     }
-
+    console.log("初步得分", dict.questionScore, dict.symCount, dict.healthType);
     // 把面部和舌头的加上
     for(var i=0;i<7;i++) {
         dict.questionScore[i] += dict.faceScore[i] + dict.tongueScore[i];
@@ -143,10 +145,11 @@ var diagnosis = function(questions, faceResult, tongueResult){
     // 如果气虚症状综述<2或者关键性问题回答否，那么就不是气虚
     if(dict.symCount[6]<2 && dict.healthType[6]==0){
         dict.questionScore[6] = 0;
-        symptom_num++;
+        symptom_num++; // 症状数 -1 
     }
     // 肾虚
     if(dict.symCount[5]<2&& dict.healthType[5]==0){
+        console.log("肾虚清空")
         dict.questionScore[5] = 0;
         symptom_num++;
     }

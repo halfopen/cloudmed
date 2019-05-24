@@ -16,6 +16,7 @@
 		<script src="../js/angular-aria.min.js"></script>
 		<script src="../js/angular-messages.min.js"></script>
 		<script src="../js/diagnosis.js"></script>
+		<script src="../js/radar-option.js"></script>
 		<!-- Angular Material Library -->
 		<script src="../js/angular-material.min.js"></script>
 		<link rel="stylesheet" href="../css/angular-material.min.css" />
@@ -44,7 +45,7 @@
 				<div>结论：
 					<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> 
 					<span class="explain-text" ng-click="showExplainDialog($event)">{{healthScore}}分</span> 
-					<span ng-if="userType=='3'">点击蓝色文字查看对结果的解释</span>
+					<span ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
 				</div>
 				<p>{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
@@ -89,6 +90,7 @@
 				 }
 				 return get_par;
 			 }
+			
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.faceResult = "无面诊记录";
@@ -157,74 +159,14 @@
 					}
 					var myradar = echarts.init(byId('radar'));
 					//var myradar = echarts.init(document.getElementById('radar'));
-					var option = {
-						title: {},
-						tooltip: {},
-						legend: {
-							data: ['体质得分'],
-							tooltip:{
-								color: 'orange'
-							}							
-						},
-						radar: {
-							// shape: 'circle',
-							name: {
-								textStyle: {
-									color: '#fff',
-									backgroundColor: '#999',
-									borderRadius: 3,
-									padding: [3, 5],
-									fontSize: 15,
-								}
-								
-							},
-							indicator: [
-								{ name: '阳虚', max: 60},
-								{ name: '阴虚', max: 60},
-								{ name: '痰湿', max: 60},
-								{ name: '瘀滞', max: 60},
-								{ name: '脾虚', max: 60},
-								{ name: '肾虚', max: 60},
-								{ name: '气虚', max: 60}
-							],
-							splitNumber: '2',
-							splitArea: {
-								areaStyle: {
-									color: ['white', 'white', 'white', 'white']
-								}
-							},
-							splitLine:{
-								lineStyle: {
-									color: ['#aaa', '#ddd'],
-									width: '1'
-								}
-							}
-							
-						},
-						series: [{
-							name: '体质分数',
-							type: 'radar',
-							// areaStyle: {normal: {}},
-							data : [
-								{
-									value : score,
-									name : '体质得分',
-									lineStyle:{
-										color: 'darkred',
-										width: '5'
-									}
-								},
-								
-							]
-						}]
-					};
+					option.series[0].data[0].value = score;
 					myradar.setOption(option);
 					
 				}
 				
 				$scope.showExplainDialog = function(ev){
 					console.log("questions", $scope.questions)
-					if($scope.userType!='3')return;
+					if($scope.userType!='2')return;
 					$mdDialog.show({
 						controller: DialogController,
 						locals:{
@@ -281,7 +223,10 @@
 								desc += tizhi[i]+"+"+ scores[i] +"分 ";
 							}
 						}
-						if(false== flag)desc = "无";
+						if(false== flag)
+						{
+							desc = "无";
+						}
 						return desc
 					}
 					
@@ -300,7 +245,13 @@
 								score[6] += choose[j].score.qixu;
 							}
 						}
-						return $scope.score_desc(score)
+						var ret = $scope.score_desc(score, question);
+						if(ret=="无"){
+							if(question.id=="12")ret = "肾虚分数清空， 不是肾虚体质";
+							if(question.id=="0")ret = "气虚分数清空, 不是气虚体质";
+						}
+						console.log("ret", ret, question.id);
+						return ret;
 					}
 					$scope.tizhi_expl = tizhi.rows[$scope.data.mainType];
 					
@@ -312,7 +263,7 @@
 					p = phyTypes.indexOf($scope.phyType[index]);
 					//console.log(p);
 					console.log("questions", $scope.questions)
-					if($scope.userType!='3')return;
+					if($scope.userType!='2')return;
 					$mdDialog.show({
 						controller: DialogController1,
 						locals:{

@@ -75,7 +75,7 @@
 			}
 			.notify{
 				height:25%;
-				display: flex;
+				/* display: flex; */
 				background: rgb(199, 154, 184);
 				border-radius: 5px;
 				padding: 5px;
@@ -148,7 +148,7 @@
 		<div class="mui-content home" ng-show="tabIndex==0">
 				<div class="notify"> 
 					<div>{{date}}</div> 
-					<div>{{tip}}</div>
+					<div ng-if="userType=='2'">{{tip}}</div>
 				</div>
 
 				<div class="entry-ctn mui-row">
@@ -205,7 +205,8 @@
 				$scope.titles = ["首页", "诊断记录"];
 				$scope.moment = moment;
 				$scope.records = [];
-				
+				$scope.userType = localStorage.getItem("userType");
+				$scope.tip = "云中医由复旦大学计算机学院和上海中医药大学合作研制，面诊和舌诊算法使用深度学习模型训练完成，1万5千份训练集，2000多志愿者参与测试;问诊规则由多个资深老中医编写完成"
 				if(true || undefined == mui.os.plus){
 					console.log("web 环境");
 					$scope.goDiagnosis = function(id){
