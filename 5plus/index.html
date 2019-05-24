@@ -93,7 +93,7 @@
 				table-layout: fixed;
 				border-top: 0;
 				border-bottom: 0;
-				-webkit-touch-callout: none
+				-webkit-touch-callout: none;
 				padding-top: 10px;
 				border-top: 1px solid gray;
 				background: white;
@@ -147,7 +147,7 @@
 		</div>
 		<div class="mui-content home" ng-show="tabIndex==0">
 				<div class="notify"> 
-					<div>{{date}}</div> 
+					<div ng-hide="userType=='2'">{{date}}</div> 
 					<div ng-if="userType=='2'">{{tip}}</div>
 				</div>
 
