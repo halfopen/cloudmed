@@ -220,7 +220,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         if (80-baseScore>=40){
             dict.healthScore = 90 - baseScore;
         }else if(80-baseScore<40){
-            dict.healthScore = (int)(40 + (80-baseScore)*0.8);
+            dict.healthScore = parseInt(40 + (80-baseScore)*0.8);
         }
     }else if(symptom_num == 2){
         baseScore = sortedQuestionScore[6-1];
@@ -235,7 +235,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         if(80-baseScore>=40){
             dict.healthScore = 95-baseScore;
         }else if(80-baseScore<40){
-            dict.healthScore = (int)(45 + (80-baseScore)*0.8);
+            dict.healthScore = parseInt(45 + (80-baseScore)*0.8);
         }
     }else if(symptom_num==1){
         if(tizhi[0]>0) {
@@ -246,7 +246,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         if(80-baseScore>40){
             dict.healthScore = 100-baseScore;
         }else{
-            dict.healthScore = 50 + (int)((80-baseScore)*0.8);
+            dict.healthScore = 50 + parseInt((80-baseScore)*0.8);
         }
 
     }else if(symptom_num==0){

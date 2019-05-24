@@ -563,13 +563,13 @@
 							default_check[i].checked = true;
 						}
 					}
-					if (score[0]>0){description+="有点阳虚";}
-					if (score[1]>0){description+="有点阴虚";}
-					if (score[2]>0){description+="有点痰湿";}
-					if (score[3]>0){description+="有点瘀滞";}
-					if (score[4]>0){description+="有点脾虚";}
-					if (score[5]>0){description+="有点肾虚";}
-					if (score[6]>0){description+="有点气虚";}
+					if (score[0]>0){description+=" 有点阳虚";}
+					if (score[1]>0){description+=" 有点阴虚";}
+					if (score[2]>0){description+=" 有点痰湿";}
+					if (score[3]>0){description+=" 有点瘀滞";}
+					if (score[4]>0){description+=" 有点脾虚";}
+					if (score[5]>0){description+=" 有点肾虚";}
+					if (score[6]>0){description+=" 有点气虚";}
 						
 					document.getElementById("description").innerHTML = description;
 					var option = {
@@ -595,7 +595,6 @@
 									padding: [3, 5],
 									fontSize: 15,
 								}
-								
 							},
 							indicator: [
 								{ name: '阳虚', max: 30},
@@ -618,7 +617,6 @@
 									width: '1'
 								}
 							}
-							
 						},
 						series: [{
 							name: '体质分数',
@@ -633,7 +631,6 @@
 										width: '5'
 									}
 								},
-								
 							]
 						}]
 					};
@@ -744,7 +741,7 @@
 						}
 					}
 					$scope.draw = function(scores, qid){  //added
-						if(userType!='2' || userType!='3')return;
+						if(userType!='2')return;  // 第二类才可以
 						var byId = function(id){
 							return document.getElementById(id)
 						}
@@ -778,7 +775,7 @@
 						if (score[5]>0){description+=" 有点肾虚";}
 						if (score[6]>0){description+=" 有点气虚";}
 
-						$scope.description = description;
+						document.getElementById("description").innerHTML = description;
 						//console.log(scores);
 						
 						var myradar = echarts.init(byId('radar'));
