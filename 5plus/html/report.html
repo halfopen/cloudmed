@@ -41,7 +41,11 @@
 				<p>{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
-				<div>结论：<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> <span class="explain-text" ng-click="showExplainDialog($event)">{{healthScore}}分</span> <span>点击蓝色文字查看对结果的解释</span></div>
+				<div>结论：
+					<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> 
+					<span class="explain-text" ng-click="showExplainDialog($event)">{{healthScore}}分</span> 
+					<span ng-if="userType=='3'">点击蓝色文字查看对结果的解释</span>
+				</div>
 				<p>{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
 					<img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px" />
@@ -90,6 +94,7 @@
 				$scope.faceResult = "无面诊记录";
 				$scope.tongueResult = "无舌诊记录";
 				$scope.healthState = "身体棒棒哒";
+				$scope.userType = localStorage.getItem("userType");
 				//$scope.templateUrl = './suggestions/suggestion_yangxu.html';
 				// 建议类型
 				$scope.stype = 7; // 健康
@@ -219,12 +224,14 @@
 				
 				$scope.showExplainDialog = function(ev){
 					console.log("questions", $scope.questions)
+					if($scope.userType!='3')return;
 					$mdDialog.show({
 						controller: DialogController,
 						locals:{
 							id: 1,
 							qs: $scope.questions,
 							data: $scope.data,
+							userType: $scope.userType
 						},
 						templateUrl: './explain-dialog.tmpl.html',
 						parent: angular.element(document.body),
@@ -232,7 +239,6 @@
 						clickOutsideToClose:false,
 						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
 						onComplete: function(){    // 显示完成后的回调函数
-							
 							$scope.draw($scope.data.questionScore);
 						}
 					})
@@ -306,6 +312,7 @@
 					p = phyTypes.indexOf($scope.phyType[index]);
 					//console.log(p);
 					console.log("questions", $scope.questions)
+					if($scope.userType!='3')return;
 					$mdDialog.show({
 						controller: DialogController1,
 						locals:{

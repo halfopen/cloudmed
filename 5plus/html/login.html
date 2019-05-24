@@ -15,11 +15,21 @@
 		<div class="loading-overlay" id="loading-overlay" style="display: none;">
 			<img src="../images/loading.svg" style="height:80px; width:80px;">
 		</div>
+		
 		<div class="mui-content " ng-app="myApp" ng-controller="myCtrl">
 			<div class="mui-input-group" style="margin-top:20px">
+				
 				<div class="mui-input-row">
 					<label>手机号</label>
 					<input ng-model="phone" ng-change="phoneChange()" type="number" title="手机号码" placeholder="请输入手机号" value="{{phone}}">
+				</div>
+				<div class="mui-input-row">
+					<label>用户类型</label>
+					<select ng-model="userType" ng-change="userTypeChange()">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					</select>
 				</div>
 				<div class="mui-input-row">
 					<label>验证码</label>
@@ -32,6 +42,7 @@
 						width: 35%;
 					">{{tipSend}}</span>
 				</div>
+
 				<div class="mui-button-row"><button ng-click="submit()" type="button" class="mui-btn mui-btn-primary">提交</button></div>
 			</div>
 		</div>
@@ -46,7 +57,7 @@
 			app.controller('myCtrl', function($scope){
 				console.log("controller");
 				$scope.phone = null;
-				
+				$scope.userType = "1";
 				$scope.vrfCode = null;
 				$scope.tipSend = "发送验证码";
 				
@@ -80,6 +91,10 @@
 				$scope.phoneChange = function(){
 					console.log("change", $scope.phone);
 					localStorage.setItem("phone", $scope.phone);
+				}
+				// 用户选择修改用户类型
+				$scope.userTypeChange = function(){
+					console.log("change userType", $scope.userType);
 				}
 
 				var timer = function(){
@@ -131,13 +146,15 @@
 						console.log(localStorage.getItem("countDown"));
 					}
 				}
-
+				// 点击登陆
 				$scope.submit = function(){
 					if(checkInput()){
 						mui.toast("校验验证码");
 						showLoading(true);
 						var url = "http://facestory.cn:8080/check_code?phone="+$scope.phone+"&code="+$scope.vrfCode;
 						var vrfCode = $scope.vrfCode;
+						var userType = $scope.userType;
+						localStorage.setItem("userType", userType);
 						mui.ajax({
 							url:url,
 							type:"get",
@@ -152,7 +169,6 @@
 										mui.openWindow("../index.html");
 									}
 								});
-								
 							},
 							error: function(req, status, error){
 								showLoading(false);
@@ -164,7 +180,6 @@
 						}, 1000);
 					}
 				}
-
 			});
 		</script>
 

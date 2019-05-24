@@ -4,14 +4,14 @@
 	<link href="../css/chart.css" rel="stylesheet"/>
     <div >
 		<md-dialog-actions>
-			<span  ng-click="cancel()"  class="mui-icon mui-icon-checkmarkempty"></span>
+			<span  ng-click="cancel()"  style="padding: 0 20px;" class="mui-icon mui-icon-checkmarkempty"></span>
 		</md-dialog-actions>
         
     </div>
 	<md-dialog-content>
 		<div class="mui-content">
 			<div class="mui-row">				
-				<p>{{qs[id].question}}<span ng-if="qs[id].option_type=='1'">(多选)</span></p>
+				<p>{{qs[id].question}}<span ng-if="qs[id].option_type=='1'">(可多选)</span></p>
 			</div>
 			<div class="mui-content-padded"> 
 				  <!-- set question type -->
@@ -30,8 +30,8 @@
 					</div>
 				</form>
 			</div>
-			<div class="mui-content-padded">
-				<p style="color:black">{{description}}</p>
+			<div ng-if="userType=='2' || userType=='3'" class="mui-content-padded">
+				<p id="description" style="color:black">{{description}}</p>
 				<div class="chart" id="radar"></div>
 
 			</div>	

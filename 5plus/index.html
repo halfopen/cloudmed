@@ -169,7 +169,9 @@
 		</div>
 
 		<div class="record content-ctn mui-content" ng-show="tabIndex==1">
-			<div style="padding: 10px;">用户：{{userPhone}} <span ng-click="clearUserInfo()" style="padding-left: 20px; color:blue">切换用户</span></div>
+			<div style="padding: 10px;">用户：{{userPhone}} 
+				<span ng-click="clearUserInfo()" style="padding-left: 20px; color:blue">切换用户</span>
+			</div>
 			<ul class="mui-table-view" id="refreshContainer">
 				<li class="mui-table-view-cell" ng-repeat="i in records">
 					<a class="mui-navigate-right" ng-click="goRecord($index)">
@@ -225,7 +227,8 @@
 						
 						mui.ajax(config.server_root+"api/report/",{
 							data:{
-								phone: $scope.userPhone
+								phone: $scope.userPhone,
+								format: "json"
 							},
 							type:'get',//HTTP请求类型
 							timeout:10000,//超时时间设置为10秒；

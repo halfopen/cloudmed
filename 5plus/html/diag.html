@@ -44,7 +44,7 @@
 		
 		<div class="mui-content" >
 			
-			<p style="margin-top:20px;margin-left: 20px;">请点击圆圈，完成健康评估 </p>
+			<p style="margin-top:10px;margin-left: 10px;font-size: x-small;">请点击圆圈，拍摄照片完成面诊、舌诊（可以跳过此步） </p>
 			<!-- 面诊和舌诊容器 -->
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
@@ -71,8 +71,10 @@
 				</div>
 			</div>
 			<!-- 问诊容器 -->
+			<p style="margin-top:5px;margin-left: 10px;font-size: x-small;">请点击方块，回答问题完成问诊（可以选择部分回答或者不回答） </p>
 			<div class="qst-ctn border">
 				<span>问诊</span>
+				
 				<!-- 颜色说明 -->
 				<div class="color-board">
 					<div>-有症状</div>
@@ -101,7 +103,9 @@
 		
 		<script>
 			var showLoading = util.showLoading;
+			// 获取用户个人信息
 			var userPhone = localStorage.getItem("userPhone");
+			var userType = localStorage.getItem("userType");
 			var isApp = false;
 	
 			// app环境下保存结果
@@ -540,7 +544,7 @@
 					choose = qs[qid].choose;
 					//console.log(choose)
 					var score = [0,0,0,0,0,0,0];
-					var description = ""
+					var description = "";
 					if (qs[qid].option_type == '0'){
 						var default_check = document.getElementsByName("danxuan");
 					}
@@ -567,8 +571,9 @@
 					if (score[5]>0){description+="有点肾虚";}
 					if (score[6]>0){description+="有点气虚";}
 						
+					document.getElementById("description").innerHTML = description;
 					var option = {
-						title: {text: description,
+						title: {
 								textStyle:{
 									fontSize: 15
 								}			
@@ -632,7 +637,8 @@
 							]
 						}]
 					};
-					myradar.setOption(option);			
+					myradar.setOption(option);	
+					return description;
 				}
 				/**
 				 *	点击诊断 
@@ -686,7 +692,8 @@
 						controller: DialogController,
 						locals:{
 							id: index,
-							qs: $scope.questions
+							qs: $scope.questions,
+							userType: userType
 						},
 						templateUrl: './dialog1.tmpl.html',
 						parent: angular.element(document.body),
@@ -695,7 +702,9 @@
 						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
 						onComplete: function(){    // 显示完成后的回调函数
 							//根据qs的当前值,判断上次保存的情况
-							$scope.save_and_draw($scope.questions, index);
+							if(userType=="2" || userType=="3"){     // userType = 1, 不能看到解释内容
+								$scope.save_and_draw($scope.questions, index);
+							}	
 						}
 					})
 					.then(function() {
@@ -705,7 +714,7 @@
 					});
 				};
 
-				function DialogController($scope, $mdDialog, id, qs) {
+				function DialogController($scope, $mdDialog, id, qs, userType) {
 					$scope.hide = function() {
 						$mdDialog.hide();
 						console.log("hide")
@@ -717,9 +726,9 @@
 					};
 					$scope.id = id;
 					$scope.qs = qs;
+					$scope.userType = userType;
 					$scope.choose = function(index, qid){
 						var box = document.getElementsByName("duoxuan");
-
 						var cur = box[index];
 						console.log(index, cur, cur.checked);
 
@@ -733,13 +742,13 @@
 								box[box.length-1].checked = false;
 							}
 						}
-						
 					}
 					$scope.draw = function(scores, qid){  //added
+						if(userType!='2' || userType!='3')return;
 						var byId = function(id){
 							return document.getElementById(id)
 						}
-						var myradar = echarts.init(byId('radar'));					
+											
 						var score = [0,0,0,0,0,0,0];
 						var description = "";
 						// 多选
@@ -771,6 +780,8 @@
 
 						$scope.description = description;
 						//console.log(scores);
+						
+						var myradar = echarts.init(byId('radar'));
 						var option = {
 							title: {
 									textStyle:{
