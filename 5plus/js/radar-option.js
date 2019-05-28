@@ -17,12 +17,13 @@ var option = {
     polar : [
        {
         indicator: [
-            { name: '阴虚', max: 50},
             { name: '阳虚', max: 50},
-            { name: '气虚', max: 50},
-            { name: '血瘀', max: 50},
+            { name: '阴虚', max: 50},
+            { name: '痰湿', max: 50},
+            { name: '瘀滞', max: 50},
+            { name: '脾虚', max: 50},
             { name: '肾虚', max: 50},
-            { name: '瘀滞', max: 50}
+            { name: '气虚', max: 50}
          ],
         }
     ],

@@ -164,3 +164,13 @@ md-dialog{
 .desc{
     height: 40px;
 }
+
+.tizhi span{
+    padding: 0 2px;
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+.mui-popup-text{
+    text-align: start;
+}

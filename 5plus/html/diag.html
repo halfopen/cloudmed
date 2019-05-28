@@ -629,7 +629,8 @@
 						locals:{
 							id: index,
 							qs: $scope.questions,
-							userType: userType
+							userType: userType,
+							tizhi: tizhi.rows
 						},
 						templateUrl: './dialog1.tmpl.html',
 						parent: angular.element(document.body),
@@ -650,7 +651,7 @@
 					});
 				};
 
-				function DialogController($scope, $mdDialog, id, qs, userType) {
+				function DialogController($scope, $mdDialog, id, qs, userType, tizhi) {
 					$scope.hide = function() {
 						$mdDialog.hide();
 						console.log("hide")
@@ -660,9 +661,29 @@
 						console.log("cancel")
 						updateQuestion(id); // 这里要传参数
 					};
+					// 赋值到scope, 在前端显示
 					$scope.id = id;
 					$scope.qs = qs;
 					$scope.userType = userType;
+					$scope.tizhi = tizhi;
+					// 获取体质描述
+					var _f = function(t){
+						return "<b>关键词</b>:"+t.keyword+"\n"+
+							"<b>简介</b>:"+t.summary+"\n"+
+							"<b>总体特征</b>:"+t.general+"\n"+
+							"<b>常见表现</b>:"+t.expression+"\n"+
+							"<b>心理特征</b>:"+t.mental+"\n"+
+							"<b>发病倾向</b>:"+t.disease+"\n"+
+							"<b><i>以上内容来自《中医体质与分类判定》标准</i></b>";
+					}
+
+					$scope.showTizhi = function(index){
+						console.log("showTizhi", index);
+						mui.alert( _f(tizhi[index]), tizhi[index].type, function(){
+
+						});
+					}
+
 					$scope.choose = function(index, qid){
 						var box = document.getElementsByName("duoxuan");
 						var cur = box[index];
