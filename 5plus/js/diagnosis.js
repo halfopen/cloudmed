@@ -23,6 +23,45 @@ var gettongueResult = function(tongueResult){
     return result;
 }
 
+var getFaceScore = function(faceResult){
+    var score = new Array(7);
+    for(var i=0;i<7;++i)score[i] = 0;
+    if(null!=faceResult && typeof(faceResult)=="object" && faceResult.raw!="0"){
+        console.log("myraw", faceResult.raw);
+        if(faceResult.result._2faceColor == 0){ // 面白
+            score[0] += 5;
+            score[5] += 8;
+        }
+        if(faceResult.result._2faceColor == 3){  // 面黄
+            score[4] += 10;
+        }
+    }
+    return score;
+}
+
+var getTongueScore = function(tongueResult){
+    var score = new Array(7);
+    for(var i=0;i<7; ++i)score[i] = 0;
+    if(null!=tongueResult && typeof(tongueResult)=="object" && tongueResult.raw!="0"){
+        if(tongueResult.result_6tongueNatureColor==1){ // 舌淡白
+            score[0] += 8;
+            score[4] += 10;
+            score[5] += 10;
+            score[6] += 10;
+        }
+        if(tongueResult.result_6tongueNatureColor==3){ // 舌红
+            score[1] += 15;
+        }
+        if(tongueResult.result._6tongueNatureColor==0){ // 舌暗红
+            score[3] += 10;
+        }
+        if(tongueResult.result._4tongueCoatThickness==1){ // 苔厚
+            score[2] += 30;
+        }
+    }
+    return score;
+}
+
 /**
  * 诊断健康状态
  * @param {问诊回答} questions 
@@ -35,44 +74,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
      * 面部打分
      * @param {面诊结果} faceResult 
      */
-    var getFaceScore = function(faceResult){
-        var score = new Array(7);
-        for(var i=0;i<7;++i)score[i] = 0;
-        if(null!=faceResult && typeof(faceResult)=="object" && faceResult.raw!="0"){
-			console.log("myraw", faceResult.raw);
-            if(faceResult.result._2faceColor == 0){ // 面白
-                score[0] += 5;
-                score[5] += 8;
-            }
-            if(faceResult.result._2faceColor == 3){  // 面黄
-                score[4] += 10;
-            }
-        }
-        return score;
-    }
-
-    var getTongueScore = function(tongueResult){
-        var score = new Array(7);
-        for(var i=0;i<7; ++i)score[i] = 0;
-        if(null!=tongueResult && typeof(tongueResult)=="object" && tongueResult.raw!="0"){
-            if(tongueResult.result_6tongueNatureColor==1){ // 舌淡白
-                score[0] += 8;
-                score[4] += 10;
-                score[5] += 10;
-                score[6] += 10;
-            }
-            if(tongueResult.result_6tongueNatureColor==3){ // 舌红
-                score[1] += 15;
-            }
-            if(tongueResult.result._6tongueNatureColor==0){ // 舌暗红
-                score[3] += 10;
-            }
-            if(tongueResult.result._4tongueCoatThickness==1){ // 苔厚
-                score[2] += 30;
-            }
-        }
-        return score;
-    }
+    
     var phyTypes = ["阳虚","阴虚", "痰湿","瘀滞", "脾虚", "肾虚", "气虚", "健康"];
     dict = {
         faceResult: faceResult,

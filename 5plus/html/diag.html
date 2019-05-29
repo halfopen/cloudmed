@@ -49,22 +49,26 @@
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
 					<div class="border face-diag">
-						<span>面诊</span>
-						<img id="faceimg" src="../images/face.png" />
-						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
-						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
-						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
-						<div class="desc" id="face-desc">
+						<div style="position:relative">
+							<span>面诊</span>
+							<img id="faceimg" src="../images/face.png" />
+							<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
+							<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
+							<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
+						</div>
+						<div class="desc" id="face-desc" ng-click="showDesc($event, 'face')">
 							请拍面部
 						</div>
 					</div>
 				</div>
 				<div class="pic-diag-sub-ctn"> 
 					<div class="border tongue-diag">
-						<span>舌诊</span>
-						<img id="tongueimg" src="../images/tongue.png" />
-						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
-						<div class="desc" id="tongue-desc">
+						<div style="position:relative">
+							<span>舌诊</span>
+							<img id="tongueimg" src="../images/tongue.png" />
+							<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
+						</div>
+						<div class="desc" id="tongue-desc" ng-click="showDesc($event, 'tongue')">
 							请拍舌头
 						</div>
 					</div>
@@ -535,6 +539,72 @@
 					// uploadImage(type);
 				};
 			
+				// 显示图片诊断的解释
+				$scope.showDesc = function(ev, type){
+					console.log(faceResult, tongueResult);
+					var desc = "描述";
+					var score = [0,0,0,0,0,0];
+					if( type=='face'){
+						console.log("show face desc");
+						desc = getfaceResult(faceResult);
+						score = getFaceScore(faceResult);
+					}else{
+						console.log("show tongue desc");
+						desc = gettongueResult(tongueResult);
+						score = getTongueScore(tongueResult);
+					}
+					console.log(score, desc);
+					$mdDialog.show({
+						controller: function DialogController($scope, $mdDialog, pic, score, desc, tizhi, userType){
+
+							// 复制变量
+							$scope.pic = pic;
+							$scope.score = score;
+							$scope.desc = desc;
+							$scope.tizhi = tizhi;
+							$scope.userType = userType;
+
+							$scope.cancel = function(){
+								console.log($scope.userType)
+								$mdDialog.hide();
+							}
+
+							var description = "";
+							if (score[0]>0){description+=" 有点阳虚";}
+							if (score[1]>0){description+=" 有点阴虚";}
+							if (score[2]>0){description+=" 有点痰湿";}
+							if (score[3]>0){description+=" 有点瘀滞";}
+							if (score[4]>0){description+=" 有点脾虚";}
+							if (score[5]>0){description+=" 有点肾虚";}
+							if (score[6]>0){description+=" 有点气虚";}
+							$scope.description = description;
+							
+						},
+						locals:{
+							pic: config.media_root+faceResult.file,
+							score: score,
+							desc: desc,
+							tizhi: tizhi.rows,
+							userType: userType
+						},
+						templateUrl: './dialog2.tmpl.html',
+						parent: angular.element(document.body),
+						targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+						onComplete: function(){    // 显示完成后的回调函数
+							console.log("oncomplete")
+							var myradar = echarts.init(document.getElementById('radar'));
+							option.series[0].data[0].value = score;
+							myradar.setOption(option);
+						}
+					})
+					.then(function() {
+						console.log("then")
+					}, function() {
+						$scope.status = 'You cancelled the dialog.';
+					});
+				}
 
 				$scope.save_and_draw = function(qs, qid){  //用于重新进入问题页面时,显示上次选择情况
 					var byId = function(id){
