@@ -97,7 +97,7 @@
 				 return get_par;
 			 }
 			 var userType = localStorage.getItem("userType");
-			
+			 util.log_op("进入页面", "report.html");
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.faceResult = "无面诊记录";
