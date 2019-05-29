@@ -97,7 +97,7 @@
 				 return get_par;
 			 }
 			 var userType = localStorage.getItem("userType");
-			 util.log_op("进入页面", "report.html");
+			 util.log_op("进入页面", "report.html "+localStorage.getItem("record"));
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.faceResult = "无面诊记录";
@@ -173,6 +173,7 @@
 
 				// 显示图片诊断的解释
 				$scope.showDesc = function(ev, type){
+					util.log_op("report.html-查看图片解释"+type, "userType"+userType);
 					if(userType!="2")return;
 					var faceResult = data.faceResult;
 					var tongueResult = data.tongueResult;
@@ -184,11 +185,13 @@
 						desc = getfaceResult(faceResult);
 						score = getFaceScore(faceResult);
 						file = faceResult.file;
+						util.log_op("report.html-查看面诊解释", "-");
 					}else{
 						console.log("show tongue desc");
 						desc = gettongueResult(tongueResult);
 						score = getTongueScore(tongueResult);
 						file = tongueResult.file;
+						util.log_op("report.html-查看舌诊解释", "-");
 					}
 					console.log(score, desc);
 					$mdDialog.show({
@@ -219,7 +222,7 @@
 							$scope.showTizhi = function(index){
 								console.log("showTizhi", index);
 								mui.alert( util._f(tizhi[index]), tizhi[index].type, function(){
-
+									util.log_op("report.html-查看体质说明"+index);
 								});
 							}
 							
@@ -252,6 +255,7 @@
 
 				
 				$scope.showExplainDialog = function(ev){
+					util.log_op("report.html-查看分数说明解释", "-");
 					console.log("questions", $scope.questions)
 					if($scope.userType!='2')return;
 					$mdDialog.show({
@@ -277,7 +281,7 @@
 						$scope.status = 'You cancelled the dialog.';
 					});
 				};
-
+				// 分数说明解释
 				function DialogController($scope, $mdDialog, id, qs, data) {
 					$scope.hide = function() {
 						$mdDialog.hide();
@@ -286,6 +290,7 @@
 
 					$scope.cancel = function(){
 						$mdDialog.hide();
+						util.log_op("report.html-关闭分数说明", "");
 					}
 					
 					// added
@@ -341,12 +346,18 @@
 						return ret;
 					}
 					$scope.tizhi_expl = tizhi.rows[$scope.data.mainType];
+
+					$scope.logClickCell = function(id){
+						util.log_op("report.html-点击公式解释Cell-"+id, "-");
+					}
 					
 				}
 				
 				// for phy explain
 				$scope.showPhyExplainDialog = function(ev,index){
+
 					var phyTypes = ["阳虚","阴虚", "痰湿","瘀滞", "脾虚", "肾虚", "气虚", "健康"];
+					util.log_op("report.html-查看体质的解释-"+$scope.phyType[index], "");
 					p = phyTypes.indexOf($scope.phyType[index]);
 					//console.log(p);
 					console.log("questions", $scope.questions)

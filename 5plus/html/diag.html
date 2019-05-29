@@ -1,3 +1,7 @@
+<!-- 日志要记录的
+	进入页面
+
+-->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -120,8 +124,8 @@
 			app.config(function($mdGestureProvider ) {
 				$mdGestureProvider.skipClickHijack();
 			});
-			
-			util.log_op("进入页面", "diag.html");
+			// 上传用户的上一次记录
+			util.log_op("进入页面", "diag.html "+localStorage.getItem("lastReport"));
 
 			/************ 函数定义 ******** */
 
@@ -543,6 +547,7 @@
 			
 				// 显示图片诊断的解释
 				$scope.showDesc = function(ev, type){
+					util.log_op("diag.html-点击图片诊断描述showDesc", "")
 					if(userType!="2")return;
 					console.log(faceResult, tongueResult);
 					var desc = "描述";
@@ -553,11 +558,13 @@
 						desc = getfaceResult(faceResult);
 						score = getFaceScore(faceResult);
 						file = faceResult.file;
+						util.log_op("diag.html-点击面诊解释", "")
 					}else{
 						console.log("show tongue desc");
 						desc = gettongueResult(tongueResult);
 						score = getTongueScore(tongueResult);
 						file = tongueResult.file;
+						util.log_op("diag.html-点击舌诊解释", "")
 					}
 					console.log(score, desc);
 					$mdDialog.show({
@@ -588,7 +595,7 @@
 							$scope.showTizhi = function(index){
 								console.log("showTizhi", index);
 								mui.alert( util._f(tizhi[index]), tizhi[index].type, function(){
-
+									util.log_op("在图片诊断中查看体质解释"+index, "diag.html");
 								});
 							}
 
@@ -672,8 +679,7 @@
 					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
 					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
 					console.log(result);
-					
-					
+					util.log_op("diag.html-点击诊断", "-");
 					mui.ajax(config.server_root+"api/report/",{
 						data:{
 							"tizhi": result.phy,
@@ -708,6 +714,7 @@
 
 				$scope.showQuestion = function(ev, index) {
 					console.log(index)
+					util.log_op("diag.html-打开问题-"-index, "")
 					$mdDialog.show({
 						controller: DialogController,
 						locals:{
@@ -744,6 +751,7 @@
 						$mdDialog.cancel();
 						console.log("cancel")
 						updateQuestion(id); // 这里要传参数
+						util.log_op("diag.html-关闭问题"+id);
 					};
 					// 赋值到scope, 在前端显示
 					$scope.id = id;
@@ -755,11 +763,16 @@
 					$scope.showTizhi = function(index){
 						console.log("showTizhi", index);
 						mui.alert( util._f(tizhi[index]), tizhi[index].type, function(){
-
+							var context = {};
+							util.log_op("diag.html-在问诊中查看体质解释"+index, "问题id"+$scope.id);
 						});
 					}
 
 					$scope.choose = function(index, qid){
+						var context = {};
+						context.index = index;
+						context.qid = qid;
+						util.log_op("diag.html-选择选项", JSON.stringify(context));
 						var box = document.getElementsByName("duoxuan");
 						var cur = box[index];
 						console.log(index, cur, cur.checked);
@@ -841,6 +854,7 @@
 								showLoading(true);
 								plus.camera.getCamera().captureImage(function(path){
 									console.log(path);
+									util.log_op("diag.html-从相机拍照", path);
 									compressAndUpload(path, "face");
 								}, function(err){
 									showLoading(false);
@@ -855,7 +869,7 @@
 								// 回调函数返回图片路径
 								console.log(path);
 								compressAndUpload(path, "face");
-								
+								util.log_op("diag.html-从相册选取图片", path);
 							}, function(err){
 								showLoading(false);
 								alert("读取相册出错"+err);

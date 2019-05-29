@@ -42,14 +42,14 @@
 				 <p>健康分数计算公式：</p>
 				 <p>症状分数:{{data.baseScore}} &nbsp; 症状个数:{{data.symptom_num}} </p>
 				 <ul class="mui-table-view"> 
-						<li class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==0?'mui-active':''">
+						<li ng-click="logClickCell(0)" class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==0?'mui-active':''">
 							<a class="mui-navigate-right" href="#">没有症状</a>
 							<div class="mui-collapse-content">
 									<p>体质：健康</p>
 									<p>健康分数：100</p>
 							</div>
 						</li>
-						<li class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==1?'mui-active':''">
+						<li ng-click="logClickCell(1)" class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==1?'mui-active':''">
 							<a class="mui-navigate-right" href="#">1种症状</a>
 							<div class="mui-collapse-content">
 									<p>体质：当前症状对应的体质</p>
@@ -58,7 +58,7 @@
 									<p>症状分数<=40,健康分数：100-症状分数</p>
 							</div>
 						</li>
-						<li class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==2?'mui-active':''">
+						<li ng-click="logClickCell(2)" class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==2?'mui-active':''">
 							<a class="mui-navigate-right" href="#">2种症状</a>
 							<div class="mui-collapse-content">
 									<p>体质：两种症状对应的体质</p>
@@ -67,7 +67,7 @@
 									<p>症状分数<=40,健康分数：95-症状分数</p>
 							</div>
 						</li>
-						<li class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==3?'mui-active':''">
+						<li ng-click="logClickCell(3)" class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num==3?'mui-active':''">
 							<a class="mui-navigate-right" href="#">3种症状</a>
 							<div class="mui-collapse-content">
 								<p>体质：得分最高的两种症状对应的体质</p>
@@ -76,7 +76,7 @@
 								<p>症状分数<=40,健康分数：90-症状分数</p>
 							</div>
 						</li>
-						<li class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num>3?'mui-active':''">
+						<li ng-click="logClickCell(4)" class="mui-table-view-cell mui-collapse" ng-class="data.symptom_num>3?'mui-active':''">
 							<a class="mui-navigate-right" href="#">大于3种症状</a>
 							<div class="mui-collapse-content">
 								<p>体质：所有症状中得分最高的两个对应的体质</p>
