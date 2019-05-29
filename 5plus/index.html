@@ -170,6 +170,9 @@
 					<div class="mui-col-sm-6 mui-col-xs-6">
 						<div class="mui-table-view-cell" ng-click="goDiagnosis(2)" id="diagnosis"><span>背后原理</span></div>
 					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6">
+							<div class="mui-table-view-cell" ng-click="goDiagnosis(3)" id="diagnosis"><span>隐私说明</span></div>
+						</div>
 				</div>
 			
 		</div>
@@ -223,6 +226,9 @@
 						else if(id==2){
 							mui.alert($scope.tip, "背后原理");
 							util.log_op("点击背后原理", "-");
+						}else if(id==3){
+							mui.alert("我们是复旦计算机研究人员，因为面诊舌诊的功能需要，在您使用系统的过程中，系统需要接收上传的图片和用户的操作记录。我们会保护您的个人隐私不会被用于其他用途。", "隐私说明");
+							util.log_op("查看隐私说明", "-");
 						}
 					}
 				}else{
