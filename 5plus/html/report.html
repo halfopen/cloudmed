@@ -18,6 +18,7 @@
 		<script src="../js/diagnosis.js"></script>
 		<script src="../js/radar-option.js"></script>
 		<script src="../js/config.js"></script>
+		<script src="../js/util.js"></script>
 		<!-- Angular Material Library -->
 		<script src="../js/angular-material.min.js"></script>
 		<link rel="stylesheet" href="../css/angular-material.min.css" />
@@ -172,18 +173,22 @@
 
 				// 显示图片诊断的解释
 				$scope.showDesc = function(ev, type){
+					if(userType!="2")return;
 					var faceResult = data.faceResult;
 					var tongueResult = data.tongueResult;
 					var desc = "描述";
 					var score = [0,0,0,0,0,0];
+					var file = "";
 					if( type=='face'){
 						console.log("show face desc");
 						desc = getfaceResult(faceResult);
 						score = getFaceScore(faceResult);
+						file = faceResult.file;
 					}else{
 						console.log("show tongue desc");
 						desc = gettongueResult(tongueResult);
 						score = getTongueScore(tongueResult);
+						file = tongueResult.file;
 					}
 					console.log(score, desc);
 					$mdDialog.show({
@@ -210,10 +215,17 @@
 							if (score[5]>0){description+=" 有点肾虚";}
 							if (score[6]>0){description+=" 有点气虚";}
 							$scope.description = description;
+
+							$scope.showTizhi = function(index){
+								console.log("showTizhi", index);
+								mui.alert( util._f(tizhi[index]), tizhi[index].type, function(){
+
+								});
+							}
 							
 						},
 						locals:{
-							pic: config.media_root+faceResult.file,
+							pic: config.media_root+file,
 							score: score,
 							desc: desc,
 							tizhi: tizhi.rows,

@@ -115,5 +115,15 @@ var util = {
 		}else{
 			element.style.display = "none";	
 		}
+	},
+	// 获取体质描述
+	_f: function(t){
+		return "<b>关键词</b>:"+t.keyword+"\n"+
+			"<b>简介</b>:"+t.summary+"\n"+
+			"<b>常见症状</b>:"+t.general+"\n"+
+			"<b>体貌特征</b>:"+t.expression+"\n"+
+			"<b>心理特征</b>:"+t.mental+"\n"+
+			"<b>环境适应能力</b>:"+t.disease+"\n"+
+			"<b><i>以上内容来自《中医体质与分类判定》标准</i></b>";
 	}
 };
