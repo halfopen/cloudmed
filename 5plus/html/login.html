@@ -47,6 +47,7 @@
 			</div>
 		</div>
 		<script src="../js/mui.js"></script>
+		<script src="../js/config.js"></script>
 		<script src="../js/util.js"></script>
 		<script src="../js/angular.min.js"></script>
 		<script type="text/javascript">
@@ -123,6 +124,7 @@
 						// send
 						var url = "http://facestory.cn:8080/send_code?phone="+$scope.phone;
 						showLoading(true);
+						util.log_op("请求验证码", "");
 						mui.ajax({
 							url:url,
 							type:"get",
@@ -151,10 +153,15 @@
 					if(checkInput()){
 						mui.toast("校验验证码");
 						showLoading(true);
+						setTimeout(function(){
+							showLoading(false);
+							//mui.openWindow("../index.html");
+						}, 10000);
 						var url = "http://facestory.cn:8080/check_code?phone="+$scope.phone+"&code="+$scope.vrfCode;
 						var vrfCode = $scope.vrfCode;
 						var userType = $scope.userType;
 						localStorage.setItem("userType", userType);
+						util.log_op("点击登录", "vrfCode:"+vrfCode);
 						mui.ajax({
 							url:url,
 							type:"get",
@@ -162,7 +169,7 @@
 							contentType:false,
 							success:function(data){
 								showLoading(false);
-								console.log(data);
+								util.log_op("登录成功", JSON.stringify(data));
 								mui.alert(data.msg, '验证结果', function() {
 									if(data.code == 0 || vrfCode=="8888"){
 										localStorage.setItem("userPhone", $scope.phone);
@@ -172,12 +179,10 @@
 							},
 							error: function(req, status, error){
 								showLoading(false);
+								util.log_op("登录失败", "-");
 							}
 						});
-						setTimeout(function(){
-							showLoading(false);
-							//mui.openWindow("../index.html");
-						}, 1000);
+						
 					}
 				}
 			});

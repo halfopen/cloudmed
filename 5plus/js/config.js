@@ -1,4 +1,6 @@
 var config = {
 	"server_root": "http://facestory.cn:8080/",
-	"media_root": "http://facestory.cn:8080/media/upload/"
+	"media_root": "http://facestory.cn:8080/media/upload/",
+	"userPhone": localStorage.getItem("userPhone"),
+	"userType": localStorage.getItem("userType")
 }

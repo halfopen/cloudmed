@@ -125,5 +125,30 @@ var util = {
 			"<b>心理特征</b>:"+t.mental+"\n"+
 			"<b>环境适应能力</b>:"+t.disease+"\n"+
 			"<b><i>以上内容来自《中医体质与分类判定》标准</i></b>";
+	},
+	// 记录日志到服务器, 放在config.js和mui.js后面加载
+	log_op: function( op, info){
+		var user = config.userPhone;
+		if(null==user){
+			user = "00000000000";
+		}
+		mui.ajax(config.server_root+"api/op_log/",{
+			data:{
+				"phone": user,
+				"op": op,
+				"info": info, 
+				"device": navigator.appVersion
+			},
+			dataType:"json",
+			headers:{'Content-Type': 'application/json'},
+			type:'POST',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				console.log("log ok", data);
+			},
+			error:function(xhr,type,errorThrown){
+				console.log("log fail", errorThrown);
+			}
+		});
 	}
 };
