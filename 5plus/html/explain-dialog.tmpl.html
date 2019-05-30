@@ -13,6 +13,7 @@
 	<md-dialog-content>
 		<div class="mui-content">
 			<h4>健康分数是{{data.healthScore}}的原因</h4>
+			<p >有些症状需要超过2个以上才作为体质判断依据, 否则症状分数会被清空。</p>
 			<div class="mui-content-padded">
 				<p>面诊舌诊</p>
 				<div>{{faceResult}}：{{score_desc(data.faceScore)}}</div>
@@ -27,12 +28,14 @@
 					<div style="font-weight:bold">问题{{$index+1}}:{{q.short_question}}<span ng-if="q.option_type=='1'">(多选)</span></div>
 					<div>回答是:{{q.choose_result}}</div>
 					<div>结果的影响：{{answer_expl(q)}}</div>
-					<div style="color:red">{{q.special_info}}</div>
+					<div >{{q.special_info}}</div>
 				</div>
+				
 			</div>
 			
 			<div class="mui-content-padded">
 				<p>雷达图（7种体质得分）:</p>
+				
 			</div>
 			<div class="mui-content-padded">
 				<div class="chart" id="radar"></div>
