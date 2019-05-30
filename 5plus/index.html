@@ -73,7 +73,7 @@
 				height: 20px;
 				display: inline-block;
 				color:white;
-				font-size: medium;
+				font-size: large;
 			}
 			.notify{
 				height:25%;
@@ -154,14 +154,14 @@
 					<div ng-if="userType=='2'">{{tip}}</div> -->
 					<div>{{date}}</div>
 
-					<div style="position: absolute; bottom: 10px;">
-						<span ng-click="goDiagnosis(2)" style="padding-left: 20px; text-decoration: underline; color: blue;">背后原理</span>
-						<span ng-click="goDiagnosis(3)" style="padding-left: 20px; text-decoration: underline; color: blue;">隐私说明</span>
+					<div style="padding: 10px 0px;text-align: center;position: absolute;bottom: 0px;font-size:large">
+							<span ng-click="goDiagnosis(2)" style="padding-left: 20px; text-decoration: underline; color: blue;">原理说明</span>
+							<span ng-click="goDiagnosis(3)" style="padding-left: 20px; text-decoration: underline; color: blue;">隐私说明</span>
 					</div>
 				</div>
 
 				<div class="entry-ctn mui-row">
-					<div class="mui-col-sm-6 mui-col-xs-6">
+					<div class="mui-col-sm-6 mui-col-xs-6" style="width:100%">
 						<div class="mui-table-view-cell" ng-click="goDiagnosis(0)" id="diagnosis"><span>开始中医体检</span></div>
 					</div>
 					<!-- <div class="mui-col-sm-6 mui-col-xs-6">
@@ -180,7 +180,7 @@
 							<div class="mui-table-view-cell" ng-click="goDiagnosis(3)" id="diagnosis"><span>隐私说明</span></div>
 						</div> -->
 				</div>
-			
+
 		</div>
 
 		<div class="record content-ctn mui-content" ng-show="tabIndex==1">
