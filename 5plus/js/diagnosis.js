@@ -89,6 +89,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         tongueScore: getTongueScore(tongueResult),
         symptom_num: 0, 
         baseScore: null,
+        clearInfo: ""
     }
 
     
@@ -146,38 +147,45 @@ var diagnosis = function(questions, faceResult, tongueResult){
     var symptom_num = 0;
     // 如果气虚症状综述<2或者关键性问题回答否，那么就不是气虚
     if(dict.symCount[6]<2 && dict.healthType[6]==0){
+        if(dict.questionScore[6]>0)dict.clearInfo+=" 气虚分数被清空"
         dict.questionScore[6] = 0;
         symptom_num++; // 症状数 -1 
     }
     // 肾虚
     if(dict.symCount[5]<2&& dict.healthType[5]==0){
         console.log("肾虚清空")
+        if(dict.questionScore[5]>0)dict.clearInfo+=" 肾虚分数被清空"
         dict.questionScore[5] = 0;
         symptom_num++;
     }
     // 脾虚
     if (dict.symCount[4]<2){
         dict.questionScore[4] = 0;
+        if(dict.questionScore[4]>0)dict.clearInfo+=" 脾虚分数被清空"
         symptom_num++;
     }
     // 瘀滞
     if (dict.symCount[3]<2){
+        if(dict.questionScore[3]>0)dict.clearInfo+=" 瘀滞分数被清空"
         dict.questionScore[3] = 0;
         symptom_num++;
     }
     // 痰湿
     if (dict.symCount[2]<2 && dict.healthType[2]==0){
+        if(dict.questionScore[2]>0)dict.clearInfo+=" 痰湿分数被清空"
         dict.questionScore[2] = 0;
         symptom_num++;
     }
     // 阴虚
     if (dict.symCount[1]<2){
-        dict.questionScore[4] = 0;
+        if(dict.questionScore[1]>0)dict.clearInfo+=" 阴虚分数被清空"
+        dict.questionScore[1] = 0;
         symptom_num++;
     }
     // 阳虚
     if (dict.symCount[0]<3){
-        dict.questionScore[4] = 0;
+        if(dict.questionScore[0]>0)dict.clearInfo+=" 阳虚分数被清空"
+        dict.questionScore[0] = 0;
         symptom_num++;
     }
 
