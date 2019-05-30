@@ -590,6 +590,8 @@
 							if (score[4]>0){description+=" 有点脾虚";}
 							if (score[5]>0){description+=" 有点肾虚";}
 							if (score[6]>0){description+=" 有点气虚";}
+
+							if(""==description)description = "正常，无症状";
 							$scope.description = description;
 
 							$scope.showTizhi = function(index){
@@ -661,6 +663,8 @@
 					if (score[4]>0){mdescription+=" 有点脾虚";}
 					if (score[5]>0){mdescription+=" 有点肾虚";}
 					if (score[6]>0){mdescription+=" 有点气虚";}
+
+					if(""==mdescription)mdescription = "正常，无症状";
 						
 					document.getElementById("description").innerHTML = mdescription;
 					option.series[0].data[0].value = score;
@@ -823,6 +827,7 @@
 						if (score[5]>0){description+=" 有点肾虚";}
 						if (score[6]>0){description+=" 有点气虚";}
 
+						if(""==description)description = "正常，无症状";
 						document.getElementById("description").innerHTML = description;
 						//console.log(scores);
 						
