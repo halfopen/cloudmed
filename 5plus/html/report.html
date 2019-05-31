@@ -17,6 +17,8 @@
 		<script src="../js/angular-messages.min.js"></script>
 		<script src="../js/diagnosis.js"></script>
 		<script src="../js/radar-option.js"></script>
+		<script src="../js/config.js"></script>
+		<script src="../js/util.js"></script>
 		<!-- Angular Material Library -->
 		<script src="../js/angular-material.min.js"></script>
 		<link rel="stylesheet" href="../css/angular-material.min.css" />
@@ -35,19 +37,23 @@
 			</div>
 			<div class="col-box">
 				<div>面诊结果</div>
-				<p>{{faceResult}}</p>
+				<p style="color: blue; text-decoration: underline" ng-click="showDesc($event, 'face')">{{faceResult}}</p>
 			</div>
 			<div class="col-box">
 				<div>舌诊结果</div>
-				<p>{{tongueResult}}</p>
+				<p style="color: blue; text-decoration: underline" ng-click="showDesc($event, 'tongue')">{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
-				<div>结论：
-					<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> 
+				<div>结论
+				
+				</div>
+				<p>
+					<p>
+							<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> 
 					<span class="explain-text" ng-click="showExplainDialog($event)">{{healthScore}}分</span> 
 					<span ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
-				</div>
-				<p>{{healthState}}
+					</p>
+					{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
 					<img ng-show="HEALTH_INDEX==0" src="./resource/html/image/xiaolian2.jpg" width="120px" height="120px" />
 					<img ng-show="HEALTH_INDEX==1" src="./resource/html/image/xiaolian.jpg" width="120px" height="120px"/>
@@ -90,13 +96,14 @@
 				 }
 				 return get_par;
 			 }
-			
+			 var userType = localStorage.getItem("userType");
+			 util.log_op("进入页面", "report.html "+localStorage.getItem("record"));
 			var app = angular.module('myApp', ['ngMaterial', 'ngMessages']);
 			app.controller('myCtrl', function($scope, $mdDialog){
 				$scope.faceResult = "无面诊记录";
 				$scope.tongueResult = "无舌诊记录";
 				$scope.healthState = "身体棒棒哒";
-				$scope.userType = localStorage.getItem("userType");
+				$scope.userType = userType;
 				//$scope.templateUrl = './suggestions/suggestion_yangxu.html';
 				// 建议类型
 				$scope.stype = 7; // 健康
@@ -163,8 +170,94 @@
 					myradar.setOption(option);
 					
 				}
+
+				// 显示图片诊断的解释
+				$scope.showDesc = function(ev, type){
+					util.log_op("report.html-查看图片解释"+type, "userType"+userType);
+					if(userType!="2")return;
+					var faceResult = data.faceResult;
+					var tongueResult = data.tongueResult;
+					var desc = "描述";
+					var score = [0,0,0,0,0,0];
+					var file = "";
+					if( type=='face'){
+						console.log("show face desc");
+						desc = getfaceResult(faceResult);
+						score = getFaceScore(faceResult);
+						file = faceResult.file;
+						util.log_op("report.html-查看面诊解释", "-");
+					}else{
+						console.log("show tongue desc");
+						desc = gettongueResult(tongueResult);
+						score = getTongueScore(tongueResult);
+						file = tongueResult.file;
+						util.log_op("report.html-查看舌诊解释", "-");
+					}
+					console.log(score, desc);
+					$mdDialog.show({
+						controller: function DialogController($scope, $mdDialog, pic, score, desc, tizhi, userType){
+
+							// 复制变量
+							$scope.pic = pic;
+							$scope.score = score;
+							$scope.desc = desc;
+							$scope.tizhi = tizhi;
+							$scope.userType = userType;
+
+							$scope.cancel = function(){
+								console.log($scope.userType)
+								$mdDialog.hide();
+							}
+
+							var description = "";
+							if (score[0]>0){description+=" 有点阳虚";}
+							if (score[1]>0){description+=" 有点阴虚";}
+							if (score[2]>0){description+=" 有点痰湿";}
+							if (score[3]>0){description+=" 有点瘀滞";}
+							if (score[4]>0){description+=" 有点脾虚";}
+							if (score[5]>0){description+=" 有点肾虚";}
+							if (score[6]>0){description+=" 有点气虚";}
+
+							if(""==description) description = "正常，无症状";
+							$scope.description = description;
+
+							$scope.showTizhi = function(index){
+								console.log("showTizhi", index);
+								mui.alert( util._f(tizhi[index]), tizhi[index].type, function(){
+									util.log_op("report.html-查看体质说明"+index);
+								});
+							}
+							
+						},
+						locals:{
+							pic: config.media_root+file,
+							score: score,
+							desc: desc,
+							tizhi: tizhi.rows,
+							userType: userType
+						},
+						templateUrl: './dialog2.tmpl.html',
+						parent: angular.element(document.body),
+						targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+						onComplete: function(){    // 显示完成后的回调函数
+							console.log("oncomplete")
+							var myradar = echarts.init(document.getElementById('radar'));
+							option.series[0].data[0].value = score;
+							myradar.setOption(option);
+						}
+					})
+					.then(function() {
+						console.log("then")
+					}, function() {
+						$scope.status = 'You cancelled the dialog.';
+					});
+				}
+
 				
 				$scope.showExplainDialog = function(ev){
+					util.log_op("report.html-查看分数说明解释", "-");
 					console.log("questions", $scope.questions)
 					if($scope.userType!='2')return;
 					$mdDialog.show({
@@ -190,7 +283,7 @@
 						$scope.status = 'You cancelled the dialog.';
 					});
 				};
-
+				// 分数说明解释
 				function DialogController($scope, $mdDialog, id, qs, data) {
 					$scope.hide = function() {
 						$mdDialog.hide();
@@ -199,6 +292,7 @@
 
 					$scope.cancel = function(){
 						$mdDialog.hide();
+						util.log_op("report.html-关闭分数说明", "");
 					}
 					
 					// added
@@ -254,12 +348,18 @@
 						return ret;
 					}
 					$scope.tizhi_expl = tizhi.rows[$scope.data.mainType];
+
+					$scope.logClickCell = function(id){
+						util.log_op("report.html-点击公式解释Cell-"+id, "-");
+					}
 					
 				}
 				
 				// for phy explain
 				$scope.showPhyExplainDialog = function(ev,index){
+
 					var phyTypes = ["阳虚","阴虚", "痰湿","瘀滞", "脾虚", "肾虚", "气虚", "健康"];
+					util.log_op("report.html-查看体质的解释-"+$scope.phyType[index], "");
 					p = phyTypes.indexOf($scope.phyType[index]);
 					//console.log(p);
 					console.log("questions", $scope.questions)

@@ -23,6 +23,45 @@ var gettongueResult = function(tongueResult){
     return result;
 }
 
+var getFaceScore = function(faceResult){
+    var score = new Array(7);
+    for(var i=0;i<7;++i)score[i] = 0;
+    if(null!=faceResult && typeof(faceResult)=="object" && faceResult.raw!="0"){
+        console.log("myraw", faceResult.raw);
+        if(faceResult.result._2faceColor == 0){ // 面白
+            score[0] += 5;
+            score[5] += 8;
+        }
+        if(faceResult.result._2faceColor == 3){  // 面黄
+            score[4] += 10;
+        }
+    }
+    return score;
+}
+
+var getTongueScore = function(tongueResult){
+    var score = new Array(7);
+    for(var i=0;i<7; ++i)score[i] = 0;
+    if(null!=tongueResult && typeof(tongueResult)=="object" && tongueResult.raw!="0"){
+        if(tongueResult.result_6tongueNatureColor==1){ // 舌淡白
+            score[0] += 8;
+            score[4] += 10;
+            score[5] += 10;
+            score[6] += 10;
+        }
+        if(tongueResult.result_6tongueNatureColor==3){ // 舌红
+            score[1] += 15;
+        }
+        if(tongueResult.result._6tongueNatureColor==0){ // 舌暗红
+            score[3] += 10;
+        }
+        if(tongueResult.result._4tongueCoatThickness==1){ // 苔厚
+            score[2] += 30;
+        }
+    }
+    return score;
+}
+
 /**
  * 诊断健康状态
  * @param {问诊回答} questions 
@@ -35,44 +74,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
      * 面部打分
      * @param {面诊结果} faceResult 
      */
-    var getFaceScore = function(faceResult){
-        var score = new Array(7);
-        for(var i=0;i<7;++i)score[i] = 0;
-        if(null!=faceResult && typeof(faceResult)=="object" && faceResult.raw!="0"){
-			console.log("myraw", faceResult.raw);
-            if(faceResult.result._2faceColor == 0){ // 面白
-                score[0] += 5;
-                score[5] += 8;
-            }
-            if(faceResult.result._2faceColor == 3){  // 面黄
-                score[4] += 10;
-            }
-        }
-        return score;
-    }
-
-    var getTongueScore = function(tongueResult){
-        var score = new Array(7);
-        for(var i=0;i<7; ++i)score[i] = 0;
-        if(null!=tongueResult && typeof(tongueResult)=="object" && tongueResult.raw!="0"){
-            if(tongueResult.result_6tongueNatureColor==1){ // 舌淡白
-                score[0] += 8;
-                score[4] += 10;
-                score[5] += 10;
-                score[6] += 10;
-            }
-            if(tongueResult.result_6tongueNatureColor==3){ // 舌红
-                score[1] += 15;
-            }
-            if(tongueResult.result._6tongueNatureColor==0){ // 舌暗红
-                score[3] += 10;
-            }
-            if(tongueResult.result._4tongueCoatThickness==1){ // 苔厚
-                score[2] += 30;
-            }
-        }
-        return score;
-    }
+    
     var phyTypes = ["阳虚","阴虚", "痰湿","瘀滞", "脾虚", "肾虚", "气虚", "健康"];
     dict = {
         faceResult: faceResult,
@@ -87,6 +89,7 @@ var diagnosis = function(questions, faceResult, tongueResult){
         tongueScore: getTongueScore(tongueResult),
         symptom_num: 0, 
         baseScore: null,
+        clearInfo: ""
     }
 
     
@@ -144,38 +147,45 @@ var diagnosis = function(questions, faceResult, tongueResult){
     var symptom_num = 0;
     // 如果气虚症状综述<2或者关键性问题回答否，那么就不是气虚
     if(dict.symCount[6]<2 && dict.healthType[6]==0){
+        if(dict.questionScore[6]>0)dict.clearInfo+=" 气虚分数被清空"
         dict.questionScore[6] = 0;
         symptom_num++; // 症状数 -1 
     }
     // 肾虚
     if(dict.symCount[5]<2&& dict.healthType[5]==0){
         console.log("肾虚清空")
+        if(dict.questionScore[5]>0)dict.clearInfo+=" 肾虚分数被清空"
         dict.questionScore[5] = 0;
         symptom_num++;
     }
     // 脾虚
     if (dict.symCount[4]<2){
         dict.questionScore[4] = 0;
+        if(dict.questionScore[4]>0)dict.clearInfo+=" 脾虚分数被清空"
         symptom_num++;
     }
     // 瘀滞
     if (dict.symCount[3]<2){
+        if(dict.questionScore[3]>0)dict.clearInfo+=" 瘀滞分数被清空"
         dict.questionScore[3] = 0;
         symptom_num++;
     }
     // 痰湿
     if (dict.symCount[2]<2 && dict.healthType[2]==0){
+        if(dict.questionScore[2]>0)dict.clearInfo+=" 痰湿分数被清空"
         dict.questionScore[2] = 0;
         symptom_num++;
     }
     // 阴虚
     if (dict.symCount[1]<2){
-        dict.questionScore[4] = 0;
+        if(dict.questionScore[1]>0)dict.clearInfo+=" 阴虚分数被清空"
+        dict.questionScore[1] = 0;
         symptom_num++;
     }
     // 阳虚
     if (dict.symCount[0]<3){
-        dict.questionScore[4] = 0;
+        if(dict.questionScore[0]>0)dict.clearInfo+=" 阳虚分数被清空"
+        dict.questionScore[0] = 0;
         symptom_num++;
     }
 

@@ -163,4 +163,12 @@ md-dialog{
 
 .desc{
     height: 40px;
+    text-decoration: underline;
+    color: blue;
+    margin-top: 10px;
+}
+
+
+.mui-popup-text{
+    text-align: start;
 }

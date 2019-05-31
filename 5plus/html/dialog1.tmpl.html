@@ -34,7 +34,10 @@
 			</div>
 			<div ng-if="userType=='2' || userType=='3'" class="mui-content-padded">
 					<p style="color:red">{{qs[id].special_info}}</p>
-				<p id="description" style="color:black">{{description}}</p>
+				<p id="description" style="color:black">{{mdescription}}</p>
+				<p class="tizhi">点击查看体质说明：
+					<span ng-repeat="t in tizhi" ng-click="showTizhi($index)">{{t.type}}</span>
+				</p>
 				<div style="background:white;">
 					<div class="chart" id="radar" ></div>
 				</div>

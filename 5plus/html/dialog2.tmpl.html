@@ -1,0 +1,38 @@
+<!-- 面舌诊弹出框，显示面诊图片和对应的说明，加上雷达图-->
+<md-dialog>
+	<script src="../data/question.js" ></script>
+	<script src="../js/echarts.min.js"></script>
+	<link href="../css/chart.css" rel="stylesheet"/>
+    <div >
+		<md-dialog-actions>
+				<span>{{desc}}</span>
+				<span  ng-click="cancel()"  style="padding: 0 20px;" class="mui-icon mui-icon-checkmarkempty"></span>
+		</md-dialog-actions>
+        
+    </div>
+	<md-dialog-content>
+		<div class="mui-content">
+			<div class="mui-row">				
+				<div style="position: relative; text-align: center"><img style="vertical-align: middle" width="300px" height="300px" ng-src="{{pic}}" /></div>
+				<div style="margin: 10px"></div>
+			</div>
+			<div class="mui-content-padded"> 
+				  <!-- set question type -->
+				
+			</div>
+			<div ng-if="userType=='2' || userType=='3'" class="mui-content-padded">
+					<p style="color:red">{{qs[id].special_info}}</p>
+				<p id="description" style="color:black">{{description}}</p>
+				<p class="tizhi">点击查看体质说明：
+					<span ng-repeat="t in tizhi" ng-click="showTizhi($index)">{{t.type}}</span>
+				</p>
+				<div style="background:white;">
+					<div class="chart" id="radar" ></div>
+				</div>
+				
+			</div>	
+		</div>	
+	</md-dialog-content>
+</md-dialog>
+
+	

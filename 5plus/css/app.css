@@ -23,3 +23,10 @@
     margin-left: -40px;
     margin-top: -40px;
 }
+
+.tizhi span{
+    padding: 0 2px;
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}

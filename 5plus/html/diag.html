@@ -1,3 +1,7 @@
+<!-- 日志要记录的
+	进入页面
+
+-->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -49,22 +53,26 @@
 			<div class="pic-diag-ctn">
 				<div class="pic-diag-sub-ctn"> 
 					<div class="border face-diag">
-						<span>面诊</span>
-						<img id="faceimg" src="../images/face.png" />
-						<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
-						<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
-						<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
-						<div class="desc" id="face-desc">
+						<div style="position:relative">
+							<span>面诊</span>
+							<img id="faceimg" src="../images/face.png" />
+							<!-- <input type="file" id="facepic" onchange="selectFile('face')"/> -->
+							<!-- https://blog.csdn.net/klo220/article/details/53331229 -->
+							<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
+						</div>
+						<div class="desc" id="face-desc" ng-click="showDesc($event, 'face')">
 							请拍面部
 						</div>
 					</div>
 				</div>
 				<div class="pic-diag-sub-ctn"> 
 					<div class="border tongue-diag">
-						<span>舌诊</span>
-						<img id="tongueimg" src="../images/tongue.png" />
-						<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
-						<div class="desc" id="tongue-desc">
+						<div style="position:relative">
+							<span>舌诊</span>
+							<img id="tongueimg" src="../images/tongue.png" />
+							<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
+						</div>
+						<div class="desc" id="tongue-desc" ng-click="showDesc($event, 'tongue')">
 							请拍舌头
 						</div>
 					</div>
@@ -116,9 +124,11 @@
 			app.config(function($mdGestureProvider ) {
 				$mdGestureProvider.skipClickHijack();
 			});
-			
+			// 上传用户的上一次记录
+			util.log_op("进入页面", "diag.html "+localStorage.getItem("lastReport"));
+
 			/************ 函数定义 ******** */
-		
+
 			/**
 			 * 
 			 * 上传图片
@@ -535,6 +545,89 @@
 					// uploadImage(type);
 				};
 			
+				// 显示图片诊断的解释
+				$scope.showDesc = function(ev, type){
+					util.log_op("diag.html-点击图片诊断描述showDesc", "")
+					if(userType!="2")return;
+					console.log(faceResult, tongueResult);
+					var desc = "描述";
+					var score = [0,0,0,0,0,0];
+					var file = "";
+					if( type=='face'){
+						console.log("show face desc");
+						desc = getfaceResult(faceResult);
+						score = getFaceScore(faceResult);
+						file = faceResult.file;
+						util.log_op("diag.html-点击面诊解释", "")
+					}else{
+						console.log("show tongue desc");
+						desc = gettongueResult(tongueResult);
+						score = getTongueScore(tongueResult);
+						file = tongueResult.file;
+						util.log_op("diag.html-点击舌诊解释", "")
+					}
+					console.log(score, desc);
+					$mdDialog.show({
+						controller: function DialogController($scope, $mdDialog, pic, score, desc, tizhi, userType){
+
+							// 复制变量
+							$scope.pic = pic;
+							$scope.score = score;
+							$scope.desc = desc;
+							$scope.tizhi = tizhi;
+							$scope.userType = userType;
+
+							$scope.cancel = function(){
+								console.log($scope.userType)
+								$mdDialog.hide();
+							}
+
+							var description = "";
+							if (score[0]>0){description+=" 有点阳虚";}
+							if (score[1]>0){description+=" 有点阴虚";}
+							if (score[2]>0){description+=" 有点痰湿";}
+							if (score[3]>0){description+=" 有点瘀滞";}
+							if (score[4]>0){description+=" 有点脾虚";}
+							if (score[5]>0){description+=" 有点肾虚";}
+							if (score[6]>0){description+=" 有点气虚";}
+
+							if(""==description)description = "正常，无症状";
+							$scope.description = description;
+
+							$scope.showTizhi = function(index){
+								console.log("showTizhi", index);
+								mui.alert( util._f(tizhi[index]), tizhi[index].type, function(){
+									util.log_op("在图片诊断中查看体质解释"+index, "diag.html");
+								});
+							}
+
+							
+						},
+						locals:{
+							pic: config.media_root+file,
+							score: score,
+							desc: desc,
+							tizhi: tizhi.rows,
+							userType: userType
+						},
+						templateUrl: './dialog2.tmpl.html',
+						parent: angular.element(document.body),
+						targetEvent: ev,
+						clickOutsideToClose:false,
+						fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
+						onComplete: function(){    // 显示完成后的回调函数
+							console.log("oncomplete")
+							var myradar = echarts.init(document.getElementById('radar'));
+							option.series[0].data[0].value = score;
+							myradar.setOption(option);
+						}
+					})
+					.then(function() {
+						console.log("then")
+					}, function() {
+						$scope.status = 'You cancelled the dialog.';
+					});
+				}
 
 				$scope.save_and_draw = function(qs, qid){  //用于重新进入问题页面时,显示上次选择情况
 					var byId = function(id){
@@ -544,7 +637,7 @@
 					choose = qs[qid].choose;
 					//console.log(choose)
 					var score = [0,0,0,0,0,0,0];
-					var description = "";
+					var mdescription = "";
 					if (qs[qid].option_type == '0'){
 						var default_check = document.getElementsByName("danxuan");
 					}
@@ -563,15 +656,17 @@
 							default_check[i].checked = true;
 						}
 					}
-					if (score[0]>0){description+=" 有点阳虚";}
-					if (score[1]>0){description+=" 有点阴虚";}
-					if (score[2]>0){description+=" 有点痰湿";}
-					if (score[3]>0){description+=" 有点瘀滞";}
-					if (score[4]>0){description+=" 有点脾虚";}
-					if (score[5]>0){description+=" 有点肾虚";}
-					if (score[6]>0){description+=" 有点气虚";}
+					if (score[0]>0){mdescription+=" 有点阳虚";}
+					if (score[1]>0){mdescription+=" 有点阴虚";}
+					if (score[2]>0){mdescription+=" 有点痰湿";}
+					if (score[3]>0){mdescription+=" 有点瘀滞";}
+					if (score[4]>0){mdescription+=" 有点脾虚";}
+					if (score[5]>0){mdescription+=" 有点肾虚";}
+					if (score[6]>0){mdescription+=" 有点气虚";}
+
+					if(""==mdescription)mdescription = "正常，无症状";
 						
-					document.getElementById("description").innerHTML = description;
+					document.getElementById("description").innerHTML = mdescription;
 					option.series[0].data[0].value = score;
 					myradar.setOption(option);	
 					return description;
@@ -588,8 +683,7 @@
 					console.log(JSON.stringify($scope.tongueResult), JSON.stringify($scope.faceResult));
 					var result = diagnosis($scope.questions, $scope.faceResult, $scope.tongueResult);
 					console.log(result);
-					
-					
+					util.log_op("diag.html-点击诊断", "-");
 					mui.ajax(config.server_root+"api/report/",{
 						data:{
 							"tizhi": result.phy,
@@ -624,12 +718,14 @@
 
 				$scope.showQuestion = function(ev, index) {
 					console.log(index)
+					util.log_op("diag.html-打开问题-"-index, "")
 					$mdDialog.show({
 						controller: DialogController,
 						locals:{
 							id: index,
 							qs: $scope.questions,
-							userType: userType
+							userType: userType,
+							tizhi: tizhi.rows
 						},
 						templateUrl: './dialog1.tmpl.html',
 						parent: angular.element(document.body),
@@ -650,7 +746,7 @@
 					});
 				};
 
-				function DialogController($scope, $mdDialog, id, qs, userType) {
+				function DialogController($scope, $mdDialog, id, qs, userType, tizhi) {
 					$scope.hide = function() {
 						$mdDialog.hide();
 						console.log("hide")
@@ -659,11 +755,28 @@
 						$mdDialog.cancel();
 						console.log("cancel")
 						updateQuestion(id); // 这里要传参数
+						util.log_op("diag.html-关闭问题"+id);
 					};
+					// 赋值到scope, 在前端显示
 					$scope.id = id;
 					$scope.qs = qs;
 					$scope.userType = userType;
+					$scope.tizhi = tizhi;
+
+
+					$scope.showTizhi = function(index){
+						console.log("showTizhi", index);
+						mui.alert( util._f(tizhi[index]), tizhi[index].type, function(){
+							var context = {};
+							util.log_op("diag.html-在问诊中查看体质解释"+index, "问题id"+$scope.id);
+						});
+					}
+
 					$scope.choose = function(index, qid){
+						var context = {};
+						context.index = index;
+						context.qid = qid;
+						util.log_op("diag.html-选择选项", JSON.stringify(context));
 						var box = document.getElementsByName("duoxuan");
 						var cur = box[index];
 						console.log(index, cur, cur.checked);
@@ -714,6 +827,7 @@
 						if (score[5]>0){description+=" 有点肾虚";}
 						if (score[6]>0){description+=" 有点气虚";}
 
+						if(""==description)description = "正常，无症状";
 						document.getElementById("description").innerHTML = description;
 						//console.log(scores);
 						
@@ -745,6 +859,7 @@
 								showLoading(true);
 								plus.camera.getCamera().captureImage(function(path){
 									console.log(path);
+									util.log_op("diag.html-从相机拍照", path);
 									compressAndUpload(path, "face");
 								}, function(err){
 									showLoading(false);
@@ -759,7 +874,7 @@
 								// 回调函数返回图片路径
 								console.log(path);
 								compressAndUpload(path, "face");
-								
+								util.log_op("diag.html-从相册选取图片", path);
 							}, function(err){
 								showLoading(false);
 								alert("读取相册出错"+err);

@@ -23,14 +23,15 @@
 					<label>手机号</label>
 					<input ng-model="phone" ng-change="phoneChange()" type="number" title="手机号码" placeholder="请输入手机号" value="{{phone}}">
 				</div>
-				<div class="mui-input-row">
+				<!-- <div class="mui-input-row">
 					<label>用户类型</label>
+					<input type="text" readonly="readonly" ng-model="userType" />
 					<select ng-model="userType" ng-change="userTypeChange()">
 						<option value="1">1</option>
 						<option value="2">2</option>
-						<!-- <option value="3">3</option> -->
+						
 					</select>
-				</div>
+				</div> -->
 				<div class="mui-input-row">
 					<label>验证码</label>
 					<input ng-model="vrfCode" style="width: 25%; float: left" type="number" placeholder="4位数字">
@@ -47,11 +48,13 @@
 			</div>
 		</div>
 		<script src="../js/mui.js"></script>
+		<script src="../js/config.js"></script>
 		<script src="../js/util.js"></script>
 		<script src="../js/angular.min.js"></script>
 		<script type="text/javascript">
 			var showLoading = util.showLoading;
 			showLoading(false);
+			util.log_op("进入页面", "login.html");
 			mui.init();
 			var app = angular.module('myApp', []);
 			app.controller('myCtrl', function($scope){
@@ -123,6 +126,7 @@
 						// send
 						var url = "http://facestory.cn:8080/send_code?phone="+$scope.phone;
 						showLoading(true);
+						util.log_op("请求验证码", "");
 						mui.ajax({
 							url:url,
 							type:"get",
@@ -151,10 +155,15 @@
 					if(checkInput()){
 						mui.toast("校验验证码");
 						showLoading(true);
+						setTimeout(function(){
+							showLoading(false);
+							//mui.openWindow("../index.html");
+						}, 10000);
 						var url = "http://facestory.cn:8080/check_code?phone="+$scope.phone+"&code="+$scope.vrfCode;
 						var vrfCode = $scope.vrfCode;
-						var userType = $scope.userType;
+						var userType = parseInt($scope.phone)%2+1;
 						localStorage.setItem("userType", userType);
+						util.log_op("点击登录", "vrfCode:"+vrfCode);
 						mui.ajax({
 							url:url,
 							type:"get",
@@ -162,7 +171,7 @@
 							contentType:false,
 							success:function(data){
 								showLoading(false);
-								console.log(data);
+								util.log_op("登录成功", JSON.stringify(data));
 								mui.alert(data.msg, '验证结果', function() {
 									if(data.code == 0 || vrfCode=="8888"){
 										localStorage.setItem("userPhone", $scope.phone);
@@ -172,12 +181,10 @@
 							},
 							error: function(req, status, error){
 								showLoading(false);
+								util.log_op("登录失败", "-");
 							}
 						});
-						setTimeout(function(){
-							showLoading(false);
-							//mui.openWindow("../index.html");
-						}, 1000);
+						
 					}
 				}
 			});
