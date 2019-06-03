@@ -216,15 +216,19 @@
 		<script type="text/javascript">
 			moment.locale('zh-cn');
 			var sojumpparm = util.getPar("sojumpparm");
+			var userPhone = localStorage.getItem("userPhone");
 			// 如果有从问卷星传过来的参数
 			if(sojumpparm!=false){
 				sojumpparm = "wxj-"+sojumpparm;
+				if(userPhone!=sojumpparm){
+					localStorage.removeItem("lastReport");
+				}
 				localStorage.setItem("userPhone", sojumpparm);
 				var userType = util.getHashCode(sojumpparm)%2+1;
 				localStorage.setItem("userType", userType);
 			}else{
 				// 如果没有登录，跳转到登录页面
-				if(localStorage.getItem("userPhone")==null){
+				if(userPhone==null){
 					mui.openWindow("./html/login.html");
 				}
 			}
