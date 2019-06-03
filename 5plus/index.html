@@ -164,6 +164,9 @@
 					<div class="mui-col-sm-6 mui-col-xs-6" style="width:100%">
 						<div class="mui-table-view-cell" ng-click="goDiagnosis(0)" id="diagnosis"><span>开始中医体检</span></div>
 					</div>
+					<div class="mui-col-sm-6 mui-col-xs-6" ng-show="showWjx" style="width:100%">
+						<div class="mui-table-view-cell" ng-click="goDiagnosis(4)" id="diagnosis"><span>回答问卷</span></div>
+					</div>
 					<!-- <div class="mui-col-sm-6 mui-col-xs-6">
 						<div class="mui-table-view-cell" ng-click="goDiagnosis(1)"><span>旧版中医体检</span></div>
 					</div> -->
@@ -212,6 +215,21 @@
 		<script src="js/config.js"></script>
 		<script type="text/javascript">
 			moment.locale('zh-cn');
+			var sojumpparm = util.getPar("sojumpparm");
+			// 如果有从问卷星传过来的参数
+			if(sojumpparm!=false){
+				sojumpparm = "wxj-"+sojumpparm;
+				localStorage.setItem("userPhone", sojumpparm);
+				var userType = util.getHashCode(sojumpparm)%2+1;
+				localStorage.setItem("userType", userType);
+			}else{
+				// 如果没有登录，跳转到登录页面
+				if(localStorage.getItem("userPhone")==null){
+					mui.openWindow("./html/login.html");
+				}
+			}
+
+			
 			var app = angular.module('myApp', []);
 			var showLoading = util.showLoading;
 			util.log_op("进入页面", "index.html");
@@ -223,6 +241,20 @@
 				$scope.moment = moment;
 				$scope.records = [];
 				$scope.userType = localStorage.getItem("userType");
+				$scope.showWjx = false;
+
+				setTimeout(function(){
+					var userid = localStorage.getItem("userPhone");
+					var lastReport = localStorage.getItem("lastReport");
+					// 如果用户是从问卷星过来的，并且进行过诊断
+					if(null!=userid && userid.startsWith("wxj-") && null!=lastReport){
+						console.log("show wxj");
+						$scope.$apply(function(){
+							$scope.showWjx= true;
+						})
+					}
+				}, 100);
+
 				$scope.tip = "云中医由复旦大学计算机学院和上海中医药大学合作研制，面诊和舌诊算法使用深度学习模型训练完成，1万5千份训练集，2000多志愿者参与测试，最终总体准确率达到85%以上;问诊规则由多个资深老中医编写完成。"
 				if(true || undefined == mui.os.plus){
 					console.log("web 环境");
@@ -236,6 +268,8 @@
 						}else if(id==3){
 							mui.alert("因为面诊舌诊的功能需要，在您使用系统的过程中，系统需要接收上传的图片和用户的操作记录。我们会保护您的个人隐私不会被用于其他用途。", "隐私说明", "了解");
 							util.log_op("查看隐私说明", "-");
+						}else if(id==4){
+							location.href = "http://www.wxj.com";
 						}
 					}
 				}else{
@@ -292,9 +326,8 @@
 			  
 			});
 			
-			if(localStorage.getItem("userPhone")==null){
-				mui.openWindow("./html/login.html");
-			}
+
+
 		</script>
 	</body>
 
