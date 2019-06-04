@@ -61,7 +61,7 @@
 							<input type="file" id="facepic" onchange="angular.element(this).scope().selectFile('face')" ng-model="facepic" accept="image/*" capture="camera" />
 						</div>
 						<div class="desc" id="face-desc" ng-click="showDesc($event, 'face')">
-							请拍面部
+							点击上面的图片拍面部
 						</div>
 					</div>
 				</div>
@@ -73,7 +73,7 @@
 							<input type="file" id="tonguepic" onchange="angular.element(this).scope().selectFile('tongue')" ng-model="tonguepic" accept="image/*" mutiple="mutiple" capture="camera" />
 						</div>
 						<div class="desc" id="tongue-desc" ng-click="showDesc($event, 'tongue')">
-							请拍舌头
+							点击上面的图片拍面部
 						</div>
 					</div>
 				</div>
@@ -208,7 +208,10 @@
 									html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
 								}
 								
-								
+								if(userType==2){
+									document.getElementById(descid).style.color = "blue";
+									document.getElementById(descid).style.textDecoration = "underline";
+								}	
 							}, 1000);
 							console.log("over..");
 							
@@ -284,7 +287,11 @@
 									html+=data.key[key]+":"+data.info[key][data.result[key]]+" ";
 								}
 								
-								
+								if(userType==2){
+									document.getElementById(descid).style.color = "blue";
+									document.getElementById(descid).style.textDecoration = "underline";
+								}								
+
 							}, 1000);
 							console.log("over..");
 							
@@ -389,6 +396,29 @@
 					}
 				}
 				
+				// 处理可解释样式
+				if(null==faceResult || userType!=2){
+					document.getElementById("face-desc").style.color = "black";
+					document.getElementById("face-desc").style.textDecoration = "none";
+					//return;
+				}
+				if(null==tongueResult || userType!=2){
+					document.getElementById("tongue-desc").style.color = "black";
+					document.getElementById("tongue-desc").style.textDecoration = "none";
+					//return;
+				}
+				// 处理可解释样式
+				if(null==faceResult){
+					document.getElementById("face-desc").style.color = "black";
+					document.getElementById("face-desc").style.textDecoration = "none";
+					//return;
+				}
+				if(null==tongueResult){
+					document.getElementById("tongue-desc").style.color = "black";
+					document.getElementById("tongue-desc").style.textDecoration = "none";
+					//return;
+				}
+
 				var updateQuestion = function(qid){ // 考虑同时改变主页面上的问题描述
 					console.log("updateQuestion");
 					//console.log($scope.questions.reverse());
@@ -547,19 +577,25 @@
 			
 				// 显示图片诊断的解释
 				$scope.showDesc = function(ev, type){
+
+					
+
 					util.log_op("diag.html-点击图片诊断描述showDesc", "")
 					if(userType!="2")return;
+					
 					console.log(faceResult, tongueResult);
 					var desc = "描述";
 					var score = [0,0,0,0,0,0];
 					var file = "";
 					if( type=='face'){
+
 						console.log("show face desc");
 						desc = getfaceResult(faceResult);
 						score = getFaceScore(faceResult);
 						file = faceResult.file;
 						util.log_op("diag.html-点击面诊解释", "")
 					}else{
+
 						console.log("show tongue desc");
 						desc = gettongueResult(tongueResult);
 						score = getTongueScore(tongueResult);

@@ -24,6 +24,7 @@
 		<link rel="stylesheet" href="../css/angular-material.min.css" />
 		<!-- Eharts js-->
 		<script src="../js/echarts.min.js"></script>
+		
 	</head>
 	<body ng-app="myApp" ng-controller="myCtrl">
 		<header class="mui-bar mui-bar-nav">
@@ -37,11 +38,11 @@
 			</div>
 			<div class="col-box">
 				<div>面诊结果</div>
-				<p style="color: blue; text-decoration: underline" ng-click="showDesc($event, 'face')">{{faceResult}}</p>
+				<p id="face-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'face')">{{faceResult}}</p>
 			</div>
 			<div class="col-box">
 				<div>舌诊结果</div>
-				<p style="color: blue; text-decoration: underline" ng-click="showDesc($event, 'tongue')">{{tongueResult}}</p>
+				<p id="tongue-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'tongue')">{{tongueResult}}</p>
 			</div>
 			<div class="col-box">
 				<div>结论
@@ -49,8 +50,8 @@
 				</div>
 				<p>
 					<p>
-							<span class="explain-text" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> 
-					<span class="explain-text" ng-click="showExplainDialog($event)">{{healthScore}}分</span> 
+							<span ng-class="userType==2?'explain-text':''" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> 
+					<span ng-class="userType==2?'explain-text':''" ng-click="showExplainDialog($event)">{{healthScore}}分</span> 
 					<span ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
 					</p>
 					{{healthState}}

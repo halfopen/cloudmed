@@ -42,6 +42,7 @@ padding: 4px;
 .explain-text{
     padding-left: 10px;
     color: blue;
+    text-decoration: underline;
 }
 
 md-dialog{
