@@ -188,7 +188,7 @@ var util = {
 };
 console.log(navigator.userAgent.toLocaleLowerCase())
 console.log("isPhone:", util.isPhone())
-console.log("sojumpparm", util.getPar("sojumpparm"), util.getHashCode("12sd"))
+console.log("sojumpindex", util.getPar("sojumpindex"), util.getHashCode("12sd"))
 
 if(util.isPhone()){
 	mui.toast("是移动设备");

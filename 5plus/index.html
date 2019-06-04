@@ -215,16 +215,16 @@
 		<script src="js/config.js"></script>
 		<script type="text/javascript">
 			moment.locale('zh-cn');
-			var sojumpparm = util.getPar("sojumpparm");
+			var sojumpindex = util.getPar("sojumpindex");
 			var userPhone = localStorage.getItem("userPhone");
 			// 如果有从问卷星传过来的参数
-			if(sojumpparm!=false){
-				sojumpparm = "wjx-"+sojumpparm;
-				if(userPhone!=sojumpparm){
+			if(sojumpindex!=false){
+				sojumpindex = "wjx-"+sojumpindex;
+				if(userPhone!=sojumpindex){
 					localStorage.removeItem("lastReport");
 				}
-				localStorage.setItem("userPhone", sojumpparm);
-				var userType = util.getHashCode(sojumpparm)%2+1;
+				localStorage.setItem("userPhone", sojumpindex);
+				var userType = util.getHashCode(sojumpindex)%2+1;
 				localStorage.setItem("userType", userType);
 			}else{
 				// 如果没有登录，跳转到登录页面
