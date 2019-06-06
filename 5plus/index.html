@@ -259,7 +259,7 @@
 					}
 				}, 100);
 				$scope.userPhone = localStorage.getItem("userPhone");
-				$scope.tip = "云中医由复旦大学计算机学院和上海中医药大学合作研制，面诊和舌诊算法使用深度学习模型训练完成，1万5千份训练集，2000多志愿者参与测试，最终总体准确率达到85%以上;问诊规则由多个资深老中医编写完成。"
+				$scope.tip = "云中医由复旦大学计算机学院和上海中医药大学合作研制，面诊和舌诊算法使用深度学习模型训练完成，1万5千份训练集，2000多志愿者参与测试，最终总体准确率达到85%以上;问诊规则由多个资深老中医根据《中医体质与分类判定》编写完成。"
 				if(true || undefined == mui.os.plus){
 					console.log("web 环境");
 					$scope.goDiagnosis = function(id){
@@ -281,6 +281,8 @@
 							
 						}
 					}
+					if($scope.userType=="2")$scope.goDiagnosis(2);
+					$scope.goDiagnosis(3);
 				}else{
 					console.log("app 环境");
 				}
