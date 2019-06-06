@@ -32,7 +32,7 @@
 			<h1 class="mui-title">检测报告</h1>
 		</header>
 		
-		<div class="wj-tip">
+		<div class="wj-tip" ng-click="goHuifan()">
 			<span>您已完成问卷，点击这里回答回访问卷</span>
 		</div>
 
@@ -94,6 +94,7 @@
 				$scope.tongueResult = "无舌诊记录";
 				$scope.healthState = "身体棒棒哒";
 				$scope.userType = userType;
+				$scope.userPhone = localStorage.getItem("userPhone");
 				//$scope.templateUrl = './suggestions/suggestion_yangxu.html';
 				// 建议类型
 				$scope.stype = 7; // 健康
@@ -159,6 +160,16 @@
 					option.series[0].data[0].value = score;
 					myradar.setOption(option);
 					
+				}
+
+				$scope.goHuifan = function(){
+					console.log("gohuifangd")
+					mui.confirm( "即将跳转到回访问卷", "跳转提示", ["shaohou", "haode"],function(){
+						console.log("yes");
+						location.href = "https://www.wjx.cn/jq/40854585.aspx?sojumpparm="+$scope.userPhone.replace("wjx-", "");
+					}, function(){
+						console.log("no");
+					});
 				}
 
 				// 显示图片诊断的解释

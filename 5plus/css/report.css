@@ -60,4 +60,6 @@ md-dialog{
     color: red;
     border: 1px solid green;
     border-radius: 2px;
+    text-align: center;
+    text-decoration: underline;
 }
