@@ -23,7 +23,7 @@
 					<label>手机号</label>
 					<input ng-model="phone" ng-change="phoneChange()" type="number" title="手机号码" placeholder="请输入手机号" value="{{phone}}">
 				</div>
-				<!-- <div class="mui-input-row">
+				<div class="mui-input-row">
 					<label>用户类型</label>
 					<input type="text" readonly="readonly" ng-model="userType" />
 					<select ng-model="userType" ng-change="userTypeChange()">
@@ -31,7 +31,7 @@
 						<option value="2">2</option>
 						
 					</select>
-				</div> -->
+				</div>
 				<div class="mui-input-row">
 					<label>验证码</label>
 					<input ng-model="vrfCode" style="width: 25%; float: left" type="number" placeholder="4位数字">
@@ -60,7 +60,8 @@
 			app.controller('myCtrl', function($scope){
 				console.log("controller");
 				$scope.phone = null;
-				$scope.userType = "1";
+				$scope.userType = parseInt(Math.random()*2+1)+"";
+				console.log($scope.userType);
 				$scope.vrfCode = null;
 				$scope.tipSend = "发送验证码";
 				
@@ -161,8 +162,8 @@
 						}, 10000);
 						var url = "http://facestory.cn:8080/check_code?phone="+$scope.phone+"&code="+$scope.vrfCode;
 						var vrfCode = $scope.vrfCode;
-						var userType = parseInt($scope.phone)%2+1;
-						localStorage.setItem("userType", userType);
+						//var userType = parseInt($scope.phone)%2+1;
+						localStorage.setItem("userType", $scope.userType);
 						util.log_op("点击登录", "vrfCode:"+vrfCode);
 						mui.ajax({
 							url:url,

@@ -32,6 +32,10 @@
 			<h1 class="mui-title">检测报告</h1>
 		</header>
 		
+		<div class="wj-tip">
+			<span>您已完成问卷，点击这里回答回访问卷</span>
+		</div>
+
 		<div class="mui-content" >
 			<div class="tip">
 				您在{{date}}的体检报告
@@ -65,7 +69,7 @@
 				</p>
 			</div>
 
-			<div class="col-box">
+			<div class="col-box;">
 				<div>建议{{stype}}</div>
 				<!-- <suggestion stype="{{stype}}"></suggestion> -->
 				<div ng-show="stype==0" ng-include="'./suggestions/suggestion_yangxu.html'"></div>
@@ -77,6 +81,7 @@
 				<div ng-show="stype==6" ng-include="'./suggestions/suggestion_qixu.html'"></div>
 				<div ng-show="stype==7" ng-include="'./suggestions/suggestion_zhengchang.html'"></div>
 			</div>
+			<div style="height: 40px"></div>
 		</div>
 
 		<script>
