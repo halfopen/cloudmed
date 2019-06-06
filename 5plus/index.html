@@ -154,7 +154,7 @@
 					<div ng-if="userType=='2'">{{tip}}</div> -->
 					<div>{{date}}</div>
 
-					<div style="padding: 10px 0px;text-align: center;position: absolute;bottom: 0px;font-size:large">
+					<div ng-show="userType=='2'" style="padding: 10px 0px;text-align: center;position: absolute;bottom: 0px;font-size:large">
 							<span ng-click="goDiagnosis(2)" style="padding-left: 20px; text-decoration: underline; color: blue;">原理说明</span>
 							<span ng-click="goDiagnosis(3)" style="padding-left: 20px; text-decoration: underline; color: blue;">隐私说明</span>
 					</div>
