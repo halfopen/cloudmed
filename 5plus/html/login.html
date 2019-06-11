@@ -125,7 +125,7 @@
 				$scope.sendCode = function(){
 					if(null==localStorage.getItem("countDown") && checkPhone()==true){  // 可以发送
 						// send
-						var url = "http://facestory.cn:8080/send_code?phone="+$scope.phone;
+						var url = "http://118.25.221.34:8080/send_code?phone="+$scope.phone;
 						showLoading(true);
 						util.log_op("请求验证码", "");
 						mui.ajax({
@@ -160,7 +160,7 @@
 							showLoading(false);
 							//mui.openWindow("../index.html");
 						}, 10000);
-						var url = "http://facestory.cn:8080/check_code?phone="+$scope.phone+"&code="+$scope.vrfCode;
+						var url = "http://118.25.221.34:8080/check_code?phone="+$scope.phone+"&code="+$scope.vrfCode;
 						var vrfCode = $scope.vrfCode;
 						//var userType = parseInt($scope.phone)%2+1;
 						localStorage.setItem("userType", $scope.userType);
