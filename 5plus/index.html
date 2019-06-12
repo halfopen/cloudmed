@@ -217,6 +217,7 @@
 			moment.locale('zh-cn');
 			var sojumpindex = util.getPar("sojumpindex");
 			var userPhone = localStorage.getItem("userPhone");
+			var userType;
 			// 如果有从问卷星传过来的参数
 			if(sojumpindex!=false){
 				sojumpindex = "wjx-"+sojumpindex;
@@ -224,7 +225,7 @@
 					localStorage.removeItem("lastReport");
 				}
 				localStorage.setItem("userPhone", sojumpindex);
-				var userType = util.getHashCode(sojumpindex)%2+1;
+				userType = util.getHashCode(sojumpindex)%2+1;
 				localStorage.setItem("userType", userType);
 			}else{
 				// 如果没有登录，跳转到登录页面
@@ -237,7 +238,7 @@
 			var app = angular.module('myApp', []);
 			var showLoading = util.showLoading;
 			util.log_op("进入页面", "index.html");
-
+			util.log_op("透明性", sojumpindex+"-"+userType);
 			app.controller('myCtrl', function($scope){
 				$scope.date = Date();
 				$scope.tabIndex = 0;
