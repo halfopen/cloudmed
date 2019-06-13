@@ -16,6 +16,11 @@
     display: table-cell;
     vertical-align: middle;
     text-align: center;
+    
+}
+
+.pic-diag-sub-ctn .border{
+    min-height: 160px;
 }
 
 .border{
@@ -162,7 +167,7 @@ md-dialog{
 }
 
 .desc{
-    height: 40px;
+    height: 20px; 
     text-decoration: underline;
     color: blue;
     margin-top: 10px;

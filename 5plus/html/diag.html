@@ -63,6 +63,7 @@
 						<div class="desc" id="face-desc" ng-click="showDesc($event, 'face')">
 							点击上面的图片拍面部
 						</div>
+						<div id="face-desc-tip" style="color:red; display:none;">点击上面查看面诊结果解释</div>
 					</div>
 				</div>
 				<div class="pic-diag-sub-ctn"> 
@@ -75,6 +76,7 @@
 						<div class="desc" id="tongue-desc" ng-click="showDesc($event, 'tongue')">
 							点击上面的图片拍面部
 						</div>
+						<div id="tongue-desc-tip" style="color:red; display:none;">点击上面查看舌诊结果解释</div>
 					</div>
 				</div>
 			</div>
@@ -211,6 +213,7 @@
 								if(userType==2){
 									document.getElementById(descid).style.color = "blue";
 									document.getElementById(descid).style.textDecoration = "underline";
+									document.getElementById(descid+"-tip").style.display = "";
 								}	
 							}, 1000);
 							console.log("over..");
@@ -233,6 +236,7 @@
 				var id = "facepic";
 				var imgid = "faceimg";
 				var descid = "face-desc";
+			
 				if(type =="face"){
 					// 'facepic', 'faceimg', 'face-desc'
 					id = "facepic";
@@ -290,6 +294,7 @@
 								if(userType==2){
 									document.getElementById(descid).style.color = "blue";
 									document.getElementById(descid).style.textDecoration = "underline";
+									document.getElementById(descid+"-tip").style.display = "";
 								}								
 
 							}, 1000);
@@ -400,22 +405,29 @@
 				if(null==faceResult || userType!=2){
 					document.getElementById("face-desc").style.color = "black";
 					document.getElementById("face-desc").style.textDecoration = "none";
+					document.getElementById("face-desc"+"-tip").style.display = "none";
+
 					//return;
 				}
 				if(null==tongueResult || userType!=2){
 					document.getElementById("tongue-desc").style.color = "black";
 					document.getElementById("tongue-desc").style.textDecoration = "none";
+					document.getElementById("tongue-desc"+"-tip").style.display = "none";
 					//return;
 				}
 				// 处理可解释样式
 				if(null==faceResult){
 					document.getElementById("face-desc").style.color = "black";
 					document.getElementById("face-desc").style.textDecoration = "none";
+					document.getElementById("face-desc"+"-tip").style.display = "none";
+
 					//return;
 				}
 				if(null==tongueResult){
 					document.getElementById("tongue-desc").style.color = "black";
 					document.getElementById("tongue-desc").style.textDecoration = "none";
+					document.getElementById("tongue-desc"+"-tip").style.display = "none";
+
 					//return;
 				}
 
