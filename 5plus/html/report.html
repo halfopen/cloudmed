@@ -42,14 +42,14 @@
 			</div>
 			<div class="col-box">
 				<div>面诊结果</div>
-				<p id="face-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'face')">{{faceResult}}
-				</p>
+				<span id="face-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'face')">{{faceResult}}
+				</span>
 				<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
 				
 			</div>
 			<div class="col-box">
 				<div>舌诊结果</div>
-				<p id="tongue-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'tongue')">{{tongueResult}} 					</p>
+				<span id="tongue-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'tongue')">{{tongueResult}} 					</span>
 				<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
 				
 			</div>
