@@ -44,13 +44,13 @@
 				<div>面诊结果</div>
 				<span id="face-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'face')">{{faceResult}}
 				</span>
-				<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
+				<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看更多解释</span>
 				
 			</div>
 			<div class="col-box">
 				<div>舌诊结果</div>
 				<span id="tongue-result" ng-class="userType==2?'explain-text':''" ng-click="showDesc($event, 'tongue')">{{tongueResult}} 					</span>
-				<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
+				<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看更多解释</span>
 				
 			</div>
 			<div class="col-box">
@@ -61,7 +61,7 @@
 					<p>
 							<span ng-class="userType==2?'explain-text':''" ng-repeat="p in phyType" ng-click="showPhyExplainDialog($event, $index)">{{p}} </span> 
 					<span ng-class="userType==2?'explain-text':''" ng-click="showExplainDialog($event)">{{healthScore}}分</span> 
-					<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看对结果的解释</span>
+					<span style="color:red" ng-if="userType=='2'">点击蓝色文字查看更多解释</span>
 					</p>
 					{{healthState}}
 					<!-- 让元素先加载，然后隐藏 防止移动平台下不加载 -->
