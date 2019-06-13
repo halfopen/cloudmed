@@ -63,4 +63,5 @@ md-dialog{
     border-radius: 2px;
     text-align: center;
     text-decoration: underline;
+    font-size: smaller;
 }
