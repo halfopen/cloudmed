@@ -55,12 +55,12 @@ md-dialog{
     position: fixed;
     z-index: 10;
     top: 44px;
-    background: red;
+    background: yellow;
     width: 100%;
     padding: 10px;
-    color: white;
+    color: black;
     border: 1px solid green;
     border-radius: 2px;
     text-align: center;
-    text-decoration: underline;
+    text-decoration: underline bold;
 }
