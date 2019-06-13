@@ -53,7 +53,7 @@ md-dialog{
 
 .wj-tip{
     position: fixed;
-    z-index: 1000;
+    z-index: 10;
     top: 44px;
     background: red;
     width: 100%;
