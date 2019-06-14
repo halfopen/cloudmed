@@ -238,7 +238,8 @@
 			var app = angular.module('myApp', []);
 			var showLoading = util.showLoading;
 			util.log_op("进入页面", "index.html");
-			util.log_op("透明性", sojumpindex+"-"+userType);
+			if(userType==2)util.log_op("透明性:透明", sojumpindex+"-"+userType);
+			else util.log_op("透明性:不透明", sojumpindex+"-"+userType);
 			app.controller('myCtrl', function($scope){
 				$scope.date = Date();
 				$scope.tabIndex = 0;
