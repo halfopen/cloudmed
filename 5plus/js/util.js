@@ -128,7 +128,7 @@ var util = {
 	},
 	// 记录日志到服务器, 放在config.js和mui.js后面加载
 	log_op: function( op, info){
-		var user = config.userPhone;
+		var user = localStorage.getItem("userPhone");
 		if(null==user){
 			user = "00000000000";
 		}
