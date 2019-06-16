@@ -130,6 +130,7 @@ var util = {
 	log_op: function( op, info){
 		var user = localStorage.getItem("userPhone");
 		if(null==user){
+			return;
 			user = "00000000000";
 		}
 		mui.ajax(config.server_root+"api/op_log/",{
