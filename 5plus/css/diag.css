@@ -122,6 +122,7 @@
 
 md-dialog{
     width: 95%;
+    max-width: 95%;
 }
 
 .pic-diag-ctn input{
