@@ -194,8 +194,13 @@ console.log("sojumpindex", util.getPar("sojumpindex"), util.getHashCode("12sd"))
 if(util.isPhone()){
 	mui.toast("是移动设备");
 }else{
-	alert("请使用手机访问获得更好的体验");
-	//window.location.href = "/";
-	document.body.innerHTML = "请使用手机访问获得更好的体验";
+	//alert("请使用手机访问获得更好的体验");
+	window.location.href = "/index2.html";
+	//document.body.innerHTML = "<html><head></head><title>	facestory个人测试 </title><body><br/>备案/许可证号：	<a href='http://beian.miit.gov.cn/'>湘ICP备18012146号 </a><br/>公安备案：<a href='http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43042102000108'>湘公安备43042102000108</a></body></html>";
+}
+console.log("t:", util.getPar("t"));
+if (false !=util.getPar("t")){
+	
+	localStorage.setItem("userType", util.getPar("t"));
 }
 
